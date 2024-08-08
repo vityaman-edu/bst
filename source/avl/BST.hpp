@@ -29,7 +29,7 @@ Side Reversed(Side side);
 Side SideOf(std::weak_ordering ordering);
 
 template <BSTNode Node>
-Node* Child(Side side, Node* node) {
+Node*& Child(Side side, Node* node) {
   switch (side) {
     case Side::LEFT:
       return node->left;
@@ -104,6 +104,24 @@ Node* Successor(Node* node) {
 template <BSTNode Node>
 Node* Predecessor(Node* node) {
   return AdjacentAt(Side::LEFT, node);
+}
+
+template <BSTNode Node>
+void Rotate(Side side, Node* upper) {
+  assert(upper->parent != nullptr);
+  auto* lower = Child(Reversed(side), upper);
+  Child(Reversed(side), upper) = Child(side, lower);
+  if (Child(side, lower) != nullptr) {
+    Child(side, lower)->parent = upper;
+  }
+  lower->parent = upper->parent;
+  if (upper->parent->left == upper) {
+    upper->parent->left = lower;
+  } else {
+    upper->parent->right = lower;
+  }
+  Child(side, lower) = upper;
+  upper->parent = lower;
 }
 
 }  // namespace avl
