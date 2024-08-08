@@ -3,7 +3,9 @@
 #include <cassert>
 #include <compare>
 #include <concepts>
+#include <cstdint>
 #include <tuple>
+#include <utility>
 
 namespace avl {
 
@@ -20,6 +22,21 @@ concept BSTNode = requires(Node* node) {
   { node->key } -> std::convertible_to<typename Node::Key>;
 } && WeaklyOrdered<typename Node::Key>;
 
+enum class Direction : std::uint8_t { LEFT, RIGHT };
+
+Direction DirectionOf(std::weak_ordering ordering);
+
+template <BSTNode Node>
+Node* Child(Direction direction, Node* node) {
+  switch (direction) {
+    case Direction::LEFT:
+      return node->left;
+    case Direction::RIGHT:
+      return node->right;
+  }
+  std::unreachable();
+}
+
 template <BSTNode Node>
 std::tuple<Node*, std::weak_ordering> SearchParent(
     Node* node, const typename Node::Key& key
@@ -28,15 +45,10 @@ std::tuple<Node*, std::weak_ordering> SearchParent(
   for (;;) {
     const auto ordering = key <=> node->key;
     if (ordering == std::weak_ordering::equivalent ||
-        (ordering == std::weak_ordering::less && node->left == nullptr) ||
-        (ordering == std::weak_ordering::greater && node->right == nullptr)) {
+        Child(DirectionOf(ordering), node) == nullptr) {
       return {node, ordering};
     }
-    if (ordering == std::weak_ordering::less) {
-      node = node->left;
-    } else {
-      node = node->right;
-    }
+    node = Child(DirectionOf(ordering), node);
   }
 }
 
