@@ -1,10 +1,7 @@
 get_filename_component(AVL_INCLUDE_PATH "." ABSOLUTE)
 get_filename_component(AVL_SOURCE_PATH "./${PROJECT_NAME}" ABSOLUTE)
 
-set(
-    AVL_SOURCES
-    ${AVL_SOURCE_PATH}/Hello.cpp
-)
+file(GLOB_RECURSE AVL_SOURCES CONFIGURE_DEPENDS *.hpp *.cpp)
 
 add_library(${PROJECT_NAME} STATIC ${AVL_SOURCES})
 
