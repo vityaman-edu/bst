@@ -24,6 +24,8 @@ concept BSTNode = requires(Node* node) {
 
 enum class Direction : std::uint8_t { LEFT, RIGHT };
 
+Direction Reversed(Direction direction);
+
 Direction DirectionOf(std::weak_ordering ordering);
 
 template <BSTNode Node>
@@ -62,7 +64,7 @@ Node* Search(Node* node, const typename Node::Key& key) {
 }
 
 template <BSTNode Node>
-Node* Extreme(Direction direction, Node* node) {
+Node* ExtremeAt(Direction direction, Node* node) {
   assert(node != nullptr);
   while (Child(direction, node) != nullptr) {
     node = Child(direction, node);
@@ -72,40 +74,36 @@ Node* Extreme(Direction direction, Node* node) {
 
 template <BSTNode Node>
 Node* Min(Node* node) {
-  return Extreme(Direction::LEFT, node);
+  return ExtremeAt(Direction::LEFT, node);
 }
 
 template <BSTNode Node>
 Node* Max(Node* node) {
-  return Extreme(Direction::RIGHT, node);
+  return ExtremeAt(Direction::RIGHT, node);
+}
+
+template <BSTNode Node>
+Node* AdjacentAt(Direction direction, Node* node) {
+  assert(node != nullptr);
+  if (Child(direction, node) != nullptr) {
+    return ExtremeAt(Reversed(direction), Child(direction, node));
+  }
+  Node* ancestor = node->parent;
+  while (ancestor != nullptr && node == Child(direction, ancestor)) {
+    node = ancestor;
+    ancestor = ancestor->parent;
+  }
+  return ancestor;
 }
 
 template <BSTNode Node>
 Node* Successor(Node* node) {
-  assert(node != nullptr);
-  if (node->right != nullptr) {
-    return Min(node->right);
-  }
-  Node* ancestor = node->parent;
-  while (ancestor != nullptr && node == ancestor->right) {
-    node = ancestor;
-    ancestor = ancestor->parent;
-  }
-  return ancestor;
+  return AdjacentAt(Direction::RIGHT, node);
 }
 
 template <BSTNode Node>
 Node* Predecessor(Node* node) {
-  assert(node != nullptr);
-  if (node->left != nullptr) {
-    return Max(node->left);
-  }
-  Node* ancestor = node->parent;
-  while (ancestor != nullptr && node == ancestor->left) {
-    node = ancestor;
-    ancestor = ancestor->parent;
-  }
-  return ancestor;
+  return AdjacentAt(Direction::LEFT, node);
 }
 
 }  // namespace avl
