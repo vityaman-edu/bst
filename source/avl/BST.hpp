@@ -1,17 +1,15 @@
 #pragma once
 
 #include <cassert>
+#include <compare>
 #include <concepts>
+#include <tuple>
 
 namespace avl {
 
 template <class T>
-concept Ordered = requires(const T& lhs, const T& rhs) {
-  { lhs == rhs } -> std::same_as<bool>;
-  { lhs < rhs } -> std::same_as<bool>;
-  { lhs <= rhs } -> std::same_as<bool>;
-  { lhs > rhs } -> std::same_as<bool>;
-  { lhs >= rhs } -> std::same_as<bool>;
+concept WeaklyOrdered = requires(const T& lhs, const T& rhs) {
+  { lhs <=> rhs } -> std::convertible_to<std::weak_ordering>;
 };
 
 template <class Node>
@@ -20,18 +18,35 @@ concept BSTNode = requires(Node* node) {
   { node->left } -> std::convertible_to<Node*>;
   { node->right } -> std::convertible_to<Node*>;
   { node->key } -> std::convertible_to<typename Node::Key>;
-} && Ordered<typename Node::Key>;
+} && WeaklyOrdered<typename Node::Key>;
 
 template <BSTNode Node>
-Node* Search(Node* node, const typename Node::Key& key) {
-  while (node != nullptr && key != node->key) {
-    if (key < node->key) {
+std::tuple<Node*, std::weak_ordering> SearchParent(
+    Node* node, const typename Node::Key& key
+) {
+  assert(node != nullptr);
+  for (;;) {
+    const auto ordering = key <=> node->key;
+    if (ordering == std::weak_ordering::equivalent ||
+        (ordering == std::weak_ordering::less && node->left == nullptr) ||
+        (ordering == std::weak_ordering::greater && node->right == nullptr)) {
+      return {node, ordering};
+    }
+    if (ordering == std::weak_ordering::less) {
       node = node->left;
     } else {
       node = node->right;
     }
   }
-  return node;
+}
+
+template <BSTNode Node>
+Node* Search(Node* node, const typename Node::Key& key) {
+  auto [parent, ordering] = SearchParent(node, key);
+  if (ordering == std::weak_ordering::equivalent) {
+    return parent;
+  }
+  return nullptr;
 }
 
 template <BSTNode Node>

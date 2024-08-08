@@ -30,8 +30,4 @@ TEST(BSTSearch, Singleton) {
   ASSERT_EQ(Search(&node, 10), nullptr);
 }
 
-TEST(BSTSearch, Nil) {
-  ASSERT_EQ(Search<Node>(nullptr, 0), nullptr);
-}
-
 }  // namespace avl::test
