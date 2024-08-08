@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+cd "$(dirname "$0")"/..
+
+. ci/commons.sh
+
+message "Building the project..."
+(cd build && make)
+
+message "Testing the project..."
+(cd build && ./test/avl-test)
+
+message "Checking code format..."
+find source test -iname '*.hpp' -o -iname '*.cpp' \
+| xargs clang-format -Werror --dry-run --fallback-style=Google --verbose
+
+message "Checking code style..."
+find source -iname '*.hpp' -o -iname '*.cpp' \
+| xargs clang-tidy -p build/compile_commands.json
+
+message "Precommit checks was passed!"
