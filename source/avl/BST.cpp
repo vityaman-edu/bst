@@ -5,22 +5,22 @@
 
 namespace avl {
 
-Direction Reversed(Direction direction) {
-  switch (direction) {
-    case Direction::LEFT:
-      return Direction::RIGHT;
-    case Direction::RIGHT:
-      return Direction::LEFT;
+Side Reversed(Side side) {
+  switch (side) {
+    case Side::LEFT:
+      return Side::RIGHT;
+    case Side::RIGHT:
+      return Side::LEFT;
   }
   std::unreachable();
 }
 
-Direction DirectionOf(std::weak_ordering ordering) {
+Side SideOf(std::weak_ordering ordering) {
   if (ordering == std::weak_ordering::less) {
-    return Direction::LEFT;
+    return Side::LEFT;
   }
   if (ordering == std::weak_ordering::greater) {
-    return Direction::RIGHT;
+    return Side::RIGHT;
   }
   std::unreachable();
 }

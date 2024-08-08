@@ -22,18 +22,18 @@ concept BSTNode = requires(Node* node) {
   { node->key } -> std::convertible_to<typename Node::Key>;
 } && WeaklyOrdered<typename Node::Key>;
 
-enum class Direction : std::uint8_t { LEFT, RIGHT };
+enum class Side : std::uint8_t { LEFT, RIGHT };
 
-Direction Reversed(Direction direction);
+Side Reversed(Side side);
 
-Direction DirectionOf(std::weak_ordering ordering);
+Side SideOf(std::weak_ordering ordering);
 
 template <BSTNode Node>
-Node* Child(Direction direction, Node* node) {
-  switch (direction) {
-    case Direction::LEFT:
+Node* Child(Side side, Node* node) {
+  switch (side) {
+    case Side::LEFT:
       return node->left;
-    case Direction::RIGHT:
+    case Side::RIGHT:
       return node->right;
   }
   std::unreachable();
@@ -47,10 +47,10 @@ std::tuple<Node*, std::weak_ordering> SearchParent(
   for (;;) {
     const auto ordering = key <=> node->key;
     if (ordering == std::weak_ordering::equivalent ||
-        Child(DirectionOf(ordering), node) == nullptr) {
+        Child(SideOf(ordering), node) == nullptr) {
       return {node, ordering};
     }
-    node = Child(DirectionOf(ordering), node);
+    node = Child(SideOf(ordering), node);
   }
 }
 
@@ -64,32 +64,32 @@ Node* Search(Node* node, const typename Node::Key& key) {
 }
 
 template <BSTNode Node>
-Node* ExtremeAt(Direction direction, Node* node) {
+Node* ExtremeAt(Side side, Node* node) {
   assert(node != nullptr);
-  while (Child(direction, node) != nullptr) {
-    node = Child(direction, node);
+  while (Child(side, node) != nullptr) {
+    node = Child(side, node);
   }
   return node;
 }
 
 template <BSTNode Node>
 Node* Min(Node* node) {
-  return ExtremeAt(Direction::LEFT, node);
+  return ExtremeAt(Side::LEFT, node);
 }
 
 template <BSTNode Node>
 Node* Max(Node* node) {
-  return ExtremeAt(Direction::RIGHT, node);
+  return ExtremeAt(Side::RIGHT, node);
 }
 
 template <BSTNode Node>
-Node* AdjacentAt(Direction direction, Node* node) {
+Node* AdjacentAt(Side side, Node* node) {
   assert(node != nullptr);
-  if (Child(direction, node) != nullptr) {
-    return ExtremeAt(Reversed(direction), Child(direction, node));
+  if (Child(side, node) != nullptr) {
+    return ExtremeAt(Reversed(side), Child(side, node));
   }
   Node* ancestor = node->parent;
-  while (ancestor != nullptr && node == Child(direction, ancestor)) {
+  while (ancestor != nullptr && node == Child(side, ancestor)) {
     node = ancestor;
     ancestor = ancestor->parent;
   }
@@ -98,12 +98,12 @@ Node* AdjacentAt(Direction direction, Node* node) {
 
 template <BSTNode Node>
 Node* Successor(Node* node) {
-  return AdjacentAt(Direction::RIGHT, node);
+  return AdjacentAt(Side::RIGHT, node);
 }
 
 template <BSTNode Node>
 Node* Predecessor(Node* node) {
-  return AdjacentAt(Direction::LEFT, node);
+  return AdjacentAt(Side::LEFT, node);
 }
 
 }  // namespace avl
