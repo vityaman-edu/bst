@@ -62,21 +62,22 @@ Node* Search(Node* node, const typename Node::Key& key) {
 }
 
 template <BSTNode Node>
-Node* Min(Node* node) {
+Node* Extreme(Direction direction, Node* node) {
   assert(node != nullptr);
-  while (node->left != nullptr) {
-    node = node->left;
+  while (Child(direction, node) != nullptr) {
+    node = Child(direction, node);
   }
   return node;
 }
 
 template <BSTNode Node>
+Node* Min(Node* node) {
+  return Extreme(Direction::LEFT, node);
+}
+
+template <BSTNode Node>
 Node* Max(Node* node) {
-  assert(node != nullptr);
-  while (node->right != nullptr) {
-    node = node->right;
-  }
-  return node;
+  return Extreme(Direction::RIGHT, node);
 }
 
 template <BSTNode Node>
