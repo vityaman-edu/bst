@@ -1,5 +1,8 @@
 #include <deque>
 
+#include "avl/bst/Core.hpp"
+#include "avl/bst/Side.hpp"
+
 namespace avl::test {
 
 struct Node {
@@ -16,14 +19,8 @@ public:
   Node* operator()(Node::Key key, Node* lhs = nullptr, Node* rhs = nullptr) {
     nodes_.push_back({.key = key});
     Node* node = &nodes_.back();
-    if (lhs != nullptr) {
-      node->left = lhs;
-      node->left->parent = node;
-    }
-    if (rhs != nullptr) {
-      node->right = rhs;
-      node->right->parent = node;
-    }
+    LinkChild(node, Side::LEFT, lhs);
+    LinkChild(node, Side::RIGHT, rhs);
     return node;
   }
 

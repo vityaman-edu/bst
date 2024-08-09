@@ -9,18 +9,10 @@ template <BSTNode Node>
 void Rotate(Side side, Node* upper) {
   assert(upper->parent != nullptr);
   auto* lower = Child(Reversed(side), upper);
-  Child(Reversed(side), upper) = Child(side, lower);
-  if (Child(side, lower) != nullptr) {
-    Child(side, lower)->parent = upper;
-  }
-  lower->parent = upper->parent;
-  if (upper->parent->left == upper) {
-    upper->parent->left = lower;
-  } else {
-    upper->parent->right = lower;
-  }
-  Child(side, lower) = upper;
-  upper->parent = lower;
+  LinkChild(upper, Reversed(side), Child(side, lower));
+  auto upper_side = (upper->parent->left == upper) ? Side::LEFT : Side::RIGHT;
+  LinkChild(upper->parent, upper_side, lower);
+  LinkChild(lower, side, upper);
 }
 
 }  // namespace avl

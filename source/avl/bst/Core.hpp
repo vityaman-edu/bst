@@ -32,4 +32,13 @@ Node*& Child(Side side, Node* node) {
   std::unreachable();
 }
 
+template <BSTNode Node>
+void LinkChild(Node* node, Side side, Node* child) {
+  assert(node != nullptr);
+  Child(side, node) = child;
+  if (child != nullptr) {
+    child->parent = node;
+  }
+}
+
 }  // namespace avl
