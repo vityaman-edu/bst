@@ -42,4 +42,16 @@ void LinkChild(Node* node, Side side, Node* child) {
   }
 }
 
+template <BSTNode Node>
+Side SideOf(Node* node) {
+  assert(node->parent != nullptr);
+  if (node->parent->left == node) {
+    return Side::LEFT;
+  }
+  if (node->parent->right == node) {
+    return Side::RIGHT;
+  }
+  std::unreachable();
+}
+
 }  // namespace avl
