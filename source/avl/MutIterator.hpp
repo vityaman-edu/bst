@@ -1,8 +1,10 @@
 #pragma once
 
 #include <cassert>
+#include <iterator>
 
-#include "avl/BST.hpp"
+#include "avl/bst/Adjacent.hpp"
+#include "avl/bst/Core.hpp"
 
 namespace avl {
 

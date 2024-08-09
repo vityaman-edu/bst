@@ -1,4 +1,4 @@
-#include "avl/BST.hpp"
+#include "avl/bst/Side.hpp"
 
 #include <compare>
 #include <utility>

@@ -1,8 +1,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "avl/BST.hpp"
 #include "avl/MutIterator.hpp"
+#include "avl/bst/Core.hpp"
+#include "avl/bst/Extreme.hpp"
 #include "avl/test/bst/Example.hpp"
 
 namespace avl::test {
