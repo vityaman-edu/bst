@@ -35,6 +35,7 @@ TEST(MutIterator, Empty) {
 
 TEST(MutIterator, Forward) {
   static_assert(std::bidirectional_iterator<MutIterator<Node>>);
+  static_assert(std::ranges::bidirectional_range<BSTKeyRange<Node>>);
 
   auto [nodes, root] = Example();
 
@@ -44,6 +45,7 @@ TEST(MutIterator, Forward) {
   }
 
   ASSERT_THAT(keys, testing::ElementsAreArray({1, 3, 4, 6, 7, 8, 10, 13, 14}));
+  ASSERT_TRUE(std::ranges::is_sorted(BSTKeyRange(root)));
 }
 
 }  // namespace avl::test
