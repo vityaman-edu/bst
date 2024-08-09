@@ -14,18 +14,28 @@ public:
   }
 
   MutIterator<Node> begin() {
+    if (root_ == nullptr) {
+      return end();
+    }
     return MutIterator<Node>(Min(root_));
   }
 
   MutIterator<Node> end() {
-    return MutIterator<Node>(nullptr);
+    return MutIterator<Node>();
   }
 
 private:
   Node* root_;
 };
 
+TEST(MutIterator, Empty) {
+  auto range = BSTKeyRange<Node>(nullptr);
+  ASSERT_EQ(range.begin(), range.end());
+}
+
 TEST(MutIterator, Forward) {
+  static_assert(std::bidirectional_iterator<MutIterator<Node>>);
+
   auto [nodes, root] = Example();
 
   std::vector<Node::Key> keys;

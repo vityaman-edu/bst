@@ -1,16 +1,28 @@
 #pragma once
 
+#include <cassert>
+
 #include "avl/BST.hpp"
 
 namespace avl {
 
 template <BSTNode Node>
-class MutIterator {
+class MutIterator final {
 public:
-  explicit MutIterator(Node* node) : node_(node) {
+  using iterator_category = std::bidirectional_iterator_tag;  // NOLINT
+  using value_type = Node::Key;                               // NOLINT
+  using difference_type = std::ptrdiff_t;                     // NOLINT
+  using pointer = Node::Key*;                                 // NOLINT
+  using reference = Node::Key&;                               // NOLINT
+
+  MutIterator() : node_(nullptr) {
   }
 
-  Node::Key& operator*() {
+  explicit MutIterator(Node* node) : node_(node) {
+    assert(node != nullptr);
+  }
+
+  Node::Key& operator*() const {
     return node_->key;
   }
 
@@ -19,7 +31,7 @@ public:
     return *this;
   }
 
-  const MutIterator operator++(int) {  // NOLINT
+  MutIterator operator++(int) {  // NOLINT
     auto prev = *this;
     ++*this;
     return prev;
@@ -30,16 +42,13 @@ public:
     return *this;
   }
 
-  const MutIterator operator--(int) {  // NOLINT
+  MutIterator operator--(int) {  // NOLINT
     auto next = *this;
     --*this;
     return next;
   }
 
-  bool operator==(const MutIterator& rhs) const {
-    return node_ == rhs.node_;
-  }
-
+  bool operator==(const MutIterator& rhs) const = default;
   bool operator!=(const MutIterator& rhs) const = default;
 
 private:
