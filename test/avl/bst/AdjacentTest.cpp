@@ -3,11 +3,12 @@
 #include "avl/bst/Adjacent.hpp"
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Search.hpp"
+#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
 TEST(BSTSuccessor, Example) {
-  auto [nodes, root] = Example();
+  auto [nodes, root] = Example<SimpleNode<int>>();
   ASSERT_EQ(Successor(Search(root, 1)), Search(root, 3));
   ASSERT_EQ(Successor(Search(root, 3)), Search(root, 4));
   ASSERT_EQ(Successor(Search(root, 4)), Search(root, 6));
@@ -20,7 +21,7 @@ TEST(BSTSuccessor, Example) {
 }
 
 TEST(BSTPredecessor, Example) {
-  auto [nodes, root] = Example();
+  auto [nodes, root] = Example<SimpleNode<int>>();
   ASSERT_EQ(Predecessor(Search(root, 1)), nullptr);
   ASSERT_EQ(Predecessor(Search(root, 3)), Search(root, 1));
   ASSERT_EQ(Predecessor(Search(root, 4)), Search(root, 3));

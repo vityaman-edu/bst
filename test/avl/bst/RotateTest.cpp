@@ -3,6 +3,7 @@
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Search.hpp"
+#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
@@ -21,6 +22,7 @@ namespace avl::test {
 TEST(Rotate, LeftRight) {
   using ParentLeftRight = std::tuple<std::size_t, std::size_t, std::size_t>;
   using NodeState = std::tuple<std::size_t, ParentLeftRight>;
+  using Node = SimpleNode<int>;
 
   NodeFactory<Node> bst;
   Node* root = bst(9, bst(5, bst(4), bst(7, bst(6), bst(8))));

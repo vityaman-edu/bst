@@ -2,11 +2,12 @@
 
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Search.hpp"
+#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
 TEST(BSTSearch, Simple) {
-  NodeFactory<Node> bst;
+  NodeFactory<SimpleNode<int>> bst;
 
   auto* tree = bst(5, bst(4, bst(3)), bst(8, bst(6), bst(9)));
 
@@ -24,7 +25,7 @@ TEST(BSTSearch, Simple) {
 }
 
 TEST(BSTSearch, Singleton) {
-  Node node = {.key = 5};
+  SimpleNode<int> node = {.key = 5};
   ASSERT_EQ(Search(&node, 5), &node);
   ASSERT_EQ(Search(&node, 0), nullptr);
   ASSERT_EQ(Search(&node, 10), nullptr);

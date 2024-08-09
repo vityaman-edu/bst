@@ -2,15 +2,6 @@
 
 namespace avl::test {
 
-struct Node {
-  using Key = int;
-
-  Key key = 0;
-  Node* parent = nullptr;
-  Node* left = nullptr;
-  Node* right = nullptr;
-};
-
 /**
  * Example
  * ---
@@ -19,6 +10,7 @@ struct Node {
  * 1  6     14
  *   4 7  13
  */
+template <BSTNode Node>
 inline std::tuple<NodeFactory<Node>, Node*> Example() {
   NodeFactory<Node> bst;
   Node* root =

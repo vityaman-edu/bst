@@ -3,11 +3,12 @@
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/Search.hpp"
+#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
 TEST(BSTMin, Example) {
-  auto [nodes, root] = Example();
+  auto [nodes, root] = Example<SimpleNode<int>>();
   ASSERT_EQ(Min(Search(root, 8)), Search(root, 1));
   ASSERT_EQ(Min(Search(root, 3)), Search(root, 1));
   ASSERT_EQ(Min(Search(root, 1)), Search(root, 1));
@@ -20,7 +21,7 @@ TEST(BSTMin, Example) {
 }
 
 TEST(BSTMax, Example) {
-  auto [nodes, root] = Example();
+  auto [nodes, root] = Example<SimpleNode<int>>();
   ASSERT_EQ(Max(Search(root, 8)), Search(root, 14));
   ASSERT_EQ(Max(Search(root, 3)), Search(root, 7));
   ASSERT_EQ(Max(Search(root, 1)), Search(root, 1));

@@ -5,6 +5,7 @@
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/MutIterator.hpp"
+#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
@@ -30,15 +31,17 @@ private:
 };
 
 TEST(MutIterator, Empty) {
-  auto range = BSTKeyRange<Node>(nullptr);
+  auto range = BSTKeyRange<SimpleNode<int>>(nullptr);
   ASSERT_EQ(range.begin(), range.end());
 }
 
 TEST(MutIterator, Forward) {
+  using Node = SimpleNode<int>;
+
   static_assert(std::bidirectional_iterator<MutIterator<Node>>);
   static_assert(std::ranges::bidirectional_range<BSTKeyRange<Node>>);
 
-  auto [nodes, root] = Example();
+  auto [nodes, root] = Example<Node>();
 
   std::vector<Node::Key> keys;
   for (const auto& key : BSTKeyRange(root)) {
