@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 
 #include "avl/bst/Core.hpp"
+#include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/MutIterator.hpp"
-#include "avl/test/bst/Example.hpp"
 
 namespace avl::test {
 

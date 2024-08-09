@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "avl/bst/Adjacent.hpp"
+#include "avl/bst/Example.hpp"
 #include "avl/bst/Search.hpp"
-#include "avl/test/bst/Example.hpp"
 
 namespace avl::test {
 
