@@ -15,4 +15,10 @@ void Rotate(Side side, Node* upper) {
   LinkChild(lower, side, upper);
 }
 
+template <BSTNode Node>
+void DoubleRotate(Side side, Node* upper) {
+  Rotate(Reversed(side), Child(Reversed(side), upper));
+  Rotate(side, upper);
+}
+
 }  // namespace avl

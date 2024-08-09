@@ -101,6 +101,8 @@ private:
 
 }  // namespace
 
+namespace {
+
 ////////////////////////////////////
 //          9               9     //
 //         /               /      //
@@ -113,8 +115,6 @@ private:
 // Cormen, Introduction to Algorithms
 // Chapter 13, Red-Black Trees, p. 336
 
-namespace {
-
 const NodeTable RotatedLeft  // NOLINT
     {
         {9, {0, 7, 0}},
@@ -123,7 +123,7 @@ const NodeTable RotatedLeft  // NOLINT
         {4, {5, 0, 0}},
         {6, {5, 0, 0}},
         {8, {7, 0, 0}},
-    };
+};
 
 const NodeTable RotatedRight  // NOLINT
     {
@@ -133,7 +133,7 @@ const NodeTable RotatedRight  // NOLINT
         {7, {5, 6, 8}},
         {6, {7, 0, 0}},
         {8, {7, 0, 0}},
-    };
+};
 
 }  // namespace
 
@@ -165,6 +165,74 @@ TEST(Rotate, LeftRight) {
 
   Rotate(Side::LEFT, tree.NodeAt(5));
   tree.AssertFromTable(RotatedLeft);
+}
+
+namespace {
+
+const NodeTable LRStage0  // NOLINT
+    {
+        {9, {0, 7, 0}},
+        {7, {9, 3, 8}},
+        {3, {7, 2, 5}},
+        {8, {7, 0, 0}},
+        {2, {3, 0, 0}},
+        {5, {3, 4, 6}},
+        {4, {5, 0, 0}},
+        {6, {5, 0, 0}},
+};
+
+const NodeTable LRStage1  // NOLINT
+    {
+        {9, {0, 7, 0}},
+        {7, {9, 5, 8}},
+        {5, {7, 3, 6}},
+        {8, {7, 0, 0}},
+        {3, {5, 2, 4}},
+        {6, {5, 0, 0}},
+        {2, {3, 0, 0}},
+        {4, {3, 0, 0}},
+};
+
+const NodeTable LRStage2  // NOLINT
+    {
+        {9, {0, 5, 0}},
+        {5, {9, 3, 7}},
+        {3, {5, 2, 4}},
+        {7, {5, 6, 8}},
+        {2, {3, 0, 0}},
+        {4, {3, 0, 0}},
+        {6, {7, 0, 0}},
+        {8, {7, 0, 0}},
+};
+
+}  // namespace
+
+/**
+ *          9             9            9
+ *         /             /            /
+ *        7             7            5
+ *       / \           / \        /    \
+ *      3  8   =>     5  8  =>   3      7
+ *     / \           / \        / \    / \
+ *    2   5         3   6      2   4  6   8
+ *       / \       / \
+ *      4   6     2   4
+ */
+TEST(DoubleRotate, LeftThenRight) {
+  auto tree = SampleTree::FromTable(LRStage0);
+
+  Rotate(Side::LEFT, tree.NodeAt(3));
+  tree.AssertFromTable(LRStage1);
+
+  Rotate(Side::RIGHT, tree.NodeAt(7));
+  tree.AssertFromTable(LRStage2);
+}
+
+TEST(DoubleRotate, Right) {
+  auto tree = SampleTree::FromTable(LRStage0);
+
+  DoubleRotate(Side::RIGHT, tree.NodeAt(7));
+  tree.AssertFromTable(LRStage2);
 }
 
 }  // namespace avl::test

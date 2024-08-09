@@ -15,3 +15,5 @@ AlignAfterOpenBracket: BlockIndent
 
 BinPackArguments: false
 BinPackParameters: false
+
+AlignArrayOfStructures: Right

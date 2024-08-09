@@ -23,6 +23,7 @@ concept BSTNode = requires(Node* node) {
 
 template <BSTNode Node>
 Node*& Child(Side side, Node* node) {
+  assert(node != nullptr);
   switch (side) {
     case Side::LEFT:
       return node->left;
