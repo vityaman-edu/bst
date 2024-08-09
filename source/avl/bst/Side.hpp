@@ -5,7 +5,7 @@
 
 namespace avl {
 
-enum class Side : std::uint8_t { LEFT, RIGHT };
+enum class Side : std::int8_t { LEFT = -1, RIGHT = +1 };
 
 Side Reversed(Side side);
 
