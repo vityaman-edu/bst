@@ -1,7 +1,7 @@
 #pragma once
 
-#include "avl/bst/Core.hpp"
 #include "avl/bst/Extreme.hpp"
+#include "avl/bst/Node.hpp"
 #include "avl/bst/Side.hpp"
 
 namespace avl {

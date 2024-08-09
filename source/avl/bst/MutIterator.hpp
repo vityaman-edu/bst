@@ -4,7 +4,7 @@
 #include <iterator>
 
 #include "avl/bst/Adjacent.hpp"
-#include "avl/bst/Core.hpp"
+#include "avl/bst/Node.hpp"
 
 namespace avl {
 

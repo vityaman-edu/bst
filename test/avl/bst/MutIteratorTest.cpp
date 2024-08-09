@@ -1,10 +1,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "avl/bst/Core.hpp"
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/MutIterator.hpp"
+#include "avl/bst/Node.hpp"
 #include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {

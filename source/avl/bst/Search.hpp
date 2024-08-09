@@ -3,7 +3,7 @@
 #include <compare>
 #include <tuple>
 
-#include "avl/bst/Core.hpp"
+#include "avl/bst/Node.hpp"
 
 namespace avl {
 
