@@ -113,34 +113,58 @@ private:
 // Cormen, Introduction to Algorithms
 // Chapter 13, Red-Black Trees, p. 336
 
-TEST(Rotate, LeftRight) {
-  NodeTable left = {
-      {9, {0, 7, 0}},
-      {7, {9, 5, 8}},
-      {5, {7, 4, 6}},
-      {4, {5, 0, 0}},
-      {6, {5, 0, 0}},
-      {8, {7, 0, 0}},
-  };
+namespace {
 
-  NodeTable right = {
-      {9, {0, 5, 0}},
-      {5, {9, 4, 7}},
-      {4, {5, 0, 0}},
-      {7, {5, 6, 8}},
-      {6, {7, 0, 0}},
-      {8, {7, 0, 0}},
-  };
+const NodeTable RotatedLeft  // NOLINT
+    {
+        {9, {0, 7, 0}},
+        {7, {9, 5, 8}},
+        {5, {7, 4, 6}},
+        {4, {5, 0, 0}},
+        {6, {5, 0, 0}},
+        {8, {7, 0, 0}},
+    };
 
-  auto tree = SampleTree::FromTable(right);
+const NodeTable RotatedRight  // NOLINT
+    {
+        {9, {0, 5, 0}},
+        {5, {9, 4, 7}},
+        {4, {5, 0, 0}},
+        {7, {5, 6, 8}},
+        {6, {7, 0, 0}},
+        {8, {7, 0, 0}},
+    };
 
-  // Roundtrip
+}  // namespace
+
+TEST(Rotate, Left) {
+  auto tree = SampleTree::FromTable(RotatedRight);
+  tree.AssertFromTable(RotatedRight);
+
   Rotate(Side::LEFT, tree.NodeAt(5));
+  tree.AssertFromTable(RotatedLeft);
+}
+
+TEST(Rotate, Right) {
+  auto tree = SampleTree::FromTable(RotatedLeft);
+  tree.AssertFromTable(RotatedLeft);
+
   Rotate(Side::RIGHT, tree.NodeAt(7));
+  tree.AssertFromTable(RotatedRight);
+}
+
+TEST(Rotate, LeftRight) {
+  auto tree = SampleTree::FromTable(RotatedRight);
+  tree.AssertFromTable(RotatedRight);
 
   Rotate(Side::LEFT, tree.NodeAt(5));
+  tree.AssertFromTable(RotatedLeft);
 
-  tree.AssertFromTable(left);
+  Rotate(Side::RIGHT, tree.NodeAt(7));
+  tree.AssertFromTable(RotatedRight);
+
+  Rotate(Side::LEFT, tree.NodeAt(5));
+  tree.AssertFromTable(RotatedLeft);
 }
 
 }  // namespace avl::test
