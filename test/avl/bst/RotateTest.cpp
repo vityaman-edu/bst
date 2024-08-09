@@ -169,6 +169,18 @@ TEST(Rotate, LeftRight) {
 
 namespace {
 
+/**
+ *          9             9            9
+ *         /             /            /
+ *        7             7            5
+ *       / \           / \        /    \
+ *      3  8   =>     5  8  =>   3      7
+ *     / \           / \        / \    / \
+ *    2   5         3   6      2   4  6   8
+ *       / \       / \
+ *      4   6     2   4
+ */
+
 const NodeTable LRStage0  // NOLINT
     {
         {9, {0, 7, 0}},
@@ -207,18 +219,7 @@ const NodeTable LRStage2  // NOLINT
 
 }  // namespace
 
-/**
- *          9             9            9
- *         /             /            /
- *        7             7            5
- *       / \           / \        /    \
- *      3  8   =>     5  8  =>   3      7
- *     / \           / \        / \    / \
- *    2   5         3   6      2   4  6   8
- *       / \       / \
- *      4   6     2   4
- */
-TEST(DoubleRotate, LeftThenRight) {
+TEST(Rotate, LeftThenRight) {
   auto tree = SampleTree::FromTable(LRStage0);
 
   Rotate(Side::LEFT, tree.NodeAt(3));
@@ -233,6 +234,65 @@ TEST(DoubleRotate, Right) {
 
   DoubleRotate(Side::RIGHT, tree.NodeAt(7));
   tree.AssertFromTable(LRStage2);
+}
+
+namespace {
+
+/**
+ *        9           9                9
+ *       /           /                /
+ *      3           3                5
+ *     / \         / \            /    \
+ *    2   7   =>  2   5    =>    3      7
+ *       / \         / \        / \    / \
+ *      5   8       4   7      2   4  6   8
+ *     / \             / \
+ *    4   6           6   8
+ */
+
+const NodeTable RLStage0  // NOLINT
+    {
+        {9, {0, 3, 0}},
+        {3, {9, 2, 7}},
+        {2, {3, 0, 0}},
+        {7, {3, 5, 8}},
+        {5, {7, 4, 6}},
+        {8, {7, 0, 0}},
+        {4, {5, 0, 0}},
+        {6, {5, 0, 0}},
+};
+
+const NodeTable RLStage1  // NOLINT
+    {
+        {9, {0, 3, 0}},
+        {3, {9, 2, 5}},
+        {2, {3, 0, 0}},
+        {5, {3, 4, 7}},
+        {4, {5, 0, 0}},
+        {7, {5, 6, 8}},
+        {6, {7, 0, 0}},
+        {8, {7, 0, 0}},
+};
+
+const NodeTable RLStage2 = LRStage2;  // NOLINT
+
+}  // namespace
+
+TEST(Rotate, RightThenLeft) {
+  auto tree = SampleTree::FromTable(RLStage0);
+
+  Rotate(Side::RIGHT, tree.NodeAt(7));
+  tree.AssertFromTable(RLStage1);
+
+  Rotate(Side::LEFT, tree.NodeAt(3));
+  tree.AssertFromTable(RLStage2);
+}
+
+TEST(DoubleRotate, Left) {
+  auto tree = SampleTree::FromTable(RLStage0);
+
+  DoubleRotate(Side::LEFT, tree.NodeAt(3));
+  tree.AssertFromTable(RLStage2);
 }
 
 }  // namespace avl::test
