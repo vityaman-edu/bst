@@ -6,7 +6,7 @@
 namespace avl::test {
 
 TEST(BSTSearch, Simple) {
-  Nodes bst;
+  NodeFactory<Node> bst;
 
   auto* tree = bst(5, bst(4, bst(3)), bst(8, bst(6), bst(9)));
 

@@ -1,7 +1,4 @@
-#include <deque>
-
-#include "avl/bst/Core.hpp"
-#include "avl/bst/Side.hpp"
+#include "avl/bst/NodeFactory.hpp"
 
 namespace avl::test {
 
@@ -14,20 +11,6 @@ struct Node {
   Node* right = nullptr;
 };
 
-class Nodes {
-public:
-  Node* operator()(Node::Key key, Node* lhs = nullptr, Node* rhs = nullptr) {
-    nodes_.push_back({.key = key});
-    Node* node = &nodes_.back();
-    LinkChild(node, Side::LEFT, lhs);
-    LinkChild(node, Side::RIGHT, rhs);
-    return node;
-  }
-
-private:
-  std::deque<Node> nodes_;
-};
-
 /**
  * Example
  * ---
@@ -36,8 +19,8 @@ private:
  * 1  6     14
  *   4 7  13
  */
-inline std::tuple<Nodes, Node*> Example() {
-  Nodes bst;
+inline std::tuple<NodeFactory<Node>, Node*> Example() {
+  NodeFactory<Node> bst;
   Node* root =
       bst(8,
           bst(3, bst(1), bst(6, bst(4), bst(7))),

@@ -22,7 +22,7 @@ TEST(Rotate, LeftRight) {
   using ParentLeftRight = std::tuple<std::size_t, std::size_t, std::size_t>;
   using NodeState = std::tuple<std::size_t, ParentLeftRight>;
 
-  Nodes bst;
+  NodeFactory<Node> bst;
   Node* root = bst(9, bst(5, bst(4), bst(7, bst(6), bst(8))));
 
   std::vector<Node*> node;
