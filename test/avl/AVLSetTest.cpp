@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "avl/bst/SimpleTree.hpp"
+#include "avl/Tree.hpp"
 #include "avl/bst/TestStdLike.hpp"
 
 namespace avl::test {
 
-TEST(SimpleSet, StdLike) {
-  TestStdLike<SimpleTree<K>>("SimpleSet");
+TEST(AVLSet, StdLike) {
+  TestStdLike<AVLTree<K>>("AVLSet");
 }
 
 }  // namespace avl::test
