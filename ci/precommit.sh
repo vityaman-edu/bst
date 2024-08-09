@@ -6,11 +6,27 @@ cd "$(dirname "$0")"/..
 
 . ci/commons.sh
 
+MODE=$1
+if [ -z "$MODE" ]; then
+  MODE="check"
+fi
+
+if [ "$MODE" != "fix" ] && [ "$MODE" != "check" ]; then
+  error "Invalid argument. Must be either 'fix' or 'check'."
+  exit 1
+fi
+
 message "Building the project..."
 (cd build && make)
 
 message "Testing the project..."
 (cd build && ./test/avl-test)
+
+if [ "$MODE" = "fix" ]; then
+    message "Formatting code..."
+    find source test -iname '*.hpp' -o -iname '*.cpp' \
+    | xargs clang-format -i --fallback-style=Google --verbose
+fi
 
 message "Checking code format..."
 find source test -iname '*.hpp' -o -iname '*.cpp' \
