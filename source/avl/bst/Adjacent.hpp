@@ -3,31 +3,32 @@
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/Node.hpp"
 #include "avl/bst/Side.hpp"
+#include "avl/bst/Tree.hpp"
 
 namespace avl {
 
-template <BSTNode Node>
-Node* AdjacentAt(Side side, Node* node) {
-  assert(node != nullptr);
-  if (Child(side, node) != nullptr) {
-    return ExtremeAt(Reversed(side), Child(side, node));
+template <BSTTree Tree, BSTNode Node = typename Tree::Node>
+Node* Adjacent(Tree& tree, Side side, Node* node) {
+  assert(node != tree.Nil());
+  if (Child(side, node) != tree.Nil()) {
+    return Extreme(tree, Reversed(side), Child(side, node));
   }
   Node* ancestor = node->parent;
-  while (ancestor != nullptr && node == Child(side, ancestor)) {
+  while (ancestor != tree.Nil() && node == Child(side, ancestor)) {
     node = ancestor;
     ancestor = ancestor->parent;
   }
   return ancestor;
 }
 
-template <BSTNode Node>
-Node* Successor(Node* node) {
-  return AdjacentAt(Side::RIGHT, node);
+template <BSTTree Tree, BSTNode Node = typename Tree::Node>
+Node* Successor(Tree& tree, Node* node) {
+  return Adjacent(tree, Side::RIGHT, node);
 }
 
-template <BSTNode Node>
-Node* Predecessor(Node* node) {
-  return AdjacentAt(Side::LEFT, node);
+template <BSTTree Tree, BSTNode Node = typename Tree::Node>
+Node* Predecessor(Tree& tree, Node* node) {
+  return Adjacent(tree, Side::LEFT, node);
 }
 
 }  // namespace avl

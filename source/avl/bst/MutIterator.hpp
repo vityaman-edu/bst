@@ -5,10 +5,11 @@
 
 #include "avl/bst/Adjacent.hpp"
 #include "avl/bst/Node.hpp"
+#include "avl/bst/Tree.hpp"
 
 namespace avl {
 
-template <BSTNode Node>
+template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 class MutIterator final {
 public:
   using iterator_category = std::bidirectional_iterator_tag;  // NOLINT
@@ -17,11 +18,12 @@ public:
   using pointer = Node::Key*;                                 // NOLINT
   using reference = Node::Key&;                               // NOLINT
 
-  MutIterator() : node_(nullptr) {
-  }
+  MutIterator() = default;
 
-  explicit MutIterator(Node* node) : node_(node) {
+  explicit MutIterator(Tree* tree, Node* node) : tree_(tree), node_(node) {
+    assert(tree != nullptr);
     assert(node != nullptr);
+    assert(node != tree->Nil());
   }
 
   Node::Key& operator*() const {
@@ -29,7 +31,7 @@ public:
   }
 
   MutIterator& operator++() {
-    node_ = Successor(node_);
+    SetNode(Successor(*tree_, node_));
     return *this;
   }
 
@@ -40,7 +42,7 @@ public:
   }
 
   MutIterator& operator--() {
-    node_ = Predecessor(node_);
+    SetNode(Predecessor(*tree_, node_));
     return *this;
   }
 
@@ -50,11 +52,21 @@ public:
     return next;
   }
 
-  bool operator==(const MutIterator& rhs) const = default;
-  bool operator!=(const MutIterator& rhs) const = default;
+  bool operator==(const MutIterator& rhs) const {
+    return this->node_ == rhs.node_;
+  }
+
+  bool operator!=(const MutIterator& rhs) const {
+    return !(*this == rhs);
+  }
 
 private:
-  Node* node_;
+  void SetNode(Node* node) {
+    node_ = node != tree_->Nil() ? node : nullptr;
+  }
+
+  Tree* tree_ = nullptr;
+  Node* node_ = nullptr;
 };
 
 }  // namespace avl

@@ -27,19 +27,19 @@ public:
 
   bool Contains(const K& item) {
     auto* root = tree_.Root();
-    return root != nullptr && Search(root, item) != nullptr;
+    return root != tree_.Nil() && Search(tree_, root, item) != tree_.Nil();
   }
 
-  MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)
+  MutIterator<Tree> begin() {  // NOLINT(readability-identifier-naming)
     auto* root = tree_.Root();
-    if (root == nullptr) {
+    if (root == tree_.Nil()) {
       return end();
     }
-    return MutIterator<Node>(Min(root));
+    return MutIterator<Tree>(&tree_, Min(tree_, root));
   }
 
-  MutIterator<Node> end() {  // NOLINT(readability-identifier-naming)
-    return MutIterator<Node>();
+  MutIterator<Tree> end() {  // NOLINT(readability-identifier-naming)
+    return MutIterator<Tree>();
   }
 
 private:

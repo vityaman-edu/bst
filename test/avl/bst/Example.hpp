@@ -1,4 +1,5 @@
 #include "avl/bst/NodeFactory.hpp"
+#include "avl/bst/SimpleTree.hpp"
 
 namespace avl::test {
 
@@ -10,14 +11,12 @@ namespace avl::test {
  * 1  6     14
  *   4 7  13
  */
-template <BSTNode Node>
-inline std::tuple<NodeFactory<Node>, Node*> Example() {
-  NodeFactory<Node> bst;
-  Node* root =
-      bst(8,
-          bst(3, bst(1), bst(6, bst(4), bst(7))),
-          bst(10, nullptr, bst(14, bst(13))));
-  return {std::move(bst), root};
+template <WeaklyOrdered K>
+inline std::tuple<SimpleNodeFactory<K>, SimpleTree<K>> Example() {
+  SimpleNodeFactory<K> bst;
+  SimpleNode<K>* root =
+      bst(8, bst(3, bst(1), bst(6, bst(4), bst(7))), bst(10, nullptr, bst(14, bst(13))));
+  return {std::move(bst), SimpleTree<K>(root)};
 }
 
 }  // namespace avl::test

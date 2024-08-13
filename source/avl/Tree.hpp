@@ -16,13 +16,19 @@ struct AVLTree {
 public:
   using Node = AVLNode<K>;
 
+  AVLTree() {
+    Reset(Nil());
+  }
+
   bool Insert(Node* node) {
-    if (root_ == nullptr) {
-      root_ = node;
+    Reset(node);
+
+    if (Root() == Nil()) {
+      LinkChild(Nil(), Side::LEFT, node);
       return true;
     }
 
-    auto [parent, order] = SearchParent(root_, node->key);
+    auto [parent, order] = SearchParent(*this, Root(), node->key);
     if (order == std::weak_ordering::equivalent) {
       return false;
     }
@@ -33,20 +39,24 @@ public:
     return true;
   }
 
+  Node* Nil() {
+    return &nil_;
+  }
+
   Node* Root() {
-    return root_;
+    return nil_.left;
   }
 
 private:
   void OnInsertFixup(Node* parent, Side side) {
     parent->bias += BiasOf(side);
-    if (parent->bias == Bias::NONE || parent == root_) {
+    if (parent->bias == Bias::NONE || parent == Root()) {
       return;
     }
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
-        next != root_;                                //
+        next != Nil();                                //
         prev = next, next = next->parent              //
     ) {
       OnChildGrowthFixup(SideOf(prev), next);
@@ -66,7 +76,13 @@ private:
     }
   }
 
-  Node* root_ = nullptr;
+  void Reset(Node* node) {
+    node->left = Nil();
+    node->right = Nil();
+    node->parent = Nil();
+  }
+
+  Node nil_ = {};
 };
 
 }  // namespace avl

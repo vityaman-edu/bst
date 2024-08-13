@@ -39,8 +39,8 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
 
   for (auto i = 0; i < rounds; ++i) {
     if (i % freq == 0) {
-      std::cerr << "[ RUN      ] " << set_name << ".StdLike: running round "
-                << i << "..." << std::endl;
+      std::cerr << "[ RUN      ] " << set_name << ".StdLike: running round " << i << "..."
+                << std::endl;
     }
 
     SmartSet smart;

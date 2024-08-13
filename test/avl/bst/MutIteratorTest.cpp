@@ -4,52 +4,54 @@
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/MutIterator.hpp"
-#include "avl/bst/Node.hpp"
 #include "avl/bst/SimpleNode.hpp"
+#include "avl/bst/SimpleTree.hpp"
 
 namespace avl::test {
 
-template <BSTNode Node>
+template <BSTTree Tree>
 class BSTKeyRange {
 public:
-  explicit BSTKeyRange(Node* root) : root_(root) {
+  explicit BSTKeyRange(Tree* tree) : tree_(tree) {
   }
 
-  MutIterator<Node> begin() {
-    if (root_ == nullptr) {
+  MutIterator<Tree> begin() {
+    if (tree_->Root() == tree_->Nil()) {
       return end();
     }
-    return MutIterator<Node>(Min(root_));
+    return MutIterator<Tree>(tree_, Min(*tree_, tree_->Root()));
   }
 
-  MutIterator<Node> end() {
-    return MutIterator<Node>();
+  MutIterator<Tree> end() {
+    return MutIterator<Tree>();
   }
 
 private:
-  Node* root_;
+  Tree* tree_;
 };
 
 TEST(MutIterator, Empty) {
-  auto range = BSTKeyRange<SimpleNode<int>>(nullptr);
+  SimpleTree<int> tree;
+  auto range = BSTKeyRange<SimpleTree<int>>(&tree);
   ASSERT_EQ(range.begin(), range.end());
 }
 
 TEST(MutIterator, Forward) {
-  using Node = SimpleNode<int>;
+  using Tree = SimpleTree<int>;
+  using Node = Tree::Node;
 
-  static_assert(std::bidirectional_iterator<MutIterator<Node>>);
-  static_assert(std::ranges::bidirectional_range<BSTKeyRange<Node>>);
+  static_assert(std::bidirectional_iterator<MutIterator<Tree>>);
+  static_assert(std::ranges::bidirectional_range<BSTKeyRange<Tree>>);
 
-  auto [nodes, root] = Example<Node>();
+  auto [nodes, tree] = Example<int>();
 
   std::vector<Node::Key> keys;
-  for (const auto& key : BSTKeyRange(root)) {
+  for (const auto& key : BSTKeyRange(&tree)) {
     keys.emplace_back(key);
   }
 
   ASSERT_THAT(keys, testing::ElementsAreArray({1, 3, 4, 6, 7, 8, 10, 13, 14}));
-  ASSERT_TRUE(std::ranges::is_sorted(BSTKeyRange(root)));
+  ASSERT_TRUE(std::ranges::is_sorted(BSTKeyRange(&tree)));
 }
 
 }  // namespace avl::test

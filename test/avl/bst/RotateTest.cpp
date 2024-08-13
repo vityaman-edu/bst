@@ -38,15 +38,11 @@ public:
   void AssertFromTable(const NodeTable& table) {
     for (const auto& [number, expected] : table) {
       NodeNeighbors actual = {
-          .parent = (NodeAt(number)->parent != nullptr)
-                        ? NodeAt(number)->parent->key
-                        : 0,
+          .parent = (NodeAt(number)->parent != nullptr) ? NodeAt(number)->parent->key : 0,
           .left = (NodeAt(number)->left != nullptr)  //
                       ? NodeAt(number)->left->key
                       : 0,
-          .right = (NodeAt(number)->right != nullptr)
-                       ? NodeAt(number)->right->key
-                       : 0,
+          .right = (NodeAt(number)->right != nullptr) ? NodeAt(number)->right->key : 0,
       };
       if (expected != actual) {
         std::stringstream message;
@@ -70,10 +66,8 @@ public:
   }
 
   static SampleTree FromTable(const NodeTable& table) {
-    auto numbers =
-        table |
-        std::views::transform([](const NodeState& row) { return row.number; }) |
-        std::ranges::to<std::set>();
+    auto numbers = table | std::views::transform([](const NodeState& row) { return row.number; }) |
+                   std::ranges::to<std::set>();
 
     auto max_number = *std::ranges::max_element(numbers);
 
@@ -95,7 +89,7 @@ public:
   }
 
 private:
-  NodeFactory<Node> bst_;
+  SimpleNodeFactory<Node::Key> bst_;
   std::vector<Node*> nodes_;
 };
 

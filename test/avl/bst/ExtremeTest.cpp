@@ -3,34 +3,33 @@
 #include "avl/bst/Example.hpp"
 #include "avl/bst/Extreme.hpp"
 #include "avl/bst/Search.hpp"
-#include "avl/bst/SimpleNode.hpp"
 
 namespace avl::test {
 
 TEST(BSTMin, Example) {
-  auto [nodes, root] = Example<SimpleNode<int>>();
-  ASSERT_EQ(Min(Search(root, 8)), Search(root, 1));
-  ASSERT_EQ(Min(Search(root, 3)), Search(root, 1));
-  ASSERT_EQ(Min(Search(root, 1)), Search(root, 1));
-  ASSERT_EQ(Min(Search(root, 6)), Search(root, 4));
-  ASSERT_EQ(Min(Search(root, 4)), Search(root, 4));
-  ASSERT_EQ(Min(Search(root, 7)), Search(root, 7));
-  ASSERT_EQ(Min(Search(root, 10)), Search(root, 10));
-  ASSERT_EQ(Min(Search(root, 14)), Search(root, 13));
-  ASSERT_EQ(Min(Search(root, 13)), Search(root, 13));
+  auto [nodes, tree] = Example<int>();
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 8)), Search(tree, tree.Root(), 1));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 3)), Search(tree, tree.Root(), 1));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 1)), Search(tree, tree.Root(), 1));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 6)), Search(tree, tree.Root(), 4));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 4)), Search(tree, tree.Root(), 4));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 7)), Search(tree, tree.Root(), 7));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 10)), Search(tree, tree.Root(), 10));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 14)), Search(tree, tree.Root(), 13));
+  ASSERT_EQ(Min(tree, Search(tree, tree.Root(), 13)), Search(tree, tree.Root(), 13));
 }
 
 TEST(BSTMax, Example) {
-  auto [nodes, root] = Example<SimpleNode<int>>();
-  ASSERT_EQ(Max(Search(root, 8)), Search(root, 14));
-  ASSERT_EQ(Max(Search(root, 3)), Search(root, 7));
-  ASSERT_EQ(Max(Search(root, 1)), Search(root, 1));
-  ASSERT_EQ(Max(Search(root, 6)), Search(root, 7));
-  ASSERT_EQ(Max(Search(root, 4)), Search(root, 4));
-  ASSERT_EQ(Max(Search(root, 7)), Search(root, 7));
-  ASSERT_EQ(Max(Search(root, 10)), Search(root, 14));
-  ASSERT_EQ(Max(Search(root, 14)), Search(root, 14));
-  ASSERT_EQ(Max(Search(root, 13)), Search(root, 13));
+  auto [nodes, tree] = Example<int>();
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 8)), Search(tree, tree.Root(), 14));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 3)), Search(tree, tree.Root(), 7));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 1)), Search(tree, tree.Root(), 1));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 6)), Search(tree, tree.Root(), 7));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 4)), Search(tree, tree.Root(), 4));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 7)), Search(tree, tree.Root(), 7));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 10)), Search(tree, tree.Root(), 14));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 14)), Search(tree, tree.Root(), 14));
+  ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 13)), Search(tree, tree.Root(), 13));
 }
 
 }  // namespace avl::test

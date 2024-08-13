@@ -12,17 +12,31 @@ class SimpleTree {
 public:
   using Node = SimpleNode<K>;
 
+  SimpleTree() = default;
+
+  explicit SimpleTree(Node* root) : root_(root) {
+    assert(root != nullptr);
+  }
+
   bool Insert(Node* node) {
-    if (root_ == nullptr) {
+    Reset(node);
+
+    if (root_ == Nil()) {
       root_ = node;
       return true;
     }
-    auto [parent, order] = SearchParent(root_, node->key);
+
+    auto [parent, order] = SearchParent(*this, root_, node->key);
     if (order == std::weak_ordering::equivalent) {
       return false;
     }
+
     LinkChild(parent, SideOf(order), node);
     return true;
+  }
+
+  Node* Nil() {
+    return nullptr;
   }
 
   Node* Root() {
@@ -30,6 +44,12 @@ public:
   }
 
 private:
+  void Reset(Node* node) {
+    node->left = Nil();
+    node->right = Nil();
+    node->parent = Nil();
+  }
+
   Node* root_ = nullptr;
 };
 
