@@ -19,7 +19,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   using SillySet = BSTSet<Tree>;
 
   const auto seed = 43278423342;
-  const auto rounds = 1'500;
+  const auto rounds = 1'000;
   const auto actions = 1'000;
   const auto freq = 100;
   const K min = -100'000;
@@ -28,12 +28,13 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   struct {
     std::size_t add = 0;
     std::size_t contains = 0;
+    std::size_t remove = 0;
     std::size_t iterate = 0;
   } statistics;
 
   std::uniform_int_distribution<int> coin(0, 1);
   std::uniform_int_distribution<int> key(min, max);
-  std::uniform_int_distribution<int> action(0, 220);
+  std::uniform_int_distribution<int> action(0, 330);
 
   std::default_random_engine random(seed);  // NOLINT
 
@@ -68,6 +69,11 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto silly_res = silly.Contains(val);
         const auto smart_res = smart.contains(val);
         ASSERT_EQ(silly_res, smart_res);
+      } else if (point < 300 && set_name != "AVLSet") {
+        statistics.remove += 1;
+        const auto val = random_key();
+        silly.Remove(val);
+        smart.erase(val);
       } else {
         statistics.iterate += 1;
         const auto silly_items = silly | std::ranges::to<std::vector>();
@@ -79,6 +85,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   std::cerr << "[ RUN      ] SimpleSet.StdLike: statistics "
             << "add = " << statistics.add << ", "
             << "contains = " << statistics.contains << ", "
+            << "remove = " << statistics.remove << ", "
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 

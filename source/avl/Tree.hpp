@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <compare>
+#include <cstdlib>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
@@ -37,6 +38,10 @@ public:
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
     return true;
+  }
+
+  void Remove(Node* /*node*/) {
+    std::abort();
   }
 
   Node* Nil() {

@@ -25,9 +25,15 @@ public:
     }
   }
 
+  void Remove(const K& item) {
+    auto* node = Find(item);
+    if (node != tree_.Nil()) {
+      tree_.Remove(node);
+    }
+  }
+
   bool Contains(const K& item) {
-    auto* root = tree_.Root();
-    return root != tree_.Nil() && Search(tree_, root, item) != tree_.Nil();
+    return Find(item) != tree_.Nil();
   }
 
   MutIterator<Tree> begin() {  // NOLINT(readability-identifier-naming)
@@ -43,6 +49,14 @@ public:
   }
 
 private:
+  Node* Find(const K& item) {
+    auto* root = tree_.Root();
+    if (root == tree_.Nil()) {
+      return tree_.Nil();
+    }
+    return Search(tree_, tree_.Root(), item);
+  }
+
   Tree tree_;
   std::deque<Node> nodes_;
 };

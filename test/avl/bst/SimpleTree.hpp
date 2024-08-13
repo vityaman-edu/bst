@@ -1,5 +1,8 @@
 #pragma once
 
+#include <optional>
+
+#include "avl/bst/Adjacent.hpp"
 #include "avl/bst/Node.hpp"
 #include "avl/bst/Search.hpp"
 #include "avl/bst/Side.hpp"
@@ -33,6 +36,38 @@ public:
 
     LinkChild(parent, SideOf(order), node);
     return true;
+  }
+
+  void Remove(Node* node) {
+    assert(node != Nil());
+
+    std::optional<Node> dummy = std::nullopt;
+
+    if (node->parent == Nil()) {
+      dummy = Node();
+      LinkChild(&dummy.value(), Side::LEFT, node);
+    }
+
+    if (node->left == Nil() && node->right == Nil()) {
+      Child(SideOf(node), node->parent) = Nil();
+    } else if (node->left == Nil() || node->right == Nil()) {
+      Node* child = node->left == Nil() ? node->right : node->left;
+      LinkChild(node->parent, SideOf(node), child);
+    } else {
+      Node* successor = Successor(*this, node);
+      LinkChild(successor->parent, SideOf(successor), successor->right);
+      LinkChild(node->parent, SideOf(node), successor);
+      for (auto side : {Side::LEFT, Side::RIGHT}) {
+        LinkChild(successor, side, Child(side, node));
+      }
+    }
+
+    if (dummy != std::nullopt) {
+      root_ = dummy->left;
+      if (root_ != nullptr) {
+        root_->parent = Nil();
+      }
+    }
   }
 
   Node* Nil() {
