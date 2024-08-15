@@ -25,4 +25,14 @@ Side SideOf(std::weak_ordering ordering) {
   std::unreachable();
 }
 
+std::ostream& operator<<(std::ostream& out, Side side) {
+  switch (side) {
+    case Side::LEFT:
+      return out << "LEFT";
+    case Side::RIGHT:
+      return out << "RIGHT";
+  }
+  std::unreachable();
+}
+
 }  // namespace avl

@@ -9,8 +9,13 @@
 
 namespace avl {
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-void Print(std::ostream& out, Tree& tree, Node* node = nullptr, std::size_t indent = 0) {
+template <
+    BSTTree Tree,
+    std::invocable<std::ostream&, typename Tree::Node*> Display,
+    BSTNode Node = typename Tree::Node>
+void Print(
+    std::ostream& out, Tree& tree, Display display, Node* node = nullptr, std::size_t indent = 0
+) {
   if (node == nullptr) {
     node = tree.Root();
   }
@@ -19,9 +24,11 @@ void Print(std::ostream& out, Tree& tree, Node* node = nullptr, std::size_t inde
     return;
   }
 
-  Print(out, tree, Child(Side::RIGHT, node), indent + 1);
-  out << std::string(2 * indent, ' ') << "(" << node->key << ")" << std::endl;
-  Print(out, tree, Child(Side::LEFT, node), indent + 1);
+  Print(out, tree, display, Child(Side::RIGHT, node), indent + 1);
+  out << std::string(2 * indent, ' ') << "(";
+  display(out, node);
+  out << ")" << std::endl;
+  Print(out, tree, display, Child(Side::LEFT, node), indent + 1);
 }
 
 }  // namespace avl
