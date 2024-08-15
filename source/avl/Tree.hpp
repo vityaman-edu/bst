@@ -86,18 +86,21 @@ private:
       Child(side, parent)->bias += BiasOf(Reversed(side));
       Rotate(Reversed(side), parent);
     } else {
-      Node* A = parent;
-      Node* B = Child(side, parent);
-      Node* E = Child(Reversed(side), B);
-
-      A->bias = ((BiasOf(side) == E->bias) ? (-E->bias) : (Bias::NONE));
-      B->bias = ((BiasOf(Reversed(side)) == E->bias) ? (-E->bias) : (Bias::NONE));
-      E->bias = Bias::NONE;
-
-      DoubleRotate(Reversed(side), parent);
+      BiasedDoubleRotate(Reversed(side), parent);
     }
 
     return true;
+  }
+
+  void BiasedDoubleRotate(Side side, Node* upper) {
+    Node* midle = Child(Reversed(side), upper);
+    Node* lower = Child(side, midle);
+
+    upper->bias = ((BiasOf(Reversed(side)) == lower->bias) ? (-lower->bias) : (Bias::NONE));
+    midle->bias = ((BiasOf(side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
+    lower->bias = Bias::NONE;
+
+    DoubleRotate(side, upper);
   }
 
   std::int64_t Height(Node* node) {
