@@ -1,6 +1,7 @@
 #include "avl/bst/Side.hpp"
 
 #include <compare>
+#include <ostream>
 #include <utility>
 
 namespace avl {

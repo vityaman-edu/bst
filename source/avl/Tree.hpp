@@ -5,14 +5,20 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
-#include <iostream>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
 #include "avl/bst/Node.hpp"
-#include "avl/bst/Print.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
+
+#ifdef DEBUG
+
+#include <iostream>
+
+#include "avl/bst/Print.hpp"
+
+#endif
 
 namespace avl {
 
@@ -26,6 +32,10 @@ public:
   }
 
   bool Insert(Node* node) {
+#ifdef DEBUG
+    std::cerr << "Inserting " << *node << std::endl;
+#endif
+
     assert(node != Nil());
     EnsureSanity();
 
@@ -51,6 +61,10 @@ public:
   }
 
   void Remove(Node* node) {
+#ifdef DEBUG
+    std::cerr << "Removing " << *node << std::endl;
+#endif
+
     assert(node != Nil());
     EnsureSanity();
 
@@ -197,10 +211,13 @@ private:
   }
 
   void EnsureSanity() {
+#ifdef DEBUG
     std::cerr << "Ensuring sanity..." << std::endl;
     Print(std::cerr, *this);
+#endif
+
+    assert(Nil()->left == Root());
     assert(Nil()->right == Nil());
-    assert(Nil()->parent == Nil());
     assert(Root()->parent == Nil());
     assert(Height(Root()) >= 0);
   }
@@ -210,13 +227,19 @@ private:
       return 0;
     }
 
-    auto lhs = Height(Child(Side::LEFT, node));
-    auto rhs = Height(Child(Side::RIGHT, node));
+    auto lhs = Child(Side::LEFT, node);
+    auto rhs = Child(Side::RIGHT, node);
 
-    assert(std::abs(lhs - rhs) <= 1);
-    assert(node->bias == BiasOf(lhs <=> rhs));
+    assert(lhs == Nil() || lhs->parent == node);
+    assert(rhs == Nil() || rhs->parent == node);
 
-    return std::max(lhs, rhs) + 1;
+    auto lheight = Height(lhs);
+    auto rheight = Height(rhs);
+
+    assert(std::abs(lheight - rheight) <= 1);
+    assert(node->bias == BiasOf(lheight <=> rheight));
+
+    return std::max(lheight, rheight) + 1;
   }
 
   Node nil_ = {};

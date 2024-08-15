@@ -1,6 +1,8 @@
 #pragma once
 
+#include <compare>
 #include <cstdint>
+#include <ostream>
 
 #include "avl/bst/Side.hpp"
 

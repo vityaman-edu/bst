@@ -1,8 +1,10 @@
 #include "avl/Bias.hpp"
 
 #include <cassert>
+#include <compare>
 #include <cstdint>
 #include <cstdlib>
+#include <ostream>
 #include <utility>
 
 #include "avl/bst/Side.hpp"
