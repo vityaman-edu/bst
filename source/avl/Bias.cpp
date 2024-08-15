@@ -16,10 +16,10 @@ Bias BiasOf(Side side) {
 
 Bias BiasOf(std::weak_ordering order) {
   if (order == std::weak_ordering::less) {
-    return Bias::LEFT;
+    return Bias::RIGHT;
   }
   if (order == std::weak_ordering::greater) {
-    return Bias::RIGHT;
+    return Bias::LEFT;
   }
   assert(order == std::weak_ordering::equivalent);
   return Bias::NONE;
@@ -44,11 +44,11 @@ Bias& operator+=(Bias& lhs, Bias rhs) {
 std::ostream& operator<<(std::ostream& out, Bias bias) {
   switch (bias) {
     case Bias::NONE:
-      return out << "OO";
+      return out << "O";
     case Bias::LEFT:
-      return out << "LO";
+      return out << "L";
     case Bias::RIGHT:
-      return out << "OR";
+      return out << "R";
   }
   std::unreachable();
 }

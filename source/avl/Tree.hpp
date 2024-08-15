@@ -5,10 +5,12 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
+#include <iostream>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
 #include "avl/bst/Node.hpp"
+#include "avl/bst/Print.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
@@ -195,6 +197,8 @@ private:
   }
 
   void EnsureSanity() {
+    std::cerr << "Ensuring sanity..." << std::endl;
+    Print(std::cerr, *this);
     assert(Nil()->right == Nil());
     assert(Nil()->parent == Nil());
     assert(Root()->parent == Nil());

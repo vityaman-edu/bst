@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include "avl/Bias.hpp"
 #include "avl/bst/Node.hpp"
 
@@ -15,5 +17,10 @@ struct AVLNode {
   AVLNode* right = nullptr;
   Bias bias = Bias::NONE;
 };
+
+template <WeaklyOrdered K>
+std::ostream& operator<<(std::ostream& out, AVLNode<K>& node) {
+  return out << "(" << node.key << " " << node.bias << ")";
+}
 
 }  // namespace avl
