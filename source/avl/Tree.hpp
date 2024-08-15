@@ -5,6 +5,7 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
+#include <tuple>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
@@ -12,7 +13,7 @@
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
 
 #include <iostream>
@@ -95,6 +96,11 @@ public:
       }
     }
 
+#ifdef DEBUG
+    std::cerr << "After " << *node << " removal" << std::endl;
+    Print(std::cerr, *this);
+#endif
+
     if (shrinked.node != Nil()) {
       OnRemoveFixup(shrinked.node, shrinked.side);
     }
@@ -152,24 +158,14 @@ private:
   }
 
   void OnRemoveFixup(Node* parent, Side side) {
-    if (OnChildShrinkedFixup(side, parent)) {
-      return;
-    }
-    for (                                             //
-        Node *prev = parent, *next = parent->parent;  //
-        prev != Nil() && next != Nil();               //
-        prev = next, next = next->parent              //
-    ) {
-      auto prev_side = SideOf(next);
-      auto prev_parent = next->parent;
-      if (OnChildShrinkedFixup(SideOf(prev), next)) {
-        break;
-      }
-      next = Child(prev_side, prev_parent);
+    while (parent != Nil()) {
+      auto [next_parent, next_side] = OnChildShrinkedFixup(side, parent);
+      parent = next_parent;
+      side = next_side;
     }
   }
 
-  bool OnChildShrinkedFixup(Side side, Node* parent) {
+  std::tuple<Node*, Side> OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
 #ifdef DEBUG
@@ -183,11 +179,15 @@ private:
                 << parent->bias + Bias(Reversed(side)) << std::endl;
 #endif
       parent->bias += BiasOf(Reversed(side));
-      return parent->bias != Bias::NONE;
+      if (parent->bias != Bias::NONE) {
+        return {Nil(), Side::LEFT};
+      }
+      return {parent->parent, SideOf(parent)};
     }
 
     auto* node = Child(Reversed(side), parent);
     assert(node != Nil());
+
     if (node->bias != BiasOf(side)) {
 #ifdef DEBUG
       std::cerr << "Case Rotate. " << std::endl;
@@ -195,29 +195,37 @@ private:
       Rotate(side, parent);
       if (node->bias == Bias::NONE) {
         node->bias += BiasOf(side);
-        return true;
+        return {Nil(), Side::LEFT};
       }
       parent->bias += BiasOf(side);
       node->bias += BiasOf(side);
-    } else {
-#ifdef DEBUG
-      std::cerr << "Case DoubleRotate. " << std::endl;
-#endif
-      BiasedDoubleRotate(side, parent);
+      return {node->parent, SideOf(node)};
     }
 
-    return false;
+#ifdef DEBUG
+    std::cerr << "Case DoubleRotate. " << std::endl;
+#endif
+    auto lifted = BiasedDoubleRotate(side, parent);
+#ifdef DEBUG
+    std::cerr << "Lifed " << *lifted << ", " << "parent " << *lifted->parent << std::endl;
+#endif
+    return {lifted->parent, SideOf(lifted)};
   }
 
-  void BiasedDoubleRotate(Side side, Node* upper) {
+  Node* BiasedDoubleRotate(Side side, Node* upper) {
     Node* midle = Child(Reversed(side), upper);
     Node* lower = Child(side, midle);
+#ifdef DEBUG
+    std::cerr << "DoubleRotate " << *upper << ", " << *midle << ", " << *lower << std::endl;
+#endif
 
     upper->bias = ((BiasOf(Reversed(side)) == lower->bias) ? (-lower->bias) : (Bias::NONE));
     midle->bias = ((BiasOf(side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
     lower->bias = Bias::NONE;
 
     DoubleRotate(side, upper);
+
+    return lower;
   }
 
   void Reset(Node* node) {
@@ -243,6 +251,12 @@ private:
       return 0;
     }
 
+    assert(node->parent == Nil() || node->parent != node->left);
+    assert(node->parent == Nil() || node->parent != node->right);
+    assert(node != node->left);
+    assert(node != node->right);
+    assert(node != node->parent);
+
     auto lhs = Child(Side::LEFT, node);
     auto rhs = Child(Side::RIGHT, node);
 
@@ -252,8 +266,8 @@ private:
     auto lheight = Height(lhs);
     auto rheight = Height(rhs);
 
-    assert(std::abs(lheight - rheight) <= 1);
     assert(node->bias == BiasOf(lheight <=> rheight));
+    assert(std::abs(lheight - rheight) <= 1);
 
     return std::max(lheight, rheight) + 1;
   }
