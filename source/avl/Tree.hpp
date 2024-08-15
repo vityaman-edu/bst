@@ -12,6 +12,7 @@
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
+#define DEBUG
 #ifdef DEBUG
 
 #include <iostream>
@@ -171,7 +172,16 @@ private:
   bool OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
+#ifdef DEBUG
+    std::cerr << "Shrinked " << side << " child of " << *parent << " <- " << *Child(side, parent)
+              << std::endl;
+#endif
+
     if (parent->bias != BiasOf(Reversed(side))) {
+#ifdef DEBUG
+      std::cerr << "Case Simple. Parent bias changed " << parent->bias << " -> "
+                << parent->bias + Bias(Reversed(side)) << std::endl;
+#endif
       parent->bias += BiasOf(Reversed(side));
       return parent->bias != Bias::NONE;
     }
@@ -179,6 +189,9 @@ private:
     auto* node = Child(Reversed(side), parent);
     assert(node != Nil());
     if (node->bias != BiasOf(side)) {
+#ifdef DEBUG
+      std::cerr << "Case Rotate. " << std::endl;
+#endif
       Rotate(side, parent);
       if (node->bias == Bias::NONE) {
         node->bias += BiasOf(side);
@@ -187,6 +200,9 @@ private:
       parent->bias += BiasOf(side);
       node->bias += BiasOf(side);
     } else {
+#ifdef DEBUG
+      std::cerr << "Case DoubleRotate. " << std::endl;
+#endif
       BiasedDoubleRotate(side, parent);
     }
 
