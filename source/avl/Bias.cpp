@@ -42,4 +42,16 @@ Bias& operator+=(Bias& lhs, Bias rhs) {
   return lhs = lhs + rhs;
 }
 
+std::ostream& operator<<(std::ostream& out, Bias bias) {
+  switch (bias) {
+    case Bias::NONE:
+      return out << "OO";
+    case Bias::LEFT:
+      return out << "LO";
+    case Bias::RIGHT:
+      return out << "OR";
+  }
+  std::unreachable();
+}
+
 }  // namespace avl

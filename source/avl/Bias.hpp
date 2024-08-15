@@ -20,4 +20,6 @@ Bias operator+(Bias lhs, Bias rhs);
 
 Bias& operator+=(Bias& lhs, Bias rhs);
 
+std::ostream& operator<<(std::ostream& out, Bias bias);
+
 }  // namespace avl

@@ -117,14 +117,14 @@ private:
 
     std::cerr << "On " << side << " InsertFixup of " << parent->key << std::endl;
 
-    std::cerr << "Bias of " << parent->key << " is " << Display(parent->bias) << std::endl;
+    std::cerr << "Bias of " << parent->key << " is " << parent->bias << std::endl;
 
     parent->bias += BiasOf(side);
     if (parent->bias == Bias::NONE) {
       return;
     }
 
-    std::cerr << "Bias of " << parent->key << " is " << Display(parent->bias) << std::endl;
+    std::cerr << "Bias of " << parent->key << " is " << parent->bias << std::endl;
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
@@ -144,7 +144,7 @@ private:
 
     if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
-      std::cerr << "New bias is " << Display(parent->bias) << std::endl;
+      std::cerr << "New bias is " << parent->bias << std::endl;
       if (parent->bias != Bias::NONE) {
         return false;
       }
@@ -183,11 +183,11 @@ private:
     assert(parent != Nil());
 
     std::cerr << "On " << side << " Child Shrinked of " << parent->key << " with bias "
-              << Display(parent->bias) << std::endl;
+              << parent->bias << std::endl;
 
     if (parent->bias != BiasOf(Reversed(side))) {
       parent->bias += BiasOf(Reversed(side));
-      std::cerr << "New bias is " << Display(parent->bias) << std::endl;
+      std::cerr << "New bias is " << parent->bias << std::endl;
       return parent->bias != Bias::NONE;
     }
 
@@ -236,21 +236,8 @@ private:
 
   void Print() {
     avl::Print(std::cerr, *this, [&](auto& out, Node* node) {
-      out << node->key << " " << Display(node->bias) << "";
+      out << node->key << " " << node->bias << "";
     });
-  }
-
-  std::string Display(Bias bias) {
-    switch (bias) {
-      case Bias::LEFT:
-        return "01";
-      case Bias::NONE:
-        return "00";
-      case Bias::RIGHT:
-        return "10";
-      default:
-        std::unreachable();
-    }
   }
 
   void Reset(Node* node) {
