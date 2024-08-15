@@ -14,6 +14,17 @@ Bias BiasOf(Side side) {
   return static_cast<Bias>(num);
 }
 
+Bias BiasOf(std::weak_ordering order) {
+  if (order == std::weak_ordering::less) {
+    return Bias::LEFT;
+  }
+  if (order == std::weak_ordering::greater) {
+    return Bias::RIGHT;
+  }
+  assert(order == std::weak_ordering::equivalent);
+  return Bias::NONE;
+}
+
 Bias operator-(Bias bias) {
   const auto num = static_cast<std::int8_t>(bias);
   return static_cast<Bias>(-num);

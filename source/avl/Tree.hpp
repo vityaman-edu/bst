@@ -24,11 +24,14 @@ public:
   }
 
   bool Insert(Node* node) {
+    assert(node != Nil());
+    EnsureSanity();
+
     Reset(node);
-    assert(Root()->parent == Nil());
 
     if (Root() == Nil()) {
       LinkChild(Nil(), Side::LEFT, node);
+      EnsureSanity();
       return true;
     }
 
@@ -41,14 +44,13 @@ public:
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
 
-    assert(Height(Root()) != 0);
-
+    EnsureSanity();
     return true;
   }
 
   void Remove(Node* node) {
     assert(node != Nil());
-    assert(Root()->parent == Nil());
+    EnsureSanity();
 
     struct {
       Node* node;
@@ -80,9 +82,9 @@ public:
       OnRemoveFixup(shrinked.node, shrinked.side);
     }
 
-    assert(Height(Root()) >= 0);
-
     Reset(node);
+
+    EnsureSanity();
   }
 
   Node* Nil() {
@@ -186,20 +188,31 @@ private:
     DoubleRotate(side, upper);
   }
 
-  std::int64_t Height(Node* node) {
-    if (node == Nil()) {
-      return 0;
-    }
-    auto lhs = Height(Child(Side::LEFT, node));
-    auto rhs = Height(Child(Side::RIGHT, node));
-    assert(std::abs(lhs - rhs) <= 1);
-    return std::max(lhs, rhs) + 1;
-  }
-
   void Reset(Node* node) {
     node->left = Nil();
     node->right = Nil();
     node->parent = Nil();
+  }
+
+  void EnsureSanity() {
+    assert(Nil()->right == Nil());
+    assert(Nil()->parent == Nil());
+    assert(Root()->parent == Nil());
+    assert(Height(Root()) >= 0);
+  }
+
+  std::int64_t Height(Node* node) {
+    if (node == Nil()) {
+      return 0;
+    }
+
+    auto lhs = Height(Child(Side::LEFT, node));
+    auto rhs = Height(Child(Side::RIGHT, node));
+
+    assert(std::abs(lhs - rhs) <= 1);
+    assert(node->bias == BiasOf(lhs <=> rhs));
+
+    return std::max(lhs, rhs) + 1;
   }
 
   Node nil_ = {};

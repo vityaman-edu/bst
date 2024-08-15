@@ -14,6 +14,8 @@ enum class Bias : std::int8_t {
 
 Bias BiasOf(Side side);
 
+Bias BiasOf(std::weak_ordering order);
+
 Bias operator-(Bias bias);
 
 Bias operator+(Bias lhs, Bias rhs);
