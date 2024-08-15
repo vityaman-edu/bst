@@ -10,30 +10,18 @@
 namespace avl {
 
 Bias BiasOf(Side side) {
-  switch (side) {
-    case Side::LEFT:
-      return Bias::LEFT;
-    case Side::RIGHT:
-      return Bias::RIGHT;
-  }
-  std::unreachable();
+  const auto num = static_cast<std::int8_t>(side);
+  return static_cast<Bias>(num);
 }
 
 Bias operator-(Bias bias) {
-  switch (bias) {
-    case Bias::LEFT:
-      return Bias::RIGHT;
-    case Bias::RIGHT:
-      return Bias::LEFT;
-    case Bias::NONE:
-      return Bias::NONE;
-  }
-  std::unreachable();
+  const auto num = static_cast<std::int8_t>(bias);
+  return static_cast<Bias>(-num);
 }
 
 Bias operator+(Bias lhs, Bias rhs) {
-  auto lnum = static_cast<std::int8_t>(lhs);
-  auto rnum = static_cast<std::int8_t>(rhs);
+  const auto lnum = static_cast<std::int8_t>(lhs);
+  const auto rnum = static_cast<std::int8_t>(rhs);
   assert(std::abs(lnum + rnum) <= 1);
   return static_cast<Bias>(lnum + rnum);
 }
