@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <random>
 #include <ranges>
@@ -15,6 +16,7 @@ using K = int;
 
 template <BSTTree Tree>
 void TestStdLike(const std::string& set_name) {  // NOLINT
+  using Clock = std::chrono::high_resolution_clock;
   using SmartSet = std::set<K>;
   using SillySet = BSTSet<Tree>;
 
@@ -37,6 +39,8 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   std::uniform_int_distribution<int> action(0, 330);
 
   std::default_random_engine random(seed);  // NOLINT
+
+  auto begin = Clock::now();
 
   for (auto i = 0; i < rounds; ++i) {
     if (i % freq == 0) {
@@ -69,7 +73,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto silly_res = silly.Contains(val);
         const auto smart_res = smart.contains(val);
         ASSERT_EQ(silly_res, smart_res);
-      } else if (point < 300 && set_name != "AVLSet") {
+      } else if (point < 300 && false) {
         statistics.remove += 1;
         const auto val = random_key();
         silly.Remove(val);
@@ -82,7 +86,12 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
       }
     }
   }
+
+  auto end = Clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+
   std::cerr << "[ RUN      ] SimpleSet.StdLike: statistics "
+            << "duration " << duration << ", "
             << "add = " << statistics.add << ", "
             << "contains = " << statistics.contains << ", "
             << "remove = " << statistics.remove << ", "

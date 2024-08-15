@@ -5,12 +5,10 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
-#include <iostream>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
 #include "avl/bst/Node.hpp"
-#include "avl/bst/Print.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
@@ -26,10 +24,6 @@ public:
   }
 
   bool Insert(Node* node) {
-    std::cout << "Before insertion of " << node->key;
-    std::cout << " height is " << Height(Root()) << std::endl;
-    Print(std::cerr, *this);
-
     Reset(node);
 
     if (Root() == Nil()) {
@@ -45,6 +39,9 @@ public:
     auto side = SideOf(order);
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
+
+    assert(Height(Root()) != 0);
+
     return true;
   }
 
@@ -63,7 +60,7 @@ public:
 private:
   void OnInsertFixup(Node* parent, Side side) {
     parent->bias += BiasOf(side);
-    if (parent->bias == Bias::NONE || parent == Root()) {
+    if (parent->bias == Bias::NONE) {
       return;
     }
 
@@ -72,21 +69,35 @@ private:
         next != Nil();                                //
         prev = next, next = next->parent              //
     ) {
-      OnChildGrowthFixup(SideOf(prev), next);
-      if (next->bias == Bias::NONE) {
+      if (OnChildGrowthFixup(SideOf(prev), next)) {
         break;
       }
     }
   }
 
-  void OnChildGrowthFixup(Side side, Node* parent) {
-    if (BiasOf(side) != parent->bias) {
+  bool OnChildGrowthFixup(Side side, Node* parent) {
+    if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
-    } else {
-      parent->bias = Bias::NONE;
-      Child(side, parent)->bias = Bias::NONE;
+      if (parent->bias != Bias::NONE) {
+        return false;
+      }
+    } else if (Child(side, parent)->bias == BiasOf(side)) {
+      parent->bias += BiasOf(Reversed(side));
+      Child(side, parent)->bias += BiasOf(Reversed(side));
       Rotate(Reversed(side), parent);
+    } else {
+      Node* A = parent;
+      Node* B = Child(side, parent);
+      Node* E = Child(Reversed(side), B);
+
+      A->bias = ((BiasOf(side) == E->bias) ? (-E->bias) : (Bias::NONE));
+      B->bias = ((BiasOf(Reversed(side)) == E->bias) ? (-E->bias) : (Bias::NONE));
+      E->bias = Bias::NONE;
+
+      DoubleRotate(Reversed(side), parent);
     }
+
+    return true;
   }
 
   std::int64_t Height(Node* node) {

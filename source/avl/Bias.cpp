@@ -19,6 +19,18 @@ Bias BiasOf(Side side) {
   std::unreachable();
 }
 
+Bias operator-(Bias bias) {
+  switch (bias) {
+    case Bias::LEFT:
+      return Bias::RIGHT;
+    case Bias::RIGHT:
+      return Bias::LEFT;
+    case Bias::NONE:
+      return Bias::NONE;
+  }
+  std::unreachable();
+}
+
 Bias operator+(Bias lhs, Bias rhs) {
   auto lnum = static_cast<std::int8_t>(lhs);
   auto rnum = static_cast<std::int8_t>(rhs);
