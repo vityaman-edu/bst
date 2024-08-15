@@ -13,15 +13,6 @@
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
-// #define DEBUG
-#ifdef DEBUG
-
-#include <iostream>
-
-#include "avl/bst/Print.hpp"
-
-#endif
-
 namespace avl {
 
 template <WeaklyOrdered K>
@@ -34,10 +25,6 @@ public:
   }
 
   bool Insert(Node* node) {
-#ifdef DEBUG
-    std::cerr << "Inserting " << *node << std::endl;
-#endif
-
     assert(node != Nil());
     EnsureSanity();
 
@@ -63,10 +50,6 @@ public:
   }
 
   void Remove(Node* node) {
-#ifdef DEBUG
-    std::cerr << "Removing " << *node << std::endl;
-#endif
-
     assert(node != Nil());
     EnsureSanity();
 
@@ -95,11 +78,6 @@ public:
         LinkChild(successor, side, Child(side, node));
       }
     }
-
-#ifdef DEBUG
-    std::cerr << "After " << *node << " removal" << std::endl;
-    Print(std::cerr, *this);
-#endif
 
     if (shrinked.node != Nil()) {
       OnRemoveFixup(shrinked.node, shrinked.side);
@@ -168,16 +146,7 @@ private:
   std::tuple<Node*, Side> OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
-#ifdef DEBUG
-    std::cerr << "Shrinked " << side << " child of " << *parent << " <- " << *Child(side, parent)
-              << std::endl;
-#endif
-
     if (parent->bias != BiasOf(Reversed(side))) {
-#ifdef DEBUG
-      std::cerr << "Case Simple. Parent bias changed " << parent->bias << " -> "
-                << parent->bias + Bias(Reversed(side)) << std::endl;
-#endif
       parent->bias += BiasOf(Reversed(side));
       if (parent->bias != Bias::NONE) {
         return {Nil(), Side::LEFT};
@@ -189,9 +158,6 @@ private:
     assert(node != Nil());
 
     if (node->bias != BiasOf(side)) {
-#ifdef DEBUG
-      std::cerr << "Case Rotate. " << std::endl;
-#endif
       Rotate(side, parent);
       if (node->bias == Bias::NONE) {
         node->bias += BiasOf(side);
@@ -202,22 +168,13 @@ private:
       return {node->parent, SideOf(node)};
     }
 
-#ifdef DEBUG
-    std::cerr << "Case DoubleRotate. " << std::endl;
-#endif
     auto lifted = BiasedDoubleRotate(side, parent);
-#ifdef DEBUG
-    std::cerr << "Lifed " << *lifted << ", " << "parent " << *lifted->parent << std::endl;
-#endif
     return {lifted->parent, SideOf(lifted)};
   }
 
   Node* BiasedDoubleRotate(Side side, Node* upper) {
     Node* midle = Child(Reversed(side), upper);
     Node* lower = Child(side, midle);
-#ifdef DEBUG
-    std::cerr << "DoubleRotate " << *upper << ", " << *midle << ", " << *lower << std::endl;
-#endif
 
     upper->bias = ((BiasOf(Reversed(side)) == lower->bias) ? (-lower->bias) : (Bias::NONE));
     midle->bias = ((BiasOf(side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
@@ -235,11 +192,6 @@ private:
   }
 
   void EnsureSanity() {
-#ifdef DEBUG
-    std::cerr << "Ensuring sanity..." << std::endl;
-    Print(std::cerr, *this);
-#endif
-
     assert(Nil()->left == Root());
     assert(Nil()->right == Nil());
     assert(Root()->parent == Nil());
