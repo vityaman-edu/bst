@@ -22,8 +22,8 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   const auto rounds = 1'000;
   const auto actions = 1'000;
   const auto freq = 100;
-  const K min = -100'000;
-  const K max = +100'000;
+  const K min = 10;
+  const K max = 99;
 
   struct {
     std::size_t add = 0;

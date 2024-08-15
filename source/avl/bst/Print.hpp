@@ -1,8 +1,10 @@
 #pragma once
 
+#include <cstddef>
 #include <ostream>
 
 #include "avl/bst/Node.hpp"
+#include "avl/bst/Side.hpp"
 #include "avl/bst/Tree.hpp"
 
 namespace avl {

@@ -1,12 +1,16 @@
 #pragma once
 
 #include <cassert>
+#include <cmath>
 #include <compare>
+#include <cstdint>
 #include <cstdlib>
+#include <iostream>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
 #include "avl/bst/Node.hpp"
+#include "avl/bst/Print.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
@@ -22,6 +26,10 @@ public:
   }
 
   bool Insert(Node* node) {
+    std::cout << "Before insertion of " << node->key;
+    std::cout << " height is " << Height(Root()) << std::endl;
+    Print(std::cerr, *this);
+
     Reset(node);
 
     if (Root() == Nil()) {
@@ -79,6 +87,16 @@ private:
       Child(side, parent)->bias = Bias::NONE;
       Rotate(Reversed(side), parent);
     }
+  }
+
+  std::int64_t Height(Node* node) {
+    if (node == Nil()) {
+      return 0;
+    }
+    auto lhs = Height(Child(Side::LEFT, node));
+    auto rhs = Height(Child(Side::RIGHT, node));
+    assert(std::abs(lhs - rhs) <= 1);
+    return std::max(lhs, rhs) + 1;
   }
 
   void Reset(Node* node) {
