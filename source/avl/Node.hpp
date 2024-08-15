@@ -16,6 +16,4 @@ struct AVLNode {
   Bias bias = Bias::NONE;
 };
 
-
-
 }  // namespace avl

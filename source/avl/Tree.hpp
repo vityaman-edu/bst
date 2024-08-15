@@ -5,13 +5,10 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
-#include <iostream>
-#include <ostream>
 
 #include "avl/Bias.hpp"
 #include "avl/Node.hpp"
 #include "avl/bst/Node.hpp"
-#include "avl/bst/Print.hpp"
 #include "avl/bst/Rotate.hpp"
 #include "avl/bst/Side.hpp"
 
@@ -30,9 +27,6 @@ public:
     Reset(node);
     assert(Root()->parent == Nil());
 
-    std::cerr << "On insertion of " << node->key << std::endl;
-    Print();
-
     if (Root() == Nil()) {
       LinkChild(Nil(), Side::LEFT, node);
       return true;
@@ -47,9 +41,6 @@ public:
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
 
-    std::cerr << "After insertion of " << node->key << std::endl;
-    Print();
-
     assert(Height(Root()) != 0);
 
     return true;
@@ -58,9 +49,6 @@ public:
   void Remove(Node* node) {
     assert(node != Nil());
     assert(Root()->parent == Nil());
-
-    std::cerr << "On removal of " << node->key << std::endl;
-    Print();
 
     struct {
       Node* node;
@@ -88,15 +76,9 @@ public:
       }
     }
 
-    std::cerr << "After removal relink" << std::endl;
-    Print();
-
     if (shrinked.node != Nil()) {
       OnRemoveFixup(shrinked.node, shrinked.side);
     }
-
-    std::cerr << "After removal of " << node->key << std::endl;
-    Print();
 
     assert(Height(Root()) >= 0);
 
@@ -115,16 +97,10 @@ private:
   void OnInsertFixup(Node* parent, Side side) {
     assert(parent != Nil());
 
-    std::cerr << "On " << side << " InsertFixup of " << parent->key << std::endl;
-
-    std::cerr << "Bias of " << parent->key << " is " << parent->bias << std::endl;
-
     parent->bias += BiasOf(side);
     if (parent->bias == Bias::NONE) {
       return;
     }
-
-    std::cerr << "Bias of " << parent->key << " is " << parent->bias << std::endl;
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
@@ -140,11 +116,8 @@ private:
   bool OnChildGrowthFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
-    std::cerr << "On " << side << " Child Growth of " << parent->key << std::endl;
-
     if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
-      std::cerr << "New bias is " << parent->bias << std::endl;
       if (parent->bias != Bias::NONE) {
         return false;
       }
@@ -168,8 +141,6 @@ private:
         prev != Nil() && next != Nil();               //
         prev = next, next = next->parent              //
     ) {
-      std::cerr << prev->key << " -> " << next->key << std::endl;
-      Print();
       auto prev_side = SideOf(next);
       auto prev_parent = next->parent;
       if (OnChildShrinkedFixup(SideOf(prev), next)) {
@@ -182,12 +153,8 @@ private:
   bool OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
-    std::cerr << "On " << side << " Child Shrinked of " << parent->key << " with bias "
-              << parent->bias << std::endl;
-
     if (parent->bias != BiasOf(Reversed(side))) {
       parent->bias += BiasOf(Reversed(side));
-      std::cerr << "New bias is " << parent->bias << std::endl;
       return parent->bias != Bias::NONE;
     }
 
@@ -225,19 +192,8 @@ private:
     }
     auto lhs = Height(Child(Side::LEFT, node));
     auto rhs = Height(Child(Side::RIGHT, node));
-    if (std::abs(lhs - rhs) > 1) {
-      std::cerr << "At node " << node->key << std::endl;
-      std::cerr << "lhs height " << lhs << std::endl;
-      std::cerr << "rhs height " << rhs << std::endl;
-      std::unreachable();
-    }
+    assert(std::abs(lhs - rhs) <= 1);
     return std::max(lhs, rhs) + 1;
-  }
-
-  void Print() {
-    avl::Print(std::cerr, *this, [&](auto& out, Node* node) {
-      out << node->key << " " << node->bias << "";
-    });
   }
 
   void Reset(Node* node) {

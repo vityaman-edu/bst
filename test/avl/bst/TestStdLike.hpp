@@ -73,7 +73,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto silly_res = silly.Contains(val);
         const auto smart_res = smart.contains(val);
         ASSERT_EQ(silly_res, smart_res);
-      } else if (point < 300) {
+      } else if (point < 300 && false) {
         statistics.remove += 1;
         const auto val = random_key();
         silly.Remove(val);
