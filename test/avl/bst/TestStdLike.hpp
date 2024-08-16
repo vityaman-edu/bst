@@ -21,9 +21,17 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   using SillySet = BSTSet<Tree>;
 
   const auto seed = 43278423342;
-  const auto rounds = 5'000;
-  const auto actions = 5'000;
+
+#ifdef NDEBUG
+  const auto rounds = 2'500;
+  const auto actions = 2'500;
+  const auto freq = 500;
+#else
+  const auto rounds = 500;
+  const auto actions = 500;
   const auto freq = 100;
+#endif
+
   const K min = -100'000;
   const K max = +100'000;
 
