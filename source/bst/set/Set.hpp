@@ -28,12 +28,14 @@ public:
   void Add(const K& item) {
     if (!Contains(item)) {
       tree_.Insert(new Node(std::move(item)));
+      size_ += 1;
     }
   }
 
   void Remove(const K& item) {
     auto* node = Find(item);
     if (node != tree_.Nil()) {
+      size_ -= 1;
       tree_.Remove(node);
       delete node;  // NOLINT(cppcoreguidelines-owning-memory)
     }
@@ -41,6 +43,14 @@ public:
 
   bool Contains(const K& item) {
     return Find(item) != tree_.Nil();
+  }
+
+  [[nodiscard]] std::size_t Size() const {
+    return size_;
+  }
+
+  [[nodiscard]] bool IsEmpty() const {
+    return Size() == 0;
   }
 
   MutIterator<Tree> begin() {  // NOLINT(readability-identifier-naming)
@@ -74,6 +84,7 @@ private:
   }
 
   Tree tree_;
+  std::size_t size_ = 0;
 };
 
 }  // namespace bst::set

@@ -39,18 +39,21 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
     std::size_t add = 0;
     std::size_t contains = 0;
     std::size_t remove = 0;
+    std::size_t size = 0;
     std::size_t iterate = 0;
   } statistics;
 
   std::uniform_int_distribution<int> coin(0, 1);
   std::uniform_int_distribution<int> key(min, max);
 
-  std::uniform_int_distribution<int> action(0, 330);
   const struct {
     int add = 100;
     int contains = 200;
     int remove = 300;
+    int size = 350;
+    int iterate = 400;
   } border;
+  std::uniform_int_distribution<int> action(0, border.iterate);
 
   std::default_random_engine random(seed);  // NOLINT
 
@@ -92,7 +95,10 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto val = random_key();
         silly.Remove(val);
         smart.erase(val);
-      } else {
+      } else if (point < border.size) {
+        statistics.size += 1;
+        ASSERT_EQ(silly.Size(), smart.size());
+      } else /* (point < border.iterate) */ {
         statistics.iterate += 1;
         const auto silly_items = silly | std::ranges::to<std::vector>();
         const auto smart_items = smart | std::ranges::to<std::vector>();
@@ -109,6 +115,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
             << "add = " << statistics.add << ", "
             << "contains = " << statistics.contains << ", "
             << "remove = " << statistics.remove << ", "
+            << "size = " << statistics.size << ", "
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 
