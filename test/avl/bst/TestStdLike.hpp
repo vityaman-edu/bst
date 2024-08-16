@@ -44,7 +44,13 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
 
   std::uniform_int_distribution<int> coin(0, 1);
   std::uniform_int_distribution<int> key(min, max);
+
   std::uniform_int_distribution<int> action(0, 330);
+  const struct {
+    int add = 100;
+    int contains = 200;
+    int remove = 300;
+  } border;
 
   std::default_random_engine random(seed);  // NOLINT
 
@@ -70,18 +76,18 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
 
     for (std::size_t j = 0; j < actions; ++j) {
       const auto point = action(random);
-      if (point < 100) {
+      if (point < border.add) {
         statistics.add += 1;
         const auto val = random_key();
         silly.Add(val);
         smart.insert(val);
-      } else if (point < 200) {
+      } else if (point < border.contains) {
         statistics.contains += 1;
         const auto val = random_key();
         const auto silly_res = silly.Contains(val);
         const auto smart_res = smart.contains(val);
         ASSERT_EQ(silly_res, smart_res);
-      } else if (point < 300) {
+      } else if (point < border.remove) {
         statistics.remove += 1;
         const auto val = random_key();
         silly.Remove(val);
