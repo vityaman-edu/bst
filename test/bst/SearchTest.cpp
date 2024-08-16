@@ -2,15 +2,15 @@
 
 #include "bst/Example.hpp"
 #include "bst/Search.hpp"
-#include "bst/SimpleNode.hpp"
-#include "bst/SimpleTree.hpp"
+#include "bst/naive/Node.hpp"
+#include "bst/naive/Tree.hpp"
 
 namespace bst {
 
 TEST(BSTSearch, Simple) {
-  SimpleNodeFactory<int> bst;
+  NaiveNodeFactory<int> bst;
 
-  SimpleTree<int> tree;
+  NaiveTree<int> tree;
   auto* root = bst(5, bst(4, bst(3)), bst(8, bst(6), bst(9)));
 
   ASSERT_EQ(Search(tree, root, 3)->key, 3);
@@ -27,8 +27,8 @@ TEST(BSTSearch, Simple) {
 }
 
 TEST(BSTSearch, Singleton) {
-  SimpleTree<int> tree;
-  SimpleNode<int> node = {.key = 5};
+  NaiveTree<int> tree;
+  NaiveNode<int> node = {.key = 5};
   ASSERT_EQ(Search(tree, &node, 5), &node);
   ASSERT_EQ(Search(tree, &node, 0), nullptr);
   ASSERT_EQ(Search(tree, &node, 10), nullptr);

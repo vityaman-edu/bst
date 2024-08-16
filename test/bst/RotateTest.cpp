@@ -6,7 +6,7 @@
 
 #include "bst/Example.hpp"
 #include "bst/Rotate.hpp"
-#include "bst/SimpleNode.hpp"
+#include "bst/naive/Node.hpp"
 
 namespace bst {
 
@@ -28,7 +28,7 @@ struct NodeState {
 
 using NodeTable = std::vector<NodeState>;
 
-using Node = SimpleNode<std::size_t>;
+using Node = NaiveNode<std::size_t>;
 
 class SampleTree {
 private:
@@ -89,7 +89,7 @@ public:
   }
 
 private:
-  SimpleNodeFactory<Node::Key> bst_;
+  NaiveNodeFactory<Node::Key> bst_;
   std::vector<Node*> nodes_;
 };
 

@@ -1,23 +1,24 @@
 #pragma once
 
+#include <compare>
 #include <optional>
 
 #include "bst/Adjacent.hpp"
 #include "bst/Node.hpp"
 #include "bst/Search.hpp"
 #include "bst/Side.hpp"
-#include "bst/SimpleNode.hpp"
+#include "bst/naive/Node.hpp"
 
-namespace bst {
+namespace bst::naive {
 
 template <class K>
-class SimpleTree {
+class NaiveTree {
 public:
-  using Node = SimpleNode<K>;
+  using Node = NaiveNode<K>;
 
-  SimpleTree() = default;
+  NaiveTree() = default;
 
-  explicit SimpleTree(Node* root) : root_(root) {
+  explicit NaiveTree(Node* root) : root_(root) {
     assert(root != nullptr);
   }
 
@@ -88,4 +89,4 @@ private:
   Node* root_ = nullptr;
 };
 
-}  // namespace bst
+}  // namespace bst::naive

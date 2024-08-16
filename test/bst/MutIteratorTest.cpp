@@ -4,8 +4,8 @@
 #include "bst/Example.hpp"
 #include "bst/Extreme.hpp"
 #include "bst/MutIterator.hpp"
-#include "bst/SimpleNode.hpp"
-#include "bst/SimpleTree.hpp"
+#include "bst/naive/Node.hpp"
+#include "bst/naive/Tree.hpp"
 
 namespace bst {
 
@@ -31,13 +31,13 @@ private:
 };
 
 TEST(MutIterator, Empty) {
-  SimpleTree<int> tree;
-  auto range = BSTKeyRange<SimpleTree<int>>(&tree);
+  NaiveTree<int> tree;
+  auto range = BSTKeyRange<NaiveTree<int>>(&tree);
   ASSERT_EQ(range.begin(), range.end());
 }
 
 TEST(MutIterator, Forward) {
-  using Tree = SimpleTree<int>;
+  using Tree = NaiveTree<int>;
   using Node = Tree::Node;
 
   static_assert(std::bidirectional_iterator<MutIterator<Tree>>);

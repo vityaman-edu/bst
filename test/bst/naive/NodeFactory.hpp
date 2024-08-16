@@ -4,14 +4,14 @@
 
 #include "bst/Node.hpp"
 #include "bst/Side.hpp"
-#include "bst/SimpleNode.hpp"
+#include "bst/naive/Node.hpp"
 
-namespace bst {
+namespace bst::naive {
 
 template <WeaklyOrdered K>
-class SimpleNodeFactory {
+class NaiveNodeFactory {
 public:
-  using Node = SimpleNode<K>;
+  using Node = NaiveNode<K>;
 
   Node* operator()(Node::Key key, Node* lhs = nullptr, Node* rhs = nullptr) {
     nodes_.push_back({.key = key});
@@ -25,4 +25,4 @@ private:
   std::deque<Node> nodes_;
 };
 
-}  // namespace bst
+}  // namespace bst::naive
