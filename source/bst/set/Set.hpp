@@ -17,9 +17,18 @@ public:
   BSTSet() = default;
 
   BSTSet(const BSTSet&) = delete;
-  BSTSet(BSTSet&&) = delete;
   BSTSet& operator=(const BSTSet&) = delete;
-  BSTSet& operator=(BSTSet&&) = delete;
+
+  BSTSet(BSTSet&& that) noexcept {
+    Swap(that);
+  }
+
+  BSTSet& operator=(BSTSet&& that) noexcept {
+    if (this != &that) {
+      Swap(that);
+    }
+    return *this;
+  }
 
   ~BSTSet() {
     Clear();
@@ -78,6 +87,11 @@ private:
       return nullptr;
     }
     return Search(tree_.Root(), item);
+  }
+
+  void Swap(BSTSet& that) {
+    std::swap(this->tree_, that.tree_);
+    std::swap(this->size_, that.size_);
   }
 
   void Free(Node* node) {
