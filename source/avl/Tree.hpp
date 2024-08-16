@@ -67,11 +67,14 @@ public:
       LinkChild(node->parent, SideOf(node), child);
     } else {
       Node* successor = Successor(*this, node);
+
       shrinked = {.node = successor->parent, .side = SideOf(successor)};
       if (shrinked.node == node) {
         shrinked.node = successor;
       }
+
       LinkChild(successor->parent, SideOf(successor), successor->right);
+
       successor->bias = node->bias;
       LinkChild(node->parent, SideOf(node), successor);
       for (auto side : {Side::LEFT, Side::RIGHT}) {
@@ -79,9 +82,7 @@ public:
       }
     }
 
-    if (shrinked.node != Nil()) {
-      OnRemoveFixup(shrinked.node, shrinked.side);
-    }
+    OnRemoveFixup(shrinked.node, shrinked.side);
 
     Reset(node);
 
@@ -107,7 +108,7 @@ private:
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
-        prev != Nil() && next != Nil();               //
+        next != Nil();                                //
         prev = next, next = next->parent              //
     ) {
       if (OnChildGrowthFixup(SideOf(prev), next)) {
@@ -121,10 +122,10 @@ private:
 
     if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
-      if (parent->bias != Bias::NONE) {
-        return false;
-      }
-    } else if (Child(side, parent)->bias == BiasOf(side)) {
+      return parent->bias == Bias::NONE;
+    }
+
+    if (Child(side, parent)->bias == BiasOf(side)) {
       parent->bias += BiasOf(Reversed(side));
       Child(side, parent)->bias += BiasOf(Reversed(side));
       Rotate(Reversed(side), parent);
@@ -158,13 +159,11 @@ private:
 
     if (node->bias != BiasOf(side)) {
       Rotate(side, parent);
-      if (node->bias == Bias::NONE) {
-        node->bias += BiasOf(side);
-        return true;
+      if (node->bias != Bias::NONE) {
+        parent->bias += BiasOf(side);
       }
-      parent->bias += BiasOf(side);
       node->bias += BiasOf(side);
-      return false;
+      return node->bias != Bias::NONE;
     }
 
     BiasedDoubleRotate(side, parent);

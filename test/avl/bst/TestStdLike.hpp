@@ -23,7 +23,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   const auto seed = 43278423342;
 
 #ifdef NDEBUG
-  const auto rounds = 2'500;
+  const auto rounds = 5'000;
   const auto actions = 2'500;
   const auto freq = 500;
 #else
