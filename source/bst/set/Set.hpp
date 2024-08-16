@@ -22,7 +22,7 @@ public:
   BSTSet& operator=(BSTSet&&) = delete;
 
   ~BSTSet() {
-    Free(tree_.Root());
+    Clear();
   }
 
   void Add(const K& item) {
@@ -51,6 +51,12 @@ public:
 
   [[nodiscard]] bool IsEmpty() const {
     return Size() == 0;
+  }
+
+  void Clear() {
+    Free(tree_.Root());
+    tree_ = {};
+    size_ = 0;
   }
 
   MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)

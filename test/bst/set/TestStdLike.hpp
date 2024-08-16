@@ -39,6 +39,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
     std::size_t add = 0;
     std::size_t contains = 0;
     std::size_t remove = 0;
+    std::size_t clear = 0;
     std::size_t size = 0;
     std::size_t iterate = 0;
   } statistics;
@@ -50,6 +51,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
     int add = 100;
     int contains = 200;
     int remove = 300;
+    int clear = 320;
     int size = 350;
     int iterate = 400;
   } border;
@@ -95,6 +97,10 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto val = random_key();
         silly.Remove(val);
         smart.erase(val);
+      } else if (point < border.clear) {
+        statistics.clear += 1;
+        silly.Clear();
+        smart.clear();
       } else if (point < border.size) {
         statistics.size += 1;
         ASSERT_EQ(silly.Size(), smart.size());
@@ -115,6 +121,7 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
             << "add = " << statistics.add << ", "
             << "contains = " << statistics.contains << ", "
             << "remove = " << statistics.remove << ", "
+            << "clear = " << statistics.clear << ", "
             << "size = " << statistics.size << ", "
             << "iterate = " << statistics.iterate << "." << std::endl;
 }

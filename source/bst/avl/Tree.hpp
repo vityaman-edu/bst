@@ -24,6 +24,20 @@ public:
 
   AVLTree() = default;
 
+  AVLTree(const AVLTree&) = delete;
+  AVLTree& operator=(const AVLTree&) = delete;
+
+  AVLTree(AVLTree&& that) noexcept {
+    *this = that;
+  }
+
+  AVLTree& operator=(AVLTree&& that) noexcept {
+    std::swap(this->nil_.left, that.nil_.left);
+    return *this;
+  }
+
+  ~AVLTree() = default;
+
   bool Insert(Node* node) {
     assert(node != nullptr);
 

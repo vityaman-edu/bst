@@ -22,6 +22,14 @@ public:
     assert(root != nullptr);
   }
 
+  NaiveTree(const NaiveTree&) = delete;
+  NaiveTree& operator=(const NaiveTree&) = delete;
+
+  NaiveTree(NaiveTree&& that) noexcept = default;
+  NaiveTree& operator=(NaiveTree&&) = default;
+
+  ~NaiveTree() = default;
+
   bool Insert(Node* node) {
     if (root_ == nullptr) {
       root_ = node;
