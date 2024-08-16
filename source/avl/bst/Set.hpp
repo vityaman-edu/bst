@@ -1,7 +1,5 @@
 #pragma once
 
-#include <deque>
-
 #include "avl/bst/MutIterator.hpp"
 #include "avl/bst/Search.hpp"
 #include "avl/bst/Tree.hpp"
@@ -16,12 +14,20 @@ private:
 public:
   using K = Node::Key;
 
-  void Add(K item) {
-    nodes_.push_back(Node{std::move(item)});
-    auto* node = &nodes_.back();
-    bool is_inserted = tree_.Insert(node);
-    if (!is_inserted) {
-      nodes_.pop_back();
+  BSTSet() = default;
+
+  BSTSet(const BSTSet&) = delete;
+  BSTSet(BSTSet&&) = delete;
+  BSTSet& operator=(const BSTSet&) = delete;
+  BSTSet& operator=(BSTSet&&) = delete;
+
+  ~BSTSet() {
+    Free(tree_.Root());
+  }
+
+  void Add(const K& item) {
+    if (!Contains(item)) {
+      tree_.Insert(new Node(std::move(item)));
     }
   }
 
@@ -29,6 +35,7 @@ public:
     auto* node = Find(item);
     if (node != tree_.Nil()) {
       tree_.Remove(node);
+      delete node;  // NOLINT(cppcoreguidelines-owning-memory)
     }
   }
 
@@ -57,8 +64,16 @@ private:
     return Search(tree_, tree_.Root(), item);
   }
 
+  void Free(Node* node) {
+    if (node == tree_.Nil()) {
+      return;
+    }
+    Free(node->left);
+    Free(node->right);
+    delete node;  // NOLINT(cppcoreguidelines-owning-memory)
+  }
+
   Tree tree_;
-  std::deque<Node> nodes_;
 };
 
 }  // namespace avl
