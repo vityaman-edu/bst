@@ -34,7 +34,7 @@ public:
 
   void Remove(const K& item) {
     auto* node = Find(item);
-    if (node != tree_.Nil()) {
+    if (node != nullptr) {
       size_ -= 1;
       tree_.Remove(node);
       delete node;  // NOLINT(cppcoreguidelines-owning-memory)
@@ -42,7 +42,7 @@ public:
   }
 
   bool Contains(const K& item) {
-    return Find(item) != tree_.Nil();
+    return Find(item) != nullptr;
   }
 
   [[nodiscard]] std::size_t Size() const {
@@ -53,29 +53,29 @@ public:
     return Size() == 0;
   }
 
-  MutIterator<Tree> begin() {  // NOLINT(readability-identifier-naming)
+  MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)
     auto* root = tree_.Root();
-    if (root == tree_.Nil()) {
+    if (root == nullptr) {
       return end();
     }
-    return MutIterator<Tree>(&tree_, Min(tree_, root));
+    return MutIterator<Node>(Min(root));
   }
 
-  MutIterator<Tree> end() {  // NOLINT(readability-identifier-naming)
-    return MutIterator<Tree>();
+  MutIterator<Node> end() {  // NOLINT(readability-identifier-naming)
+    return MutIterator<Node>();
   }
 
 private:
   Node* Find(const K& item) {
     auto* root = tree_.Root();
-    if (root == tree_.Nil()) {
-      return tree_.Nil();
+    if (root == nullptr) {
+      return nullptr;
     }
-    return Search(tree_, tree_.Root(), item);
+    return Search(tree_.Root(), item);
   }
 
   void Free(Node* node) {
-    if (node == tree_.Nil()) {
+    if (node == nullptr) {
       return;
     }
     Free(node->left);

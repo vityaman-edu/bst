@@ -23,22 +23,22 @@ public:
   using Node = AVLNode<K>;
 
   AVLTree() {
-    Reset(Nil());
+    Reset(nullptr);
   }
 
   bool Insert(Node* node) {
-    assert(node != Nil());
+    assert(node != nullptr);
     EnsureSanity();
 
     Reset(node);
 
-    if (Root() == Nil()) {
-      LinkChild(Nil(), Side::LEFT, node);
+    if (Root() == nullptr) {
+      LinkChild(&nil_, Side::LEFT, node);
       EnsureSanity();
       return true;
     }
 
-    auto [parent, order] = SearchParent(*this, Root(), node->key);
+    auto [parent, order] = SearchParent(Root(), node->key);
     if (order == std::weak_ordering::equivalent) {
       return false;
     }
@@ -52,7 +52,7 @@ public:
   }
 
   void Remove(Node* node) {
-    assert(node != Nil());
+    assert(node != nullptr);
     EnsureSanity();
 
     struct {
@@ -60,15 +60,15 @@ public:
       Side side;
     } shrinked;
 
-    if (node->left == Nil() && node->right == Nil()) {
+    if (node->left == nullptr && node->right == nullptr) {
       shrinked = {.node = node->parent, .side = SideOf(node)};
-      LinkChild(node->parent, SideOf(node), Nil());
-    } else if (node->left == Nil() || node->right == Nil()) {
+      Child(SideOf(node), node->parent) = nullptr;
+    } else if (node->left == nullptr || node->right == nullptr) {
       shrinked = {.node = node->parent, .side = SideOf(node)};
-      Node* child = node->left == Nil() ? node->right : node->left;
+      Node* child = node->left == nullptr ? node->right : node->left;
       LinkChild(node->parent, SideOf(node), child);
     } else {
-      Node* successor = Successor(*this, node);
+      Node* successor = Successor(node);
 
       shrinked = {.node = successor->parent, .side = SideOf(successor)};
       if (shrinked.node == node) {
@@ -91,17 +91,13 @@ public:
     EnsureSanity();
   }
 
-  Node* Nil() {
-    return &nil_;
-  }
-
   Node* Root() {
     return nil_.left;
   }
 
 private:
   void OnInsertFixup(Node* parent, Side side) {
-    assert(parent != Nil());
+    assert(parent != nullptr);
 
     parent->bias += BiasOf(side);
     if (parent->bias == Bias::NONE) {
@@ -110,7 +106,7 @@ private:
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
-        next != Nil();                                //
+        next != nullptr;                              //
         prev = next, next = next->parent              //
     ) {
       if (OnChildGrowthFixup(SideOf(prev), next)) {
@@ -120,7 +116,7 @@ private:
   }
 
   bool OnChildGrowthFixup(Side side, Node* parent) {
-    assert(parent != Nil());
+    assert(parent != nullptr);
 
     if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
@@ -139,7 +135,7 @@ private:
   }
 
   void OnRemoveFixup(Node* parent, Side side) {
-    while (parent != Nil()) {
+    while (parent != nullptr) {
       auto next = std::tuple(parent->parent, SideOf(parent));
       if (OnChildShrinkedFixup(side, parent)) {
         break;
@@ -149,7 +145,7 @@ private:
   }
 
   bool OnChildShrinkedFixup(Side side, Node* parent) {
-    assert(parent != Nil());
+    assert(parent != nullptr);
 
     if (parent->bias != BiasOf(Reversed(side))) {
       parent->bias += BiasOf(Reversed(side));
@@ -157,7 +153,7 @@ private:
     }
 
     auto* node = Child(Reversed(side), parent);
-    assert(node != Nil());
+    assert(node != nullptr);
 
     if (node->bias != BiasOf(side)) {
       Rotate(side, parent);
@@ -184,25 +180,23 @@ private:
   }
 
   void Reset(Node* node) {
-    node->left = Nil();
-    node->right = Nil();
-    node->parent = Nil();
+    node->left = nullptr;
+    node->right = nullptr;
+    node->parent = nullptr;
   }
 
   void EnsureSanity() {
-    assert(Nil()->left == Root());
-    assert(Nil()->right == Nil());
-    assert(Root()->parent == Nil());
+    assert(Root()->parent == nullptr);
     assert(Height(Root()) >= 0);
   }
 
   std::int64_t Height(Node* node) {
-    if (node == Nil()) {
+    if (node == nullptr) {
       return 0;
     }
 
-    assert(node->parent == Nil() || node->parent != node->left);
-    assert(node->parent == Nil() || node->parent != node->right);
+    assert(node->parent == nullptr || node->parent != node->left);
+    assert(node->parent == nullptr || node->parent != node->right);
     assert(node != node->left);
     assert(node != node->right);
     assert(node != node->parent);
@@ -210,8 +204,8 @@ private:
     auto lhs = Child(Side::LEFT, node);
     auto rhs = Child(Side::RIGHT, node);
 
-    assert(lhs == Nil() || lhs->parent == node);
-    assert(rhs == Nil() || rhs->parent == node);
+    assert(lhs == nullptr || lhs->parent == node);
+    assert(rhs == nullptr || rhs->parent == node);
 
     auto lheight = Height(lhs);
     auto rheight = Height(rhs);

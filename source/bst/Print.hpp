@@ -15,7 +15,7 @@ void Print(std::ostream& out, Tree& tree, Node* node = nullptr, std::size_t inde
     node = tree.Root();
   }
 
-  if (node == tree.Nil()) {
+  if (node == nullptr) {
     return;
   }
 

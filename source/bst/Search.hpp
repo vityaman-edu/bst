@@ -4,31 +4,28 @@
 #include <tuple>
 
 #include "bst/Node.hpp"
-#include "bst/Tree.hpp"
 
 namespace bst {
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-std::tuple<Node*, std::weak_ordering> SearchParent(
-    Tree& tree, Node* node, const typename Node::Key& key
-) {
-  assert(node != tree.Nil());
+template <BSTNode Node>
+std::tuple<Node*, std::weak_ordering> SearchParent(Node* node, const typename Node::Key& key) {
+  assert(node != nullptr);
   for (;;) {
     const auto ordering = key <=> node->key;
-    if (ordering == std::weak_ordering::equivalent || Child(SideOf(ordering), node) == tree.Nil()) {
+    if (ordering == std::weak_ordering::equivalent || Child(SideOf(ordering), node) == nullptr) {
       return {node, ordering};
     }
     node = Child(SideOf(ordering), node);
   }
 }
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-Node* Search(Tree& tree, Node* node, const typename Node::Key& key) {
-  auto [parent, ordering] = SearchParent(tree, node, key);
+template <BSTNode Node>
+Node* Search(Node* node, const typename Node::Key& key) {
+  auto [parent, ordering] = SearchParent(node, key);
   if (ordering == std::weak_ordering::equivalent) {
     return parent;
   }
-  return tree.Nil();
+  return nullptr;
 }
 
 }  // namespace bst

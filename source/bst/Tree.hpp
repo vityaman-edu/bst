@@ -8,7 +8,6 @@ namespace bst {
 
 template <class Tree>
 concept BSTTree = requires(Tree tree, Tree::Node* node) {
-  { tree.Nil() } -> std::convertible_to<typename Tree::Node*>;
   { tree.Root() } -> std::convertible_to<typename Tree::Node*>;
   { tree.Insert(node) } -> std::convertible_to<bool>;
   { tree.Remove(node) };

@@ -3,32 +3,31 @@
 #include "bst/Extreme.hpp"
 #include "bst/Node.hpp"
 #include "bst/Side.hpp"
-#include "bst/Tree.hpp"
 
 namespace bst {
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-Node* Adjacent(Tree& tree, Side side, Node* node) {
-  assert(node != tree.Nil());
-  if (Child(side, node) != tree.Nil()) {
-    return Extreme(tree, Reversed(side), Child(side, node));
+template <BSTNode Node>
+Node* Adjacent(Side side, Node* node) {
+  assert(node != nullptr);
+  if (Child(side, node) != nullptr) {
+    return Extreme(Reversed(side), Child(side, node));
   }
   Node* ancestor = node->parent;
-  while (ancestor != tree.Nil() && node == Child(side, ancestor)) {
+  while (ancestor != nullptr && node == Child(side, ancestor)) {
     node = ancestor;
     ancestor = ancestor->parent;
   }
   return ancestor;
 }
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-Node* Successor(Tree& tree, Node* node) {
-  return Adjacent(tree, Side::RIGHT, node);
+template <BSTNode Node>
+Node* Successor(Node* node) {
+  return Adjacent(Side::RIGHT, node);
 }
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
-Node* Predecessor(Tree& tree, Node* node) {
-  return Adjacent(tree, Side::LEFT, node);
+template <BSTNode Node>
+Node* Predecessor(Node* node) {
+  return Adjacent(Side::LEFT, node);
 }
 
 }  // namespace bst

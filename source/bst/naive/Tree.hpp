@@ -23,14 +23,12 @@ public:
   }
 
   bool Insert(Node* node) {
-    Reset(node);
-
-    if (root_ == Nil()) {
+    if (root_ == nullptr) {
       root_ = node;
       return true;
     }
 
-    auto [parent, order] = SearchParent(*this, root_, node->key);
+    auto [parent, order] = SearchParent(root_, node->key);
     if (order == std::weak_ordering::equivalent) {
       return false;
     }
@@ -40,22 +38,22 @@ public:
   }
 
   void Remove(Node* node) {
-    assert(node != Nil());
+    assert(node != nullptr);
 
     std::optional<Node> dummy = std::nullopt;
 
-    if (node->parent == Nil()) {
+    if (node->parent == nullptr) {
       dummy = Node();
       LinkChild(&dummy.value(), Side::LEFT, node);
     }
 
-    if (node->left == Nil() && node->right == Nil()) {
-      Child(SideOf(node), node->parent) = Nil();
-    } else if (node->left == Nil() || node->right == Nil()) {
-      Node* child = node->left == Nil() ? node->right : node->left;
+    if (node->left == nullptr && node->right == nullptr) {
+      Child(SideOf(node), node->parent) = nullptr;
+    } else if (node->left == nullptr || node->right == nullptr) {
+      Node* child = node->left == nullptr ? node->right : node->left;
       LinkChild(node->parent, SideOf(node), child);
     } else {
-      Node* successor = Successor(*this, node);
+      Node* successor = Successor(node);
       LinkChild(successor->parent, SideOf(successor), successor->right);
       LinkChild(node->parent, SideOf(node), successor);
       for (auto side : {Side::LEFT, Side::RIGHT}) {
@@ -66,13 +64,9 @@ public:
     if (dummy != std::nullopt) {
       root_ = dummy->left;
       if (root_ != nullptr) {
-        root_->parent = Nil();
+        root_->parent = nullptr;
       }
     }
-  }
-
-  Node* Nil() {
-    return nullptr;
   }
 
   Node* Root() {
@@ -80,12 +74,6 @@ public:
   }
 
 private:
-  void Reset(Node* node) {
-    node->left = Nil();
-    node->right = Nil();
-    node->parent = Nil();
-  }
-
   Node* root_ = nullptr;
 };
 

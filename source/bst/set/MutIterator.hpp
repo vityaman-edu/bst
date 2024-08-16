@@ -5,11 +5,10 @@
 
 #include "bst/Adjacent.hpp"
 #include "bst/Node.hpp"
-#include "bst/Tree.hpp"
 
 namespace bst::set {
 
-template <BSTTree Tree, BSTNode Node = typename Tree::Node>
+template <BSTNode Node>
 class MutIterator final {
 public:
   using iterator_category = std::bidirectional_iterator_tag;  // NOLINT
@@ -20,10 +19,8 @@ public:
 
   MutIterator() = default;
 
-  explicit MutIterator(Tree* tree, Node* node) : tree_(tree), node_(node) {
-    assert(tree != nullptr);
+  explicit MutIterator(Node* node) : node_(node) {
     assert(node != nullptr);
-    assert(node != tree->Nil());
   }
 
   Node::Key& operator*() const {
@@ -31,7 +28,7 @@ public:
   }
 
   MutIterator& operator++() {
-    SetNode(Successor(*tree_, node_));
+    node_ = Successor(node_);
     return *this;
   }
 
@@ -42,7 +39,7 @@ public:
   }
 
   MutIterator& operator--() {
-    SetNode(Predecessor(*tree_, node_));
+    node_ = Predecessor(node_);
     return *this;
   }
 
@@ -61,11 +58,6 @@ public:
   }
 
 private:
-  void SetNode(Node* node) {
-    node_ = node != tree_->Nil() ? node : nullptr;
-  }
-
-  Tree* tree_ = nullptr;
   Node* node_ = nullptr;
 };
 
