@@ -22,19 +22,18 @@ struct AVLTree {
 public:
   using Node = AVLNode<K>;
 
-  AVLTree() {
-    Reset(nullptr);
-  }
+  AVLTree() = default;
 
   bool Insert(Node* node) {
     assert(node != nullptr);
-    EnsureSanity();
+
+    Before();
 
     Reset(node);
 
     if (Root() == nullptr) {
-      LinkChild(&nil_, Side::LEFT, node);
-      EnsureSanity();
+      LinkChild(Nil(), Side::LEFT, node);
+      After();
       return true;
     }
 
@@ -47,13 +46,14 @@ public:
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
 
-    EnsureSanity();
+    After();
     return true;
   }
 
   void Remove(Node* node) {
     assert(node != nullptr);
-    EnsureSanity();
+
+    Before();
 
     struct {
       Node* node;
@@ -88,7 +88,7 @@ public:
 
     Reset(node);
 
-    EnsureSanity();
+    After();
   }
 
   Node* Root() {
@@ -106,7 +106,7 @@ private:
 
     for (                                             //
         Node *prev = parent, *next = parent->parent;  //
-        next != nullptr;                              //
+        next != Nil();                                //
         prev = next, next = next->parent              //
     ) {
       if (OnChildGrowthFixup(SideOf(prev), next)) {
@@ -116,7 +116,7 @@ private:
   }
 
   bool OnChildGrowthFixup(Side side, Node* parent) {
-    assert(parent != nullptr);
+    assert(parent != Nil());
 
     if (parent->bias != BiasOf(side)) {
       parent->bias += BiasOf(side);
@@ -135,7 +135,7 @@ private:
   }
 
   void OnRemoveFixup(Node* parent, Side side) {
-    while (parent != nullptr) {
+    while (parent != Nil()) {
       auto next = std::tuple(parent->parent, SideOf(parent));
       if (OnChildShrinkedFixup(side, parent)) {
         break;
@@ -185,8 +185,26 @@ private:
     node->parent = nullptr;
   }
 
+  void Before() {
+    EnsureSanity();
+    if (Root() != nullptr) {
+      Root()->parent = Nil();
+    }
+  }
+
+  void After() {
+    if (Root() != nullptr) {
+      Root()->parent = nullptr;
+    }
+    EnsureSanity();
+  }
+
+  Node* Nil() {
+    return &nil_;
+  }
+
   void EnsureSanity() {
-    assert(Root()->parent == nullptr);
+    assert(Root() == nullptr || Root()->parent == nullptr);
     assert(Height(Root()) >= 0);
   }
 
