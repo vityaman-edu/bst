@@ -4,8 +4,6 @@
 #include <compare>
 #include <cstdint>
 #include <cstdlib>
-#include <ostream>
-#include <utility>
 
 #include "bst/Side.hpp"
 
@@ -41,18 +39,6 @@ Bias operator+(Bias lhs, Bias rhs) {
 
 Bias& operator+=(Bias& lhs, Bias rhs) {
   return lhs = lhs + rhs;
-}
-
-std::ostream& operator<<(std::ostream& out, Bias bias) {
-  switch (bias) {
-    case Bias::NONE:
-      return out << "O";
-    case Bias::LEFT:
-      return out << "L";
-    case Bias::RIGHT:
-      return out << "R";
-  }
-  std::unreachable();
 }
 
 }  // namespace bst::avl

@@ -2,7 +2,6 @@
 
 #include <compare>
 #include <cstdint>
-#include <ostream>
 
 #include "bst/Side.hpp"
 
@@ -23,7 +22,5 @@ Bias operator-(Bias bias);
 Bias operator+(Bias lhs, Bias rhs);
 
 Bias& operator+=(Bias& lhs, Bias rhs);
-
-std::ostream& operator<<(std::ostream& out, Bias bias);
 
 }  // namespace bst::avl
