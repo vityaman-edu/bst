@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ranges>
+
 #include "bst/Search.hpp"
 #include "bst/Tree.hpp"
 #include "bst/set/MutIterator.hpp"
@@ -15,6 +17,13 @@ public:
   using K = Node::Key;
 
   BSTSet() = default;
+
+  template <std::ranges::range Range>
+  BSTSet(Range&& range) {
+    for (auto& element : range) {
+      Add(element);
+    }
+  }
 
   BSTSet(const BSTSet&) = delete;
   BSTSet& operator=(const BSTSet&) = delete;
