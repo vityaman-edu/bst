@@ -7,7 +7,6 @@ namespace bst {
 
 template <BSTNode Node>
 void Rotate(Side side, Node* upper) {
-  assert(upper->parent != nullptr);
   auto* lower = Child(Reversed(side), upper);
   LinkChild(upper, Reversed(side), Child(side, lower));
   LinkChild(upper->parent, SideOf(upper), lower);

@@ -23,7 +23,6 @@ concept BSTNode = requires(Node* node) {
 
 template <BSTNode Node>
 Node*& Child(Side side, Node* node) {
-  assert(node != nullptr);
   switch (side) {
     case Side::LEFT:
       return node->left;
@@ -35,7 +34,6 @@ Node*& Child(Side side, Node* node) {
 
 template <BSTNode Node>
 void LinkChild(Node* node, Side side, Node* child) {
-  assert(node != nullptr);
   Child(side, node) = child;
   if (child != nullptr) {
     child->parent = node;
@@ -44,7 +42,6 @@ void LinkChild(Node* node, Side side, Node* child) {
 
 template <BSTNode Node>
 Side SideOf(Node* node) {
-  assert(node->parent != nullptr);
   if (node->parent->left == node) {
     return Side::LEFT;
   }

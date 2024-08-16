@@ -21,7 +21,6 @@ Bias BiasOf(std::weak_ordering order) {
   if (order == std::weak_ordering::greater) {
     return Bias::LEFT;
   }
-  assert(order == std::weak_ordering::equivalent);
   return Bias::NONE;
 }
 
