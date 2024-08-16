@@ -137,21 +137,20 @@ private:
 
   void OnRemoveFixup(Node* parent, Side side) {
     while (parent != Nil()) {
-      auto [next_parent, next_side] = OnChildShrinkedFixup(side, parent);
-      parent = next_parent;
-      side = next_side;
+      auto next = std::tuple(parent->parent, SideOf(parent));
+      if (OnChildShrinkedFixup(side, parent)) {
+        break;
+      }
+      std::tie(parent, side) = next;
     }
   }
 
-  std::tuple<Node*, Side> OnChildShrinkedFixup(Side side, Node* parent) {
+  bool OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
     if (parent->bias != BiasOf(Reversed(side))) {
       parent->bias += BiasOf(Reversed(side));
-      if (parent->bias != Bias::NONE) {
-        return {Nil(), Side::LEFT};
-      }
-      return {parent->parent, SideOf(parent)};
+      return parent->bias != Bias::NONE;
     }
 
     auto* node = Child(Reversed(side), parent);
@@ -161,18 +160,18 @@ private:
       Rotate(side, parent);
       if (node->bias == Bias::NONE) {
         node->bias += BiasOf(side);
-        return {Nil(), Side::LEFT};
+        return true;
       }
       parent->bias += BiasOf(side);
       node->bias += BiasOf(side);
-      return {node->parent, SideOf(node)};
+      return false;
     }
 
-    auto lifted = BiasedDoubleRotate(side, parent);
-    return {lifted->parent, SideOf(lifted)};
+    BiasedDoubleRotate(side, parent);
+    return false;
   }
 
-  Node* BiasedDoubleRotate(Side side, Node* upper) {
+  void BiasedDoubleRotate(Side side, Node* upper) {
     Node* midle = Child(Reversed(side), upper);
     Node* lower = Child(side, midle);
 
@@ -181,8 +180,6 @@ private:
     lower->bias = Bias::NONE;
 
     DoubleRotate(side, upper);
-
-    return lower;
   }
 
   void Reset(Node* node) {
