@@ -2,13 +2,13 @@
 
 #include <optional>
 
-#include "avl/bst/Adjacent.hpp"
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Search.hpp"
-#include "avl/bst/Side.hpp"
-#include "avl/bst/SimpleNode.hpp"
+#include "bst/Adjacent.hpp"
+#include "bst/Node.hpp"
+#include "bst/Search.hpp"
+#include "bst/Side.hpp"
+#include "bst/SimpleNode.hpp"
 
-namespace avl::test {
+namespace bst {
 
 template <class K>
 class SimpleTree {
@@ -88,4 +88,4 @@ private:
   Node* root_ = nullptr;
 };
 
-}  // namespace avl::test
+}  // namespace bst

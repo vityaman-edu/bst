@@ -2,10 +2,10 @@
 
 #include <ostream>
 
-#include "avl/Bias.hpp"
-#include "avl/bst/Node.hpp"
+#include "bst/Node.hpp"
+#include "bst/avl/Bias.hpp"
 
-namespace avl {
+namespace bst::avl {
 
 template <WeaklyOrdered K>
 struct AVLNode {
@@ -23,4 +23,4 @@ std::ostream& operator<<(std::ostream& out, AVLNode<K>& node) {
   return out << "(" << node.key << " " << node.bias << ")";
 }
 
-}  // namespace avl
+}  // namespace bst::avl

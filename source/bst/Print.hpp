@@ -3,11 +3,11 @@
 #include <cstddef>
 #include <ostream>
 
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Side.hpp"
-#include "avl/bst/Tree.hpp"
+#include "bst/Node.hpp"
+#include "bst/Side.hpp"
+#include "bst/Tree.hpp"
 
-namespace avl {
+namespace bst {
 
 template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 void Print(std::ostream& out, Tree& tree, Node* node = nullptr, std::size_t indent = 0) {
@@ -24,4 +24,4 @@ void Print(std::ostream& out, Tree& tree, Node* node = nullptr, std::size_t inde
   Print(out, tree, Child(Side::LEFT, node), indent + 1);
 }
 
-}  // namespace avl
+}  // namespace bst

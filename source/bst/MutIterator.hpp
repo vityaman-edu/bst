@@ -3,11 +3,11 @@
 #include <cassert>
 #include <iterator>
 
-#include "avl/bst/Adjacent.hpp"
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Tree.hpp"
+#include "bst/Adjacent.hpp"
+#include "bst/Node.hpp"
+#include "bst/Tree.hpp"
 
-namespace avl {
+namespace bst {
 
 template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 class MutIterator final {
@@ -69,4 +69,4 @@ private:
   Node* node_ = nullptr;
 };
 
-}  // namespace avl
+}  // namespace bst

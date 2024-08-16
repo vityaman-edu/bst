@@ -1,10 +1,10 @@
-#include "avl/bst/Side.hpp"
+#include "bst/Side.hpp"
 
 #include <compare>
 #include <ostream>
 #include <utility>
 
-namespace avl {
+namespace bst {
 
 Side Reversed(Side side) {
   switch (side) {
@@ -36,4 +36,4 @@ std::ostream& operator<<(std::ostream& out, Side side) {
   std::unreachable();
 }
 
-}  // namespace avl
+}  // namespace bst

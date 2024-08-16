@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "avl/bst/Example.hpp"
-#include "avl/bst/Search.hpp"
-#include "avl/bst/SimpleNode.hpp"
-#include "avl/bst/SimpleTree.hpp"
+#include "bst/Example.hpp"
+#include "bst/Search.hpp"
+#include "bst/SimpleNode.hpp"
+#include "bst/SimpleTree.hpp"
 
-namespace avl::test {
+namespace bst {
 
 TEST(BSTSearch, Simple) {
   SimpleNodeFactory<int> bst;
@@ -34,4 +34,4 @@ TEST(BSTSearch, Singleton) {
   ASSERT_EQ(Search(tree, &node, 10), nullptr);
 }
 
-}  // namespace avl::test
+}  // namespace bst

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace avl::test {
+namespace bst {
 
 template <class K>
 struct SimpleNode {
@@ -12,4 +12,4 @@ struct SimpleNode {
   SimpleNode* right = nullptr;
 };
 
-}  // namespace avl::test
+}  // namespace bst

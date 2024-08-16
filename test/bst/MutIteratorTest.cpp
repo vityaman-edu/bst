@@ -1,13 +1,13 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "avl/bst/Example.hpp"
-#include "avl/bst/Extreme.hpp"
-#include "avl/bst/MutIterator.hpp"
-#include "avl/bst/SimpleNode.hpp"
-#include "avl/bst/SimpleTree.hpp"
+#include "bst/Example.hpp"
+#include "bst/Extreme.hpp"
+#include "bst/MutIterator.hpp"
+#include "bst/SimpleNode.hpp"
+#include "bst/SimpleTree.hpp"
 
-namespace avl::test {
+namespace bst {
 
 template <BSTTree Tree>
 class BSTKeyRange {
@@ -54,4 +54,4 @@ TEST(MutIterator, Forward) {
   ASSERT_TRUE(std::ranges::is_sorted(BSTKeyRange(&tree)));
 }
 
-}  // namespace avl::test
+}  // namespace bst

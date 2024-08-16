@@ -3,10 +3,10 @@
 #include <compare>
 #include <tuple>
 
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Tree.hpp"
+#include "bst/Node.hpp"
+#include "bst/Tree.hpp"
 
-namespace avl {
+namespace bst {
 
 template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 std::tuple<Node*, std::weak_ordering> SearchParent(
@@ -31,4 +31,4 @@ Node* Search(Tree& tree, Node* node, const typename Node::Key& key) {
   return tree.Nil();
 }
 
-}  // namespace avl
+}  // namespace bst

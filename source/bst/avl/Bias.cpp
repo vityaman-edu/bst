@@ -1,4 +1,4 @@
-#include "avl/Bias.hpp"
+#include "bst/avl/Bias.hpp"
 
 #include <cassert>
 #include <compare>
@@ -7,9 +7,9 @@
 #include <ostream>
 #include <utility>
 
-#include "avl/bst/Side.hpp"
+#include "bst/Side.hpp"
 
-namespace avl {
+namespace bst::avl {
 
 Bias BiasOf(Side side) {
   const auto num = static_cast<std::int8_t>(side);
@@ -55,4 +55,4 @@ std::ostream& operator<<(std::ostream& out, Bias bias) {
   std::unreachable();
 }
 
-}  // namespace avl
+}  // namespace bst::avl

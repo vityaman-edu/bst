@@ -4,9 +4,9 @@
 #include <concepts>
 #include <utility>
 
-#include "avl/bst/Side.hpp"
+#include "bst/Side.hpp"
 
-namespace avl {
+namespace bst {
 
 template <class T>
 concept WeaklyOrdered = requires(const T& lhs, const T& rhs) {
@@ -54,4 +54,4 @@ Side SideOf(Node* node) {
   std::unreachable();
 }
 
-}  // namespace avl
+}  // namespace bst

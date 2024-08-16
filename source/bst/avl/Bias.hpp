@@ -4,9 +4,9 @@
 #include <cstdint>
 #include <ostream>
 
-#include "avl/bst/Side.hpp"
+#include "bst/Side.hpp"
 
-namespace avl {
+namespace bst::avl {
 
 enum class Bias : std::int8_t {
   NONE = 0,
@@ -26,4 +26,4 @@ Bias& operator+=(Bias& lhs, Bias rhs);
 
 std::ostream& operator<<(std::ostream& out, Bias bias);
 
-}  // namespace avl
+}  // namespace bst::avl

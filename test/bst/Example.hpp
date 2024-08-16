@@ -1,7 +1,7 @@
-#include "avl/bst/NodeFactory.hpp"
-#include "avl/bst/SimpleTree.hpp"
+#include "bst/NodeFactory.hpp"
+#include "bst/SimpleTree.hpp"
 
-namespace avl::test {
+namespace bst {
 
 /**
  * Example
@@ -19,4 +19,4 @@ inline std::tuple<SimpleNodeFactory<K>, SimpleTree<K>> Example() {
   return {std::move(bst), SimpleTree<K>(root)};
 }
 
-}  // namespace avl::test
+}  // namespace bst

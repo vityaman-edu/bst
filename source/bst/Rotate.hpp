@@ -1,9 +1,9 @@
 #pragma once
 
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Side.hpp"
+#include "bst/Node.hpp"
+#include "bst/Side.hpp"
 
-namespace avl {
+namespace bst {
 
 template <BSTNode Node>
 void Rotate(Side side, Node* upper) {
@@ -20,4 +20,4 @@ void DoubleRotate(Side side, Node* upper) {
   Rotate(side, upper);
 }
 
-}  // namespace avl
+}  // namespace bst

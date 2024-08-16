@@ -7,13 +7,13 @@
 #include <cstdlib>
 #include <tuple>
 
-#include "avl/Bias.hpp"
-#include "avl/Node.hpp"
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Rotate.hpp"
-#include "avl/bst/Side.hpp"
+#include "bst/Node.hpp"
+#include "bst/Rotate.hpp"
+#include "bst/Side.hpp"
+#include "bst/avl/Bias.hpp"
+#include "bst/avl/Node.hpp"
 
-namespace avl {
+namespace bst::avl {
 
 template <WeaklyOrdered K>
 struct AVLTree {
@@ -223,4 +223,4 @@ private:
   Node nil_ = {};
 };
 
-}  // namespace avl
+}  // namespace bst::avl

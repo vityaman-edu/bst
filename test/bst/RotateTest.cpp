@@ -4,11 +4,11 @@
 #include <ranges>
 #include <set>
 
-#include "avl/bst/Example.hpp"
-#include "avl/bst/Rotate.hpp"
-#include "avl/bst/SimpleNode.hpp"
+#include "bst/Example.hpp"
+#include "bst/Rotate.hpp"
+#include "bst/SimpleNode.hpp"
 
-namespace avl::test {
+namespace bst {
 
 namespace {
 
@@ -289,4 +289,4 @@ TEST(DoubleRotate, Left) {
   tree.AssertFromTable(RLStage2);
 }
 
-}  // namespace avl::test
+}  // namespace bst

@@ -2,11 +2,11 @@
 
 #include <deque>
 
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Side.hpp"
-#include "avl/bst/SimpleNode.hpp"
+#include "bst/Node.hpp"
+#include "bst/Side.hpp"
+#include "bst/SimpleNode.hpp"
 
-namespace avl::test {
+namespace bst {
 
 template <WeaklyOrdered K>
 class SimpleNodeFactory {
@@ -25,4 +25,4 @@ private:
   std::deque<Node> nodes_;
 };
 
-}  // namespace avl::test
+}  // namespace bst

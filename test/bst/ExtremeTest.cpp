@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "avl/bst/Example.hpp"
-#include "avl/bst/Extreme.hpp"
-#include "avl/bst/Search.hpp"
+#include "bst/Example.hpp"
+#include "bst/Extreme.hpp"
+#include "bst/Search.hpp"
 
-namespace avl::test {
+namespace bst {
 
 TEST(BSTMin, Example) {
   auto [nodes, tree] = Example<int>();
@@ -32,4 +32,4 @@ TEST(BSTMax, Example) {
   ASSERT_EQ(Max(tree, Search(tree, tree.Root(), 13)), Search(tree, tree.Root(), 13));
 }
 
-}  // namespace avl::test
+}  // namespace bst

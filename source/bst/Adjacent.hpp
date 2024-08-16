@@ -1,11 +1,11 @@
 #pragma once
 
-#include "avl/bst/Extreme.hpp"
-#include "avl/bst/Node.hpp"
-#include "avl/bst/Side.hpp"
-#include "avl/bst/Tree.hpp"
+#include "bst/Extreme.hpp"
+#include "bst/Node.hpp"
+#include "bst/Side.hpp"
+#include "bst/Tree.hpp"
 
-namespace avl {
+namespace bst {
 
 template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 Node* Adjacent(Tree& tree, Side side, Node* node) {
@@ -31,4 +31,4 @@ Node* Predecessor(Tree& tree, Node* node) {
   return Adjacent(tree, Side::LEFT, node);
 }
 
-}  // namespace avl
+}  // namespace bst

@@ -2,9 +2,9 @@
 
 #include <concepts>
 
-#include "avl/bst/Node.hpp"
+#include "bst/Node.hpp"
 
-namespace avl {
+namespace bst {
 
 template <class Tree>
 concept BSTTree = requires(Tree tree, Tree::Node* node) {
@@ -14,4 +14,4 @@ concept BSTTree = requires(Tree tree, Tree::Node* node) {
   { tree.Remove(node) };
 } && std::default_initializable<Tree> && BSTNode<typename Tree::Node>;
 
-}  // namespace avl
+}  // namespace bst

@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <ostream>
 
-namespace avl {
+namespace bst {
 
 enum class Side : std::int8_t { LEFT = -1, RIGHT = +1 };
 
@@ -14,4 +14,4 @@ Side SideOf(std::weak_ordering order);
 
 std::ostream& operator<<(std::ostream& out, Side side);
 
-}  // namespace avl
+}  // namespace bst

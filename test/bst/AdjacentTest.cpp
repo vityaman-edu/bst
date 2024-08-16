@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "avl/bst/Adjacent.hpp"
-#include "avl/bst/Example.hpp"
-#include "avl/bst/Search.hpp"
+#include "bst/Adjacent.hpp"
+#include "bst/Example.hpp"
+#include "bst/Search.hpp"
 
-namespace avl::test {
+namespace bst {
 
 TEST(BSTSuccessor, Example) {
   auto [nodes, tree] = Example<int>();
@@ -32,4 +32,4 @@ TEST(BSTPredecessor, Example) {
   ASSERT_EQ(Predecessor(tree, Search(tree, tree.Root(), 14)), Search(tree, tree.Root(), 13));
 }
 
-}  // namespace avl::test
+}  // namespace bst
