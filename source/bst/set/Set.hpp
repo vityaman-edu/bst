@@ -1,10 +1,10 @@
 #pragma once
 
-#include "bst/MutIterator.hpp"
 #include "bst/Search.hpp"
 #include "bst/Tree.hpp"
+#include "bst/set/MutIterator.hpp"
 
-namespace bst {
+namespace bst::set {
 
 template <BSTTree Tree>
 class BSTSet {
@@ -76,4 +76,4 @@ private:
   Tree tree_;
 };
 
-}  // namespace bst
+}  // namespace bst::set

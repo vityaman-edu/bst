@@ -8,9 +8,9 @@
 #include <set>
 #include <vector>
 
-#include "bst/Set.hpp"
+#include "bst/set/Set.hpp"
 
-namespace bst {
+namespace bst::set {
 
 using K = int;
 
@@ -112,4 +112,4 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 
-}  // namespace bst
+}  // namespace bst::set

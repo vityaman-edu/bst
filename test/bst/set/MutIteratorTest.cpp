@@ -3,11 +3,11 @@
 
 #include "bst/Example.hpp"
 #include "bst/Extreme.hpp"
-#include "bst/MutIterator.hpp"
 #include "bst/naive/Node.hpp"
 #include "bst/naive/Tree.hpp"
+#include "bst/set/MutIterator.hpp"
 
-namespace bst {
+namespace bst::set {
 
 template <BSTTree Tree>
 class BSTKeyRange {
@@ -54,4 +54,4 @@ TEST(MutIterator, Forward) {
   ASSERT_TRUE(std::ranges::is_sorted(BSTKeyRange(&tree)));
 }
 
-}  // namespace bst
+}  // namespace bst::set

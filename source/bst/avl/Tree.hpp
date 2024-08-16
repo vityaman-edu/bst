@@ -7,8 +7,10 @@
 #include <cstdlib>
 #include <tuple>
 
+#include "bst/Adjacent.hpp"
 #include "bst/Node.hpp"
 #include "bst/Rotate.hpp"
+#include "bst/Search.hpp"
 #include "bst/Side.hpp"
 #include "bst/avl/Bias.hpp"
 #include "bst/avl/Node.hpp"

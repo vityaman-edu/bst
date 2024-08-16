@@ -7,7 +7,7 @@
 #include "bst/Node.hpp"
 #include "bst/Tree.hpp"
 
-namespace bst {
+namespace bst::set {
 
 template <BSTTree Tree, BSTNode Node = typename Tree::Node>
 class MutIterator final {
@@ -69,4 +69,4 @@ private:
   Node* node_ = nullptr;
 };
 
-}  // namespace bst
+}  // namespace bst::set
