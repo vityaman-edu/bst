@@ -77,7 +77,7 @@ public:
     }
   }
 
-  Node* Root() {
+  Node* Root() const {
     return root_;
   }
 

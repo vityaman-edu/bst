@@ -19,20 +19,24 @@ public:
   BSTSet() = default;
 
   BSTSet(const std::initializer_list<K>& list) {
-    for (auto& element : list) {
-      Add(element);
-    }
+    Assign(list);
   }
 
   template <std::ranges::range Range>
-  explicit BSTSet(Range&& range) {
-    for (auto& element : range) {
-      Add(element);
-    }
+  explicit BSTSet(const Range& range) {
+    Assign(range);
   }
 
-  BSTSet(const BSTSet&) = delete;
-  BSTSet& operator=(const BSTSet&) = delete;
+  BSTSet(const BSTSet& that) {
+    Assign(that);
+  }
+
+  BSTSet& operator=(const BSTSet& that) {
+    if (this != &that) {
+      Assign(that);
+    }
+    return *this;
+  }
 
   BSTSet(BSTSet&& that) noexcept {
     Swap(that);
@@ -83,7 +87,7 @@ public:
     size_ = 0;
   }
 
-  MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)
+  MutIterator<Node> begin() const {  // NOLINT(readability-identifier-naming)
     auto* root = tree_.Root();
     if (root == nullptr) {
       return end();
@@ -91,7 +95,7 @@ public:
     return MutIterator<Node>(Min(root));
   }
 
-  MutIterator<Node> end() {  // NOLINT(readability-identifier-naming)
+  MutIterator<Node> end() const {  // NOLINT(readability-identifier-naming)
     return MutIterator<Node>();
   }
 
@@ -102,6 +106,14 @@ private:
       return nullptr;
     }
     return Search(tree_.Root(), item);
+  }
+
+  template <std::ranges::range Range>
+  void Assign(const Range& range) {
+    Clear();
+    for (const auto& element : range) {
+      Add(element);
+    }
   }
 
   void Swap(BSTSet& that) {

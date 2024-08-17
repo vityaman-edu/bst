@@ -24,4 +24,8 @@ TEST(NaiveSet, Movable) {
   TestMovable<NaiveTree<K>>();
 }
 
+TEST(NaiveSet, Copyable) {
+  TestCopyable<NaiveTree<K>>();
+}
+
 }  // namespace bst::naive

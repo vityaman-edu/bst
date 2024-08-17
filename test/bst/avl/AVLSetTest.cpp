@@ -24,4 +24,8 @@ TEST(AVLSet, Movable) {
   TestMovable<AVLTree<K>>();
 }
 
+TEST(AVLSet, Copyable) {
+  TestCopyable<AVLTree<K>>();
+}
+
 }  // namespace bst::avl

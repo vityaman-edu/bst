@@ -105,7 +105,7 @@ public:
     After();
   }
 
-  Node* Root() {
+  Node* Root() const {
     return nil_.left;
   }
 

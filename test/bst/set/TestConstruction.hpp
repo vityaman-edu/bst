@@ -54,4 +54,22 @@ void TestMovable() {
   ASSERT_THAT(first | std::ranges::to<std::vector>(), expected);
 }
 
+template <BSTTree Tree>
+void TestCopyable() {
+  using Set = BSTSet<Tree>;
+
+  std::vector<int> expected = {1, 2, 3, 4};
+
+  Set first(expected);
+
+  Set second = first;
+
+  Set third;
+  third = first;
+
+  ASSERT_THAT(first | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(second | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(third | std::ranges::to<std::vector>(), expected);
+}
+
 }  // namespace bst::set
