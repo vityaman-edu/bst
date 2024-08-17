@@ -12,8 +12,16 @@ TEST(NaiveSet, StdLike) {
   TestStdLike<NaiveTree<K>>("NaiveSet");
 }
 
+TEST(NaiveSet, ConstructFromRange) {
+  TestConstructionFromRange<NaiveTree<K>>();
+}
+
 TEST(NaiveSet, ConstructFromInitializerList) {
   TestConstructionFromInitializerList<NaiveTree<K>>();
+}
+
+TEST(NaiveSet, Movable) {
+  TestMovable<NaiveTree<K>>();
 }
 
 }  // namespace bst::naive

@@ -18,8 +18,14 @@ public:
 
   BSTSet() = default;
 
+  BSTSet(const std::initializer_list<K>& list) {
+    for (auto& element : list) {
+      Add(element);
+    }
+  }
+
   template <std::ranges::range Range>
-  BSTSet(Range&& range) {
+  explicit BSTSet(Range&& range) {
     for (auto& element : range) {
       Add(element);
     }

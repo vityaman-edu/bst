@@ -28,7 +28,7 @@ public:
   AVLTree& operator=(const AVLTree&) = delete;
 
   AVLTree(AVLTree&& that) noexcept {
-    *this = that;
+    std::swap(this->nil_.left, that.nil_.left);
   }
 
   AVLTree& operator=(AVLTree&& that) noexcept {

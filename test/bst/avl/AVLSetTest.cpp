@@ -12,8 +12,16 @@ TEST(AVLSet, StdLike) {
   TestStdLike<AVLTree<K>>("AVLSet");
 }
 
+TEST(AVLSet, ConstructFromRange) {
+  TestConstructionFromRange<AVLTree<K>>();
+}
+
 TEST(AVLSet, ConstructFromInitializerList) {
   TestConstructionFromInitializerList<AVLTree<K>>();
+}
+
+TEST(AVLSet, Movable) {
+  TestMovable<AVLTree<K>>();
 }
 
 }  // namespace bst::avl
