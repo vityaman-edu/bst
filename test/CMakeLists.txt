@@ -1,7 +1,7 @@
 find_package(GTest REQUIRED)
 
 get_filename_component(AVL_TEST_INCLUDE_PATH "." ABSOLUTE)
-get_filename_component(AVL_TEST_SOURCE_PATH "./${PROJECT_NAME}/test" ABSOLUTE)
+get_filename_component(AVL_TEST_SOURCE_PATH "./${PROJECT_NAME}" ABSOLUTE)
 
 set(AVL_TEST_TARGET "${PROJECT_NAME}-test")
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.30)
 
-project(avl VERSION 0.1.0)
+project(bst VERSION 0.1.0)
 
 option(AVL_DEVELOPER "Enable ${PROJECT_NAME} developer mode" OFF)
 
@@ -12,4 +12,5 @@ add_subdirectory(source)
 
 if(AVL_DEVELOPER)
     add_subdirectory(test)
+    add_subdirectory(benchmark)
 endif()
