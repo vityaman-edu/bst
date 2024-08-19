@@ -32,7 +32,7 @@ message "Building the project..."
 (cd build && make)
 
 message "Testing the project..."
-(cd build && ./test/avl-test)
+(cd build && ./test/bst-test)
 
 if [ "$MODE" = "fix" ]; then
   message "Formatting code..."
