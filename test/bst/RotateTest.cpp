@@ -5,7 +5,7 @@
 #include <set>
 
 #include "bst/Example.hpp"
-#include "bst/Rotate.hpp"
+#include "bst/algo/Rotate.hpp"
 #include "bst/naive/Node.hpp"
 
 namespace bst {

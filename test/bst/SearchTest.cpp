@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "bst/Example.hpp"
-#include "bst/Search.hpp"
+#include "bst/algo/Search.hpp"
 #include "bst/naive/Node.hpp"
 
 namespace bst {

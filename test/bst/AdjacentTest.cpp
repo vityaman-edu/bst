@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "bst/Adjacent.hpp"
 #include "bst/Example.hpp"
-#include "bst/Search.hpp"
+#include "bst/algo/Adjacent.hpp"
+#include "bst/algo/Search.hpp"
 
 namespace bst {
 

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstddef>
+#include <initializer_list>
 #include <ranges>
 
-#include "bst/Search.hpp"
-#include "bst/Tree.hpp"
+#include "bst/algo/Search.hpp"
+#include "bst/core/Tree.hpp"
 #include "bst/set/MutIterator.hpp"
 
 namespace bst::set {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "bst/Node.hpp"
-#include "bst/Side.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst {
 

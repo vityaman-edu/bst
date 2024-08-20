@@ -4,7 +4,7 @@
 #include <concepts>
 #include <utility>
 
-#include "bst/Side.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst {
 

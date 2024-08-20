@@ -5,7 +5,7 @@
 
 #include <ranges>
 
-#include "bst/Tree.hpp"
+#include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
 namespace bst::set {

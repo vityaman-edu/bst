@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "bst/Side.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst::avl {
 

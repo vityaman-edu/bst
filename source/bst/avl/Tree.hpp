@@ -7,13 +7,13 @@
 #include <cstdlib>
 #include <tuple>
 
-#include "bst/Adjacent.hpp"
-#include "bst/Node.hpp"
-#include "bst/Rotate.hpp"
-#include "bst/Search.hpp"
-#include "bst/Side.hpp"
+#include "bst/algo/Adjacent.hpp"
+#include "bst/algo/Rotate.hpp"
+#include "bst/algo/Search.hpp"
 #include "bst/avl/Bias.hpp"
 #include "bst/avl/Node.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst::avl {
 

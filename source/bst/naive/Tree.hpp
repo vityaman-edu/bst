@@ -3,10 +3,10 @@
 #include <compare>
 #include <optional>
 
-#include "bst/Adjacent.hpp"
-#include "bst/Node.hpp"
-#include "bst/Search.hpp"
-#include "bst/Side.hpp"
+#include "bst/algo/Adjacent.hpp"
+#include "bst/algo/Search.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 #include "bst/naive/Node.hpp"
 
 namespace bst::naive {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "bst/Extreme.hpp"
-#include "bst/Node.hpp"
-#include "bst/Side.hpp"
+#include "bst/algo/Extreme.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst {
 

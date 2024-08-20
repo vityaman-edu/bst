@@ -1,7 +1,7 @@
 #pragma once
 
-#include "bst/Node.hpp"
 #include "bst/avl/Bias.hpp"
+#include "bst/core/Node.hpp"
 
 namespace bst::avl {
 

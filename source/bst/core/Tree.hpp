@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-#include "bst/Node.hpp"
+#include "bst/core/Node.hpp"
 
 namespace bst {
 

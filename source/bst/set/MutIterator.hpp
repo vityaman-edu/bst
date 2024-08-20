@@ -3,8 +3,8 @@
 #include <cassert>
 #include <iterator>
 
-#include "bst/Adjacent.hpp"
-#include "bst/Node.hpp"
+#include "bst/algo/Adjacent.hpp"
+#include "bst/core/Node.hpp"
 
 namespace bst::set {
 

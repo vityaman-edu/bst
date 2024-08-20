@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 #include "bst/Example.hpp"
-#include "bst/Extreme.hpp"
-#include "bst/Node.hpp"
+#include "bst/algo/Extreme.hpp"
+#include "bst/core/Node.hpp"
 #include "bst/naive/Node.hpp"
 #include "bst/naive/Tree.hpp"
 #include "bst/set/MutIterator.hpp"

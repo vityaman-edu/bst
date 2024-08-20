@@ -2,8 +2,8 @@
 
 #include <deque>
 
-#include "bst/Node.hpp"
-#include "bst/Side.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 #include "bst/naive/Node.hpp"
 
 namespace bst::naive {

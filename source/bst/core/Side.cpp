@@ -1,7 +1,8 @@
-#include "bst/Side.hpp"
+#include "bst/core/Side.hpp"
 
 #include <cassert>
 #include <compare>
+#include <cstdint>
 #include <utility>
 
 namespace bst {

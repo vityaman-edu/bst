@@ -3,7 +3,7 @@
 #include <compare>
 #include <tuple>
 
-#include "bst/Node.hpp"
+#include "bst/core/Node.hpp"
 
 namespace bst {
 
