@@ -98,7 +98,7 @@ public:
   }
 
   auto* Root(this auto& self) {
-    return self.nil_.Child(Side::LEFT);
+    return self.Nil()->Child(Side::LEFT);
   }
 
 private:
@@ -196,16 +196,16 @@ private:
     EnsureSanity();
   }
 
-  Node* Nil() {
-    return &nil_;
+  auto* Nil(this auto& self) {
+    return &self.nil_;
   }
 
   void Swap(AVLTree& that) {
-    Side root_side = Side::LEFT;
-    Node* this_root = this->nil_.Child(root_side);
-    Node* that_root = that.nil_.Child(root_side);
-    this->nil_.SetChild(root_side, that_root);
-    that.nil_.SetChild(root_side, this_root);
+    const Side root_side = Side::LEFT;
+    Node* this_root = this->Nil()->Child(root_side);
+    Node* that_root = that.Nil()->Child(root_side);
+    this->Nil()->SetChild(root_side, that_root);
+    that.Nil()->SetChild(root_side, this_root);
   }
 
   void EnsureSanity() {
