@@ -17,15 +17,15 @@ public:
   explicit TemplateNode(KeyType key) : key_(std::move(key)) {
   }
 
-  const KeyType& Key() const {
+  [[nodiscard]] const KeyType& Key() const {
     return key_;
   }
 
-  auto* Parent(this auto& self) {
+  [[nodiscard]] auto* Parent(this auto& self) {
     return self.parent_;
   }
 
-  auto* Child(this auto& self, Side side) {
+  [[nodiscard]] auto* Child(this auto& self, Side side) {
     switch (side) {
       case Side::LEFT:
         return self.left_;
