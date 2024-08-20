@@ -21,6 +21,4 @@ Bias operator-(Bias bias);
 
 Bias operator+(Bias lhs, Bias rhs);
 
-Bias& operator+=(Bias& lhs, Bias rhs);
-
 }  // namespace bst::avl

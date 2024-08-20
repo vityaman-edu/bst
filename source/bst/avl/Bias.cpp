@@ -36,8 +36,4 @@ Bias operator+(Bias lhs, Bias rhs) {
   return static_cast<Bias>(lnum + rnum);
 }
 
-Bias& operator+=(Bias& lhs, Bias rhs) {
-  return lhs = lhs + rhs;
-}
-
 }  // namespace bst::avl
