@@ -8,10 +8,11 @@
 namespace bst::naive {
 
 template <WeaklyOrdered K, class V = std::monostate>
-struct NaiveNode final : TemplateNode<K, V, NaiveNode<K>> {
+struct NaiveNode final : TemplateNode<K, V, NaiveNode<K, V>> {
   NaiveNode() = default;
 
-  explicit NaiveNode(K key) : TemplateNode<K, V, NaiveNode<K>>(std::move(key)) {
+  explicit NaiveNode(K key, V value = {})
+      : TemplateNode<K, V, NaiveNode<K, V>>(std::move(key), std::move(value)) {
   }
 };
 

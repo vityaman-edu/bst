@@ -8,10 +8,13 @@
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
+#include "bst/support/Update.hpp"
 
 namespace bst::set {
 
-template <BSTTree Tree>
+template <
+    BSTTree Tree,
+    std::invocable<typename Tree::Node*> Update = EmptyUpdate<typename Tree::Node>>
 class BSTSet {
 private:
   using Node = Tree::Node;
@@ -20,6 +23,9 @@ public:
   using K = Node::KeyType;
 
   BSTSet() = default;
+
+  explicit BSTSet(Update update) : tree_(std::move(update)) {
+  }
 
   BSTSet(const std::initializer_list<K>& list) {
     Assign(list);
@@ -100,6 +106,11 @@ public:
 
   ConstIterator<Node> end() const {  // NOLINT(readability-identifier-naming)
     return ConstIterator<Node>();
+  }
+
+protected:
+  const Node* Root() const {
+    return tree_.Root();
   }
 
 private:

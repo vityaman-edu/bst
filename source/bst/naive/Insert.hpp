@@ -3,6 +3,7 @@
 #include <compare>
 #include <cstdint>
 
+#include "bst/algo/Iterating.hpp"
 #include "bst/core/Node.hpp"
 
 namespace bst::naive {
@@ -22,6 +23,15 @@ NaiveInsertionResult NaiveInsert(Node* root, Node* newbie) {
 
   LinkChild(parent, SideOf(order), newbie);
   return NaiveInsertionResult::INSERTED;
+}
+
+template <BSTNode Node, std::invocable<Node*> OnChildrenChanged>
+NaiveInsertionResult NaiveInsert(Node* root, Node* newbie, OnChildrenChanged notify) {
+  const auto result = NaiveInsert(root, newbie);
+  if (result == NaiveInsertionResult::INSERTED) {
+    IteratingOverBranchFrom(newbie->Parent(), notify);
+  }
+  return result;
 }
 
 }  // namespace bst::naive

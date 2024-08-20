@@ -15,7 +15,8 @@ public:
 
   TemplateNode() = default;
 
-  explicit TemplateNode(KeyType key) : key_(std::move(key)) {
+  explicit TemplateNode(KeyType key, ValueType value = {})
+      : key_(std::move(key)), value_(std::move(value)) {
   }
 
   [[nodiscard]] const KeyType& Key() const {

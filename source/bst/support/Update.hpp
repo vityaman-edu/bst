@@ -1,10 +1,12 @@
 #pragma once
 
+#include "bst/core/Node.hpp"
+
 namespace bst {
 
-template <class V>
+template <BSTNode Node>
 struct EmptyUpdate {
-  void operator()(V& /*parent*/, const V& /*left*/, const V& /*right*/) {
+  void operator()(Node* /*parent*/) {
     // Do nothing
   }
 };

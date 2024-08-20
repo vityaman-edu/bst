@@ -8,19 +8,22 @@
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Node.hpp"
 #include "bst/naive/Remove.hpp"
-#include "bst/support/EmptyUpdate.hpp"
+#include "bst/support/Update.hpp"
 
 namespace bst::naive {
 
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<V&, const V&, const V&> Update = EmptyUpdate<V>>
+    std::invocable<NaiveNode<K, V>*> Update = EmptyUpdate<NaiveNode<K, V>>>
 class NaiveTree {
 public:
   using Node = NaiveNode<K, V>;
 
   NaiveTree() = default;
+
+  explicit NaiveTree(Update update) : update_(std::move(update)) {
+  }
 
   explicit NaiveTree(Node* root) : root_(root) {
     assert(root != nullptr);
@@ -35,7 +38,7 @@ public:
   ~NaiveTree() = default;
 
   bool Insert(Node* node) {
-    const auto result = NaiveInsert(root_, node);
+    const auto result = NaiveInsert(root_, node, update_);
 
     switch (result) {
       case NaiveInsertionResult::EMPTY:

@@ -14,7 +14,7 @@
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Remove.hpp"
 #include "bst/support/Defer.hpp"
-#include "bst/support/EmptyUpdate.hpp"
+#include "bst/support/Update.hpp"
 
 #ifndef NDEBUG
 #include "bst/avl/Height.hpp"
@@ -25,7 +25,7 @@ namespace bst::avl {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<V&, const V&, const V&> Update = EmptyUpdate<V>>
+    std::invocable<AVLNode<K, V>*> Update = EmptyUpdate<AVLNode<K, V>>>
 struct AVLTree {
 public:
   using Node = AVLNode<K, V>;

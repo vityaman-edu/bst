@@ -9,10 +9,10 @@
 namespace bst::avl {
 
 template <WeaklyOrdered K, class V = std::monostate>
-struct AVLNode final : public TemplateNode<K, V, AVLNode<K>> {
+struct AVLNode final : public TemplateNode<K, V, AVLNode<K, V>> {
   AVLNode() = default;
 
-  explicit AVLNode(K key) : TemplateNode<K, V, AVLNode<K>>(std::move(key)) {
+  explicit AVLNode(K key) : TemplateNode<K, V, AVLNode<K, V>>(std::move(key)) {
   }
 
   void SetBias(Bias bias) {
