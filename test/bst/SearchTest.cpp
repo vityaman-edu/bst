@@ -25,7 +25,7 @@ TEST(BSTSearch, Simple) {
 }
 
 TEST(BSTSearch, Singleton) {
-  NaiveNode<int> node = {.key = 5};
+  NaiveNode<int> node(5);
   ASSERT_EQ(Search(&node, 5), &node);
   ASSERT_EQ(Search(&node, 0), nullptr);
   ASSERT_EQ(Search(&node, 10), nullptr);

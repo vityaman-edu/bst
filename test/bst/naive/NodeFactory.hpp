@@ -14,7 +14,7 @@ public:
   using Node = NaiveNode<K>;
 
   Node* operator()(Node::Key key, Node* lhs = nullptr, Node* rhs = nullptr) {
-    nodes_.push_back({.key = key});
+    nodes_.emplace_back(std::move(key));
     Node* node = &nodes_.back();
     LinkChild(node, Side::LEFT, lhs);
     LinkChild(node, Side::RIGHT, rhs);

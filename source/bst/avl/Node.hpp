@@ -2,17 +2,17 @@
 
 #include "bst/avl/Bias.hpp"
 #include "bst/core/Node.hpp"
+#include "bst/help/TemplateNode.hpp"
 
 namespace bst::avl {
 
 template <WeaklyOrdered K>
-struct AVLNode {
-  using Key = K;
+struct AVLNode : public TemplateNode<K, AVLNode<K>> {
+  AVLNode() = default;
 
-  Key key;
-  AVLNode* parent = nullptr;
-  AVLNode* left = nullptr;
-  AVLNode* right = nullptr;
+  explicit AVLNode(K key) : TemplateNode<K, AVLNode<K>>(std::move(key)) {
+  }
+
   Bias bias = Bias::NONE;
 };
 
