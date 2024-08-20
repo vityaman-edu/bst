@@ -8,13 +8,17 @@
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Node.hpp"
 #include "bst/naive/Remove.hpp"
+#include "bst/support/EmptyUpdate.hpp"
 
 namespace bst::naive {
 
-template <class K>
+template <
+    WeaklyOrdered K,
+    class V = std::monostate,
+    std::invocable<V&, const V&, const V&> Update = EmptyUpdate<V>>
 class NaiveTree {
 public:
-  using Node = NaiveNode<K>;
+  using Node = NaiveNode<K, V>;
 
   NaiveTree() = default;
 
@@ -70,6 +74,7 @@ public:
 
 private:
   Node* root_ = nullptr;
+  Update update_ = {};
 };
 
 }  // namespace bst::naive

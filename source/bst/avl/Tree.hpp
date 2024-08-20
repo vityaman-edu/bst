@@ -8,20 +8,27 @@
 
 #include "bst/algo/Rotate.hpp"
 #include "bst/avl/Bias.hpp"
-#include "bst/avl/Height.hpp"
 #include "bst/avl/Node.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Remove.hpp"
 #include "bst/support/Defer.hpp"
+#include "bst/support/EmptyUpdate.hpp"
+
+#ifndef NDEBUG
+#include "bst/avl/Height.hpp"
+#endif
 
 namespace bst::avl {
 
-template <WeaklyOrdered K>
+template <
+    WeaklyOrdered K,
+    class V = std::monostate,
+    std::invocable<V&, const V&, const V&> Update = EmptyUpdate<V>>
 struct AVLTree {
 public:
-  using Node = AVLNode<K>;
+  using Node = AVLNode<K, V>;
 
   AVLTree() = default;
 
@@ -186,6 +193,7 @@ private:
   }
 
   Node nil_ = {};
+  Update update_ = {};
 };
 
 }  // namespace bst::avl

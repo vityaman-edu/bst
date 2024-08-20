@@ -7,10 +7,11 @@
 
 namespace bst {
 
-template <WeaklyOrdered K, class Node>
+template <WeaklyOrdered K, class V, class Node>
 struct TemplateNode {
 public:
   using KeyType = K;
+  using ValueType = V;
 
   TemplateNode() = default;
 
@@ -19,6 +20,10 @@ public:
 
   [[nodiscard]] const KeyType& Key() const {
     return key_;
+  }
+
+  [[nodiscard]] auto& Value(this auto& self) {
+    return self.value_;
   }
 
   [[nodiscard]] auto* Parent(this auto& self) {
@@ -52,6 +57,7 @@ public:
 
 private:
   KeyType key_;
+  ValueType value_ = {};
   Node* parent_ = nullptr;
   Node* left_ = nullptr;
   Node* right_ = nullptr;

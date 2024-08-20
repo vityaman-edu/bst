@@ -16,12 +16,14 @@ concept WeaklyOrdered = requires(const T& lhs, const T& rhs) {
 template <class Node>
 concept ReadonlyBSTNode = requires(const Node* readonly, Side side) {
   { readonly->Key() } -> std::convertible_to<const typename Node::KeyType&>;
+  { readonly->Value() } -> std::convertible_to<const typename Node::ValueType&>;
   { readonly->Parent() } -> std::convertible_to<const Node*>;
   { readonly->Child(side) } -> std::convertible_to<const Node*>;
 } && WeaklyOrdered<typename Node::KeyType>;
 
 template <class Node>
 concept BSTNode = requires(Node* writable, const Node* readonly, Side side) {
+  { writable->Value() } -> std::convertible_to<typename Node::ValueType&>;
   { writable->SetParent(writable) } -> std::same_as<void>;
   { writable->Parent() } -> std::convertible_to<Node*>;
   { writable->SetChild(side, writable) } -> std::same_as<void>;

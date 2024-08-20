@@ -1,16 +1,18 @@
 #pragma once
 
+#include <variant>
+
 #include "bst/avl/Bias.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/support/TemplateNode.hpp"
 
 namespace bst::avl {
 
-template <WeaklyOrdered K>
-struct AVLNode final : public TemplateNode<K, AVLNode<K>> {
+template <WeaklyOrdered K, class V = std::monostate>
+struct AVLNode final : public TemplateNode<K, V, AVLNode<K>> {
   AVLNode() = default;
 
-  explicit AVLNode(K key) : TemplateNode<K, AVLNode<K>>(std::move(key)) {
+  explicit AVLNode(K key) : TemplateNode<K, V, AVLNode<K>>(std::move(key)) {
   }
 
   void SetBias(Bias bias) {
