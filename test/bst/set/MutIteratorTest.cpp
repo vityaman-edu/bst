@@ -6,7 +6,7 @@
 #include "bst/core/Node.hpp"
 #include "bst/naive/Node.hpp"
 #include "bst/naive/Tree.hpp"
-#include "bst/set/MutIterator.hpp"
+#include "bst/set/ConstIterator.hpp"
 
 namespace bst::set {
 
@@ -16,32 +16,32 @@ public:
   explicit BSTKeyRange(Node* node) : node_(node) {
   }
 
-  MutIterator<Node> begin() {
+  ConstIterator<Node> begin() {
     if (node_ == nullptr) {
       return end();
     }
-    return MutIterator<Node>(Min(node_));
+    return ConstIterator<Node>(Min(node_));
   }
 
-  MutIterator<Node> end() {
-    return MutIterator<Node>();
+  ConstIterator<Node> end() {
+    return ConstIterator<Node>();
   }
 
 private:
   Node* node_;
 };
 
-TEST(MutIterator, Empty) {
+TEST(ConstIterator, Empty) {
   NaiveTree<int> tree;
   auto range = BSTKeyRange<NaiveNode<int>>(tree.Root());
   ASSERT_EQ(range.begin(), range.end());
 }
 
-TEST(MutIterator, Forward) {
+TEST(ConstIterator, Forward) {
   using Tree = NaiveTree<int>;
   using Node = Tree::Node;
 
-  static_assert(std::bidirectional_iterator<MutIterator<Node>>);
+  static_assert(std::bidirectional_iterator<ConstIterator<Node>>);
   static_assert(std::ranges::bidirectional_range<BSTKeyRange<Node>>);
 
   auto [nodes, tree] = Example<int>();

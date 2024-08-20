@@ -7,7 +7,7 @@
 #include "bst/algo/Search.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
-#include "bst/set/MutIterator.hpp"
+#include "bst/set/ConstIterator.hpp"
 
 namespace bst::set {
 
@@ -90,16 +90,16 @@ public:
     size_ = 0;
   }
 
-  MutIterator<Node> begin() const {  // NOLINT(readability-identifier-naming)
+  ConstIterator<Node> begin() const {  // NOLINT(readability-identifier-naming)
     auto* root = tree_.Root();
     if (root == nullptr) {
       return end();
     }
-    return MutIterator<Node>(Min(root));
+    return ConstIterator<Node>(Min(root));
   }
 
-  MutIterator<Node> end() const {  // NOLINT(readability-identifier-naming)
-    return MutIterator<Node>();
+  ConstIterator<Node> end() const {  // NOLINT(readability-identifier-naming)
+    return ConstIterator<Node>();
   }
 
 private:

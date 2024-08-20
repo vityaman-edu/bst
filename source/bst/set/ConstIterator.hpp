@@ -9,7 +9,7 @@
 namespace bst::set {
 
 template <BSTNode Node>
-class MutIterator final {
+class ConstIterator final {
 public:
   using iterator_category = std::bidirectional_iterator_tag;  // NOLINT
   using value_type = Node::KeyType;                           // NOLINT
@@ -17,9 +17,9 @@ public:
   using pointer = Node::KeyType*;                             // NOLINT
   using reference = Node::KeyType&;                           // NOLINT
 
-  MutIterator() = default;
+  ConstIterator() = default;
 
-  explicit MutIterator(const Node* node) : node_(node) {
+  explicit ConstIterator(const Node* node) : node_(node) {
     assert(node != nullptr);
   }
 
@@ -27,33 +27,33 @@ public:
     return node_->Key();
   }
 
-  MutIterator& operator++() {
+  ConstIterator& operator++() {
     node_ = Successor(node_);
     return *this;
   }
 
-  MutIterator operator++(int) {  // NOLINT
+  ConstIterator operator++(int) {  // NOLINT
     auto prev = *this;
     ++*this;
     return prev;
   }
 
-  MutIterator& operator--() {
+  ConstIterator& operator--() {
     node_ = Predecessor(node_);
     return *this;
   }
 
-  MutIterator operator--(int) {  // NOLINT
+  ConstIterator operator--(int) {  // NOLINT
     auto next = *this;
     --*this;
     return next;
   }
 
-  bool operator==(const MutIterator& rhs) const {
+  bool operator==(const ConstIterator& rhs) const {
     return this->node_ == rhs.node_;
   }
 
-  bool operator!=(const MutIterator& rhs) const {
+  bool operator!=(const ConstIterator& rhs) const {
     return !(*this == rhs);
   }
 
