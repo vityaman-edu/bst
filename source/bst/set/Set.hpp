@@ -72,7 +72,7 @@ public:
     }
   }
 
-  bool Contains(const K& item) {
+  bool Contains(const K& item) const {
     return Find(item) != nullptr;
   }
 
@@ -103,12 +103,12 @@ public:
   }
 
 private:
-  Node* Find(const K& item) {
-    auto* root = tree_.Root();
+  auto Find(this auto& self, const K& item) -> decltype(self.tree_.Root()) {
+    auto* root = self.tree_.Root();
     if (root == nullptr) {
       return nullptr;
     }
-    return Search(tree_.Root(), item);
+    return Search(self.tree_.Root(), item);
   }
 
   template <std::ranges::range Range>

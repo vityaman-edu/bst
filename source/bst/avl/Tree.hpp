@@ -83,11 +83,8 @@ private:
       return;
     }
 
-    for (                                               //
-        Node *prev = parent, *next = parent->Parent();  //
-        next != Nil();                                  //
-        prev = next, next = next->Parent()              //
-    ) {
+    for (Node *prev = parent, *next = parent->Parent(); next != Nil();
+         prev = next, next = next->Parent()) {
       if (OnChildGrowthFixup(SideOf(prev), next)) {
         break;
       }
