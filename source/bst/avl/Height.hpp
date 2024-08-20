@@ -1,8 +1,11 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 
 #include "bst/avl/Node.hpp"
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst::avl {
 

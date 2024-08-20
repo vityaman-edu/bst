@@ -1,12 +1,12 @@
 #pragma once
 
-#include <compare>
 #include <optional>
+#include <utility>
 
 #include "bst/algo/Adjacent.hpp"
-#include "bst/algo/Search.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/naive/Insert.hpp"
 #include "bst/naive/Node.hpp"
 
 namespace bst::naive {
@@ -31,18 +31,19 @@ public:
   ~NaiveTree() = default;
 
   bool Insert(Node* node) {
-    if (root_ == nullptr) {
-      root_ = node;
-      return true;
+    const auto result = NaiveInsert(root_, node);
+
+    switch (result) {
+      case NaiveInsertionResult::EMPTY:
+        root_ = node;
+        return true;
+      case NaiveInsertionResult::EXISTS:
+        return false;
+      case NaiveInsertionResult::INSERTED:
+        return true;
     }
 
-    auto [parent, order] = SearchParent(root_, node->Key());
-    if (order == std::weak_ordering::equivalent) {
-      return false;
-    }
-
-    LinkChild(parent, SideOf(order), node);
-    return true;
+    std::unreachable();
   }
 
   void Remove(Node* node) {

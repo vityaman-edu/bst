@@ -2,18 +2,18 @@
 
 #include <cassert>
 #include <cmath>
-#include <compare>
 #include <cstdlib>
 #include <tuple>
+#include <utility>
 
 #include "bst/algo/Adjacent.hpp"
 #include "bst/algo/Rotate.hpp"
-#include "bst/algo/Search.hpp"
 #include "bst/avl/Bias.hpp"
 #include "bst/avl/Height.hpp"
 #include "bst/avl/Node.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/naive/Insert.hpp"
 #include "bst/support/Defer.hpp"
 
 namespace bst::avl {
@@ -43,21 +43,20 @@ public:
     Before();
     Defer after([&] { After(); });
 
-    if (Root() == nullptr) {
-      LinkChild(Nil(), Side::LEFT, node);
-      return true;
+    const auto result = naive::NaiveInsert(Root(), node);
+
+    switch (result) {
+      case naive::NaiveInsertionResult::EMPTY:
+        LinkChild(Nil(), Side::LEFT, node);
+        return true;
+      case naive::NaiveInsertionResult::EXISTS:
+        return false;
+      case naive::NaiveInsertionResult::INSERTED:
+        OnInsertFixup(node->Parent(), SideOf(node));
+        return true;
     }
 
-    auto [parent, order] = SearchParent(Root(), node->Key());
-    if (order == std::weak_ordering::equivalent) {
-      return false;
-    }
-
-    auto side = SideOf(order);
-    LinkChild(parent, side, node);
-    OnInsertFixup(parent, side);
-
-    return true;
+    std::unreachable();
   }
 
   void Remove(Node* node) {
