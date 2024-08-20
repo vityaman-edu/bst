@@ -5,6 +5,7 @@
 #include <ranges>
 
 #include "bst/algo/Search.hpp"
+#include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/MutIterator.hpp"
 

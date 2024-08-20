@@ -92,7 +92,7 @@ public:
 
       LinkChild(successor->Parent(), SideOf(successor), successor->Child(Side::RIGHT));
 
-      successor->bias = node->bias;
+      successor->SetBias(node->Bias());
       LinkChild(node->Parent(), SideOf(node), successor);
       for (auto side : {Side::LEFT, Side::RIGHT}) {
         LinkChild(successor, side, node->Child(side));
@@ -114,8 +114,8 @@ private:
   void OnInsertFixup(Node* parent, Side side) {
     assert(parent != nullptr);
 
-    parent->bias += BiasOf(side);
-    if (parent->bias == Bias::NONE) {
+    AdjustBias(parent, side);
+    if (parent->Bias() == Bias::NONE) {
       return;
     }
 
@@ -133,14 +133,14 @@ private:
   bool OnChildGrowthFixup(Side side, Node* parent) {
     assert(parent != Nil());
 
-    if (parent->bias != BiasOf(side)) {
-      parent->bias += BiasOf(side);
-      return parent->bias == Bias::NONE;
+    if (parent->Bias() != BiasOf(side)) {
+      AdjustBias(parent, side);
+      return parent->Bias() == Bias::NONE;
     }
 
-    if (parent->Child(side)->bias == BiasOf(side)) {
-      parent->bias += BiasOf(-side);
-      parent->Child(side)->bias += BiasOf(-side);
+    if (parent->Child(side)->Bias() == BiasOf(side)) {
+      AdjustBias(parent, -side);
+      AdjustBias(parent->Child(side), -side);
       Rotate(-side, parent);
     } else {
       BiasedDoubleRotate(-side, parent);
@@ -162,21 +162,21 @@ private:
   bool OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != nullptr);
 
-    if (parent->bias != BiasOf(-side)) {
-      parent->bias += BiasOf(-side);
-      return parent->bias != Bias::NONE;
+    if (parent->Bias() != BiasOf(-side)) {
+      AdjustBias(parent, -side);
+      return parent->Bias() != Bias::NONE;
     }
 
     auto* node = parent->Child(-side);
     assert(node != nullptr);
 
-    if (node->bias != BiasOf(side)) {
+    if (node->Bias() != BiasOf(side)) {
       Rotate(side, parent);
-      if (node->bias != Bias::NONE) {
-        parent->bias += BiasOf(side);
+      if (node->Bias() != Bias::NONE) {
+        AdjustBias(parent, side);
       }
-      node->bias += BiasOf(side);
-      return node->bias != Bias::NONE;
+      AdjustBias(node, side);
+      return node->Bias() != Bias::NONE;
     }
 
     BiasedDoubleRotate(side, parent);
@@ -187,11 +187,15 @@ private:
     Node* midle = upper->Child(-side);
     Node* lower = midle->Child(side);
 
-    upper->bias = ((BiasOf(-side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
-    midle->bias = ((BiasOf(side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
-    lower->bias = Bias::NONE;
+    upper->SetBias(((BiasOf(-side) == lower->Bias()) ? (-lower->Bias()) : (Bias::NONE)));
+    midle->SetBias(((BiasOf(side) == lower->Bias()) ? (-lower->Bias()) : (Bias::NONE)));
+    lower->SetBias(Bias::NONE);
 
     DoubleRotate(side, upper);
+  }
+
+  static void AdjustBias(Node* node, Side side) {
+    node->SetBias(node->Bias() + BiasOf(side));
   }
 
   void Reset(Node* node) {
@@ -251,7 +255,7 @@ private:
     auto lheight = Height(lhs);
     auto rheight = Height(rhs);
 
-    assert(node->bias == BiasOf(lheight <=> rheight));
+    assert(node->Bias() == BiasOf(lheight <=> rheight));
     assert(std::abs(lheight - rheight) <= 1);
 
     return std::max(lheight, rheight) + 1;

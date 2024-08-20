@@ -13,7 +13,16 @@ struct AVLNode final : public TemplateNode<K, AVLNode<K>> {
   explicit AVLNode(K key) : TemplateNode<K, AVLNode<K>>(std::move(key)) {
   }
 
-  Bias bias = Bias::NONE;
+  void SetBias(Bias bias) {
+    bias_ = bias;
+  }
+
+  [[nodiscard]] enum Bias Bias() const {
+    return bias_;
+  }
+
+private:
+  enum Bias bias_ = Bias::NONE;
 };
 
 }  // namespace bst::avl

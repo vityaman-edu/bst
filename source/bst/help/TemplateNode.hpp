@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst {
 
