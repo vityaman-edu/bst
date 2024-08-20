@@ -76,12 +76,8 @@ public:
     }
   }
 
-  const Node* Root() const {
-    return root_;
-  }
-
-  Node* Root() {
-    return root_;
+  auto* Root(this auto& self) {
+    return self.root_;
   }
 
 private:

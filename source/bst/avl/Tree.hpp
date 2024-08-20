@@ -97,8 +97,8 @@ public:
     OnRemoveFixup(shrinked.node, shrinked.side);
   }
 
-  Node* Root() const {
-    return nil_.Child(Side::LEFT);
+  auto* Root(this auto& self) {
+    return self.nil_.Child(Side::LEFT);
   }
 
 private:
