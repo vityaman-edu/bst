@@ -14,6 +14,7 @@
 #include "bst/avl/Node.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/support/Defer.hpp"
 
 namespace bst::avl {
 
@@ -40,12 +41,12 @@ public:
 
   bool Insert(Node* node) {
     Before();
+    Defer after([&] { After(); });
 
     Reset(node);
 
     if (Root() == nullptr) {
       LinkChild(Nil(), Side::LEFT, node);
-      After();
       return true;
     }
 
@@ -58,12 +59,12 @@ public:
     LinkChild(parent, side, node);
     OnInsertFixup(parent, side);
 
-    After();
     return true;
   }
 
   void Remove(Node* node) {
     Before();
+    Defer after([&] { After(); });
 
     struct {
       Node* node;
@@ -98,8 +99,6 @@ public:
     OnRemoveFixup(shrinked.node, shrinked.side);
 
     Reset(node);
-
-    After();
   }
 
   Node* Root() const {
