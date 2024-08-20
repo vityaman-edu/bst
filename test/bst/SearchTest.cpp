@@ -11,12 +11,12 @@ TEST(BSTSearch, Simple) {
 
   auto* root = bst(5, bst(4, bst(3)), bst(8, bst(6), bst(9)));
 
-  ASSERT_EQ(Search(root, 3)->key, 3);
-  ASSERT_EQ(Search(root, 4)->key, 4);
-  ASSERT_EQ(Search(root, 5)->key, 5);
-  ASSERT_EQ(Search(root, 6)->key, 6);
-  ASSERT_EQ(Search(root, 8)->key, 8);
-  ASSERT_EQ(Search(root, 9)->key, 9);
+  ASSERT_EQ(Search(root, 3)->Key(), 3);
+  ASSERT_EQ(Search(root, 4)->Key(), 4);
+  ASSERT_EQ(Search(root, 5)->Key(), 5);
+  ASSERT_EQ(Search(root, 6)->Key(), 6);
+  ASSERT_EQ(Search(root, 8)->Key(), 8);
+  ASSERT_EQ(Search(root, 9)->Key(), 9);
 
   ASSERT_EQ(Search(root, 0), nullptr);
   ASSERT_EQ(Search(root, 2), nullptr);

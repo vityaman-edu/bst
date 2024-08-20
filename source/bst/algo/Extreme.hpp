@@ -5,21 +5,21 @@
 
 namespace bst {
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Extreme(Side side, Node* node) {
   assert(node != nullptr);
-  while (Child(side, node) != nullptr) {
-    node = Child(side, node);
+  while (node->Child(side) != nullptr) {
+    node = node->Child(side);
   }
   return node;
 }
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Min(Node* node) {
   return Extreme(Side::LEFT, node);
 }
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Max(Node* node) {
   return Extreme(Side::RIGHT, node);
 }

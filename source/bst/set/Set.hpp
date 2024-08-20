@@ -16,7 +16,7 @@ private:
   using Node = Tree::Node;
 
 public:
-  using K = Node::Key;
+  using K = Node::KeyType;
 
   BSTSet() = default;
 
@@ -127,8 +127,8 @@ private:
     if (node == nullptr) {
       return;
     }
-    Free(node->left);
-    Free(node->right);
+    Free(node->Child(Side::LEFT));
+    Free(node->Child(Side::RIGHT));
     delete node;  // NOLINT(cppcoreguidelines-owning-memory)
   }
 

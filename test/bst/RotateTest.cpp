@@ -38,11 +38,13 @@ public:
   void AssertFromTable(const NodeTable& table) {
     for (const auto& [number, expected] : table) {
       NodeNeighbors actual = {
-          .parent = (NodeAt(number)->parent != nullptr) ? NodeAt(number)->parent->key : 0,
-          .left = (NodeAt(number)->left != nullptr)  //
-                      ? NodeAt(number)->left->key
+          .parent = (NodeAt(number)->Parent() != nullptr) ? NodeAt(number)->Parent()->Key() : 0,
+          .left = (NodeAt(number)->Child(Side::LEFT) != nullptr)  //
+                      ? NodeAt(number)->Child(Side::LEFT)->Key()
                       : 0,
-          .right = (NodeAt(number)->right != nullptr) ? NodeAt(number)->right->key : 0,
+          .right = (NodeAt(number)->Child(Side::RIGHT) != nullptr)
+                       ? NodeAt(number)->Child(Side::RIGHT)->Key()
+                       : 0,
       };
       if (expected != actual) {
         std::stringstream message;
@@ -80,16 +82,16 @@ public:
     }
 
     for (const auto& [number, neighbors] : table) {
-      tree.nodes_.at(number)->parent = tree.nodes_.at(neighbors.parent);
-      tree.nodes_.at(number)->left = tree.nodes_.at(neighbors.left);
-      tree.nodes_.at(number)->right = tree.nodes_.at(neighbors.right);
+      tree.nodes_.at(number)->SetParent(tree.nodes_.at(neighbors.parent));
+      tree.nodes_.at(number)->SetChild(Side::LEFT, tree.nodes_.at(neighbors.left));
+      tree.nodes_.at(number)->SetChild(Side::RIGHT, tree.nodes_.at(neighbors.right));
     }
 
     return tree;
   }
 
 private:
-  NaiveNodeFactory<Node::Key> bst_;
+  NaiveNodeFactory<Node::KeyType> bst_;
   std::vector<Node*> nodes_;
 };
 

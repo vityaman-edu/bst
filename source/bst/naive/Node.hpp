@@ -6,7 +6,7 @@
 namespace bst::naive {
 
 template <WeaklyOrdered K>
-struct NaiveNode : TemplateNode<K, NaiveNode<K>> {
+struct NaiveNode final : TemplateNode<K, NaiveNode<K>> {
   NaiveNode() = default;
 
   explicit NaiveNode(K key) : TemplateNode<K, NaiveNode<K>>(std::move(key)) {

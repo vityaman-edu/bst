@@ -7,20 +7,20 @@
 
 namespace bst {
 
-template <BSTNode Node>
-std::tuple<Node*, std::weak_ordering> SearchParent(Node* node, const typename Node::Key& key) {
+template <ReadonlyBSTNode Node>
+std::tuple<Node*, std::weak_ordering> SearchParent(Node* node, const typename Node::KeyType& key) {
   assert(node != nullptr);
   for (;;) {
-    const auto ordering = key <=> node->key;
-    if (ordering == std::weak_ordering::equivalent || Child(SideOf(ordering), node) == nullptr) {
+    const auto ordering = key <=> node->Key();
+    if (ordering == std::weak_ordering::equivalent || node->Child(SideOf(ordering)) == nullptr) {
       return {node, ordering};
     }
-    node = Child(SideOf(ordering), node);
+    node = node->Child(SideOf(ordering));
   }
 }
 
-template <BSTNode Node>
-Node* Search(Node* node, const typename Node::Key& key) {
+template <ReadonlyBSTNode Node>
+Node* Search(Node* node, const typename Node::KeyType& key) {
   auto [parent, ordering] = SearchParent(node, key);
   if (ordering == std::weak_ordering::equivalent) {
     return parent;

@@ -6,26 +6,26 @@
 
 namespace bst {
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Adjacent(Side side, Node* node) {
   assert(node != nullptr);
-  if (Child(side, node) != nullptr) {
-    return Extreme(-side, Child(side, node));
+  if (node->Child(side) != nullptr) {
+    return Extreme(-side, node->Child(side));
   }
-  Node* ancestor = node->parent;
-  while (ancestor != nullptr && node == Child(side, ancestor)) {
+  Node* ancestor = node->Parent();
+  while (ancestor != nullptr && node == ancestor->Child(side)) {
     node = ancestor;
-    ancestor = ancestor->parent;
+    ancestor = ancestor->Parent();
   }
   return ancestor;
 }
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Successor(Node* node) {
   return Adjacent(Side::RIGHT, node);
 }
 
-template <BSTNode Node>
+template <ReadonlyBSTNode Node>
 Node* Predecessor(Node* node) {
   return Adjacent(Side::LEFT, node);
 }

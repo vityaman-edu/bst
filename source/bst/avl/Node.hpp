@@ -7,7 +7,7 @@
 namespace bst::avl {
 
 template <WeaklyOrdered K>
-struct AVLNode : public TemplateNode<K, AVLNode<K>> {
+struct AVLNode final : public TemplateNode<K, AVLNode<K>> {
   AVLNode() = default;
 
   explicit AVLNode(K key) : TemplateNode<K, AVLNode<K>>(std::move(key)) {

@@ -12,19 +12,19 @@ template <BSTNode Node>
 class MutIterator final {
 public:
   using iterator_category = std::bidirectional_iterator_tag;  // NOLINT
-  using value_type = Node::Key;                               // NOLINT
+  using value_type = Node::KeyType;                           // NOLINT
   using difference_type = std::ptrdiff_t;                     // NOLINT
-  using pointer = Node::Key*;                                 // NOLINT
-  using reference = Node::Key&;                               // NOLINT
+  using pointer = Node::KeyType*;                             // NOLINT
+  using reference = Node::KeyType&;                           // NOLINT
 
   MutIterator() = default;
 
-  explicit MutIterator(Node* node) : node_(node) {
+  explicit MutIterator(const Node* node) : node_(node) {
     assert(node != nullptr);
   }
 
-  Node::Key& operator*() const {
-    return node_->key;
+  const Node::KeyType& operator*() const {
+    return node_->Key();
   }
 
   MutIterator& operator++() {
@@ -58,7 +58,7 @@ public:
   }
 
 private:
-  Node* node_ = nullptr;
+  const Node* node_ = nullptr;
 };
 
 }  // namespace bst::set

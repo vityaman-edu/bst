@@ -13,7 +13,7 @@ class NaiveNodeFactory {
 public:
   using Node = NaiveNode<K>;
 
-  Node* operator()(Node::Key key, Node* lhs = nullptr, Node* rhs = nullptr) {
+  Node* operator()(Node::KeyType key, Node* lhs = nullptr, Node* rhs = nullptr) {
     nodes_.emplace_back(std::move(key));
     Node* node = &nodes_.back();
     LinkChild(node, Side::LEFT, lhs);

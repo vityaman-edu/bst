@@ -46,7 +46,7 @@ TEST(MutIterator, Forward) {
 
   auto [nodes, tree] = Example<int>();
 
-  std::vector<Node::Key> keys;
+  std::vector<Node::KeyType> keys;
   for (const auto& key : BSTKeyRange(tree.Root())) {
     keys.emplace_back(key);
   }

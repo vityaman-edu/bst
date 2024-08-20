@@ -36,7 +36,7 @@ public:
       return true;
     }
 
-    auto [parent, order] = SearchParent(root_, node->key);
+    auto [parent, order] = SearchParent(root_, node->Key());
     if (order == std::weak_ordering::equivalent) {
       return false;
     }
@@ -50,34 +50,39 @@ public:
 
     std::optional<Node> dummy = std::nullopt;
 
-    if (node->parent == nullptr) {
+    if (node->Parent() == nullptr) {
       dummy = Node();
       LinkChild(&dummy.value(), Side::LEFT, node);
     }
 
-    if (node->left == nullptr && node->right == nullptr) {
-      Child(SideOf(node), node->parent) = nullptr;
-    } else if (node->left == nullptr || node->right == nullptr) {
-      Node* child = node->left == nullptr ? node->right : node->left;
-      LinkChild(node->parent, SideOf(node), child);
+    if (node->Child(Side::LEFT) == nullptr && node->Child(Side::RIGHT) == nullptr) {
+      node->Parent()->SetChild(SideOf(node), nullptr);
+    } else if (node->Child(Side::LEFT) == nullptr || node->Child(Side::RIGHT) == nullptr) {
+      Node* child =
+          node->Child(Side::LEFT) == nullptr ? node->Child(Side::RIGHT) : node->Child(Side::LEFT);
+      LinkChild(node->Parent(), SideOf(node), child);
     } else {
       Node* successor = Successor(node);
-      LinkChild(successor->parent, SideOf(successor), successor->right);
-      LinkChild(node->parent, SideOf(node), successor);
+      LinkChild(successor->Parent(), SideOf(successor), successor->Child(Side::RIGHT));
+      LinkChild(node->Parent(), SideOf(node), successor);
       for (auto side : {Side::LEFT, Side::RIGHT}) {
-        LinkChild(successor, side, Child(side, node));
+        LinkChild(successor, side, node->Child(side));
       }
     }
 
     if (dummy != std::nullopt) {
-      root_ = dummy->left;
+      root_ = dummy->Child(Side::LEFT);
       if (root_ != nullptr) {
-        root_->parent = nullptr;
+        root_->SetParent(nullptr);
       }
     }
   }
 
-  Node* Root() const {
+  const Node* Root() const {
+    return root_;
+  }
+
+  Node* Root() {
     return root_;
   }
 
