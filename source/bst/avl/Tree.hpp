@@ -6,7 +6,6 @@
 #include <tuple>
 #include <utility>
 
-#include "bst/algo/Adjacent.hpp"
 #include "bst/algo/Rotate.hpp"
 #include "bst/avl/Bias.hpp"
 #include "bst/avl/Height.hpp"
@@ -14,6 +13,7 @@
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/naive/Insert.hpp"
+#include "bst/naive/Remove.hpp"
 #include "bst/support/Defer.hpp"
 
 namespace bst::avl {
@@ -63,37 +63,13 @@ public:
     Before();
     Defer after([&] { After(); });
 
-    struct {
-      Node* node;
-      Side side;
-    } shrinked;
+    const auto result = naive::NaiveRemove(node);
 
-    if (node->Child(Side::LEFT) == nullptr && node->Child(Side::RIGHT) == nullptr) {
-      shrinked = {.node = node->Parent(), .side = SideOf(node)};
-      node->Parent()->SetChild(SideOf(node), nullptr);
-    } else if (node->Child(Side::LEFT) == nullptr || node->Child(Side::RIGHT) == nullptr) {
-      shrinked = {.node = node->Parent(), .side = SideOf(node)};
-      Node* child =
-          node->Child(Side::LEFT) == nullptr ? node->Child(Side::RIGHT) : node->Child(Side::LEFT);
-      LinkChild(node->Parent(), SideOf(node), child);
-    } else {
-      Node* successor = Successor(node);
-
-      shrinked = {.node = successor->Parent(), .side = SideOf(successor)};
-      if (shrinked.node == node) {
-        shrinked.node = successor;
-      }
-
-      LinkChild(successor->Parent(), SideOf(successor), successor->Child(Side::RIGHT));
-
-      successor->SetBias(node->Bias());
-      LinkChild(node->Parent(), SideOf(node), successor);
-      for (auto side : {Side::LEFT, Side::RIGHT}) {
-        LinkChild(successor, side, node->Child(side));
-      }
+    if (result.successor != nullptr) {
+      result.successor->SetBias(node->Bias());
     }
 
-    OnRemoveFixup(shrinked.node, shrinked.side);
+    OnRemoveFixup(result.shrinked.node, result.shrinked.side);
   }
 
   auto* Root(this auto& self) {

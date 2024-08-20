@@ -3,11 +3,11 @@
 #include <optional>
 #include <utility>
 
-#include "bst/algo/Adjacent.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Node.hpp"
+#include "bst/naive/Remove.hpp"
 
 namespace bst::naive {
 
@@ -54,20 +54,7 @@ public:
       LinkChild(&dummy.value(), Side::LEFT, node);
     }
 
-    if (node->Child(Side::LEFT) == nullptr && node->Child(Side::RIGHT) == nullptr) {
-      node->Parent()->SetChild(SideOf(node), nullptr);
-    } else if (node->Child(Side::LEFT) == nullptr || node->Child(Side::RIGHT) == nullptr) {
-      Node* child =
-          node->Child(Side::LEFT) == nullptr ? node->Child(Side::RIGHT) : node->Child(Side::LEFT);
-      LinkChild(node->Parent(), SideOf(node), child);
-    } else {
-      Node* successor = Successor(node);
-      LinkChild(successor->Parent(), SideOf(successor), successor->Child(Side::RIGHT));
-      LinkChild(node->Parent(), SideOf(node), successor);
-      for (auto side : {Side::LEFT, Side::RIGHT}) {
-        LinkChild(successor, side, node->Child(side));
-      }
-    }
+    NaiveRemove(node);
 
     if (dummy != std::nullopt) {
       root_ = dummy->Child(Side::LEFT);
