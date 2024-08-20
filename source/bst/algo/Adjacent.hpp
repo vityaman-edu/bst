@@ -8,7 +8,6 @@ namespace bst {
 
 template <ReadonlyBSTNode Node>
 Node* Adjacent(Side side, Node* node) {
-  assert(node != nullptr);
   if (node->Child(side) != nullptr) {
     return Extreme(-side, node->Child(side));
   }

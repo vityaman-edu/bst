@@ -9,7 +9,6 @@ namespace bst {
 
 template <ReadonlyBSTNode Node>
 std::tuple<Node*, std::weak_ordering> SearchParent(Node* node, const typename Node::KeyType& key) {
-  assert(node != nullptr);
   for (;;) {
     const auto ordering = key <=> node->Key();
     if (ordering == std::weak_ordering::equivalent || node->Child(SideOf(ordering)) == nullptr) {

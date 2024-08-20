@@ -7,7 +7,6 @@ namespace bst {
 
 template <ReadonlyBSTNode Node>
 Node* Extreme(Side side, Node* node) {
-  assert(node != nullptr);
   while (node->Child(side) != nullptr) {
     node = node->Child(side);
   }

@@ -39,8 +39,6 @@ public:
   ~AVLTree() = default;
 
   bool Insert(Node* node) {
-    assert(node != nullptr);
-
     Before();
 
     Reset(node);
@@ -65,8 +63,6 @@ public:
   }
 
   void Remove(Node* node) {
-    assert(node != nullptr);
-
     Before();
 
     struct {
@@ -112,8 +108,6 @@ public:
 
 private:
   void OnInsertFixup(Node* parent, Side side) {
-    assert(parent != nullptr);
-
     AdjustBias(parent, side);
     if (parent->Bias() == Bias::NONE) {
       return;
@@ -131,8 +125,6 @@ private:
   }
 
   bool OnChildGrowthFixup(Side side, Node* parent) {
-    assert(parent != Nil());
-
     if (parent->Bias() != BiasOf(side)) {
       AdjustBias(parent, side);
       return parent->Bias() == Bias::NONE;
@@ -160,15 +152,12 @@ private:
   }
 
   bool OnChildShrinkedFixup(Side side, Node* parent) {
-    assert(parent != nullptr);
-
     if (parent->Bias() != BiasOf(-side)) {
       AdjustBias(parent, -side);
       return parent->Bias() != Bias::NONE;
     }
 
-    auto* node = parent->Child(-side);
-    assert(node != nullptr);
+    Node* node = parent->Child(-side);
 
     if (node->Bias() != BiasOf(side)) {
       Rotate(side, parent);

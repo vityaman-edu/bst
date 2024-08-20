@@ -1,7 +1,7 @@
 #pragma once
 
 #include "bst/core/Node.hpp"
-#include "bst/help/TemplateNode.hpp"
+#include "bst/support/TemplateNode.hpp"
 
 namespace bst::naive {
 

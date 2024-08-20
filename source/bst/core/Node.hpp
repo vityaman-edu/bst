@@ -38,7 +38,6 @@ void LinkChild(Node* node, Side side, Node* child) {
 
 template <BSTNode Node>
 Side SideOf(const Node* node) {
-  assert(node->Parent() != nullptr);
   for (Side side : {Side::LEFT, Side::RIGHT}) {
     if (node->Parent()->Child(side) == node) {
       return side;

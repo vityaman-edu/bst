@@ -19,7 +19,7 @@ Side SideOf(std::weak_ordering ordering) {
   if (ordering == std::weak_ordering::greater) {
     return Side::RIGHT;
   }
-  assert(ordering != std::weak_ordering::equivalent);
+  assert(ordering == std::weak_ordering::equivalent);
   std::unreachable();
 }
 

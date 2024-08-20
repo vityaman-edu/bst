@@ -46,8 +46,6 @@ public:
   }
 
   void Remove(Node* node) {
-    assert(node != nullptr);
-
     std::optional<Node> dummy = std::nullopt;
 
     if (node->Parent() == nullptr) {
