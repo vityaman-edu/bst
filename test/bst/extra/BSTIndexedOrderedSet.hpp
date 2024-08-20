@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <ostream>
-
 #include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
@@ -22,25 +19,22 @@ struct TreeInfo {
       const std::size_t lval = lhs != nullptr ? lhs->Value().size : 0;
       const std::size_t rval = rhs != nullptr ? rhs->Value().size : 0;
 
-      std::cout << "Updating " << parent->Value().size << " with " << lval << " and " << rval
-                << std::endl;
-
       parent->Value().size = 1 + lval + rval;
     }
   };
 };
 
-template <BSTTree Tree>
-class BSTIndexedOrderedSet final : public set::BSTSet<Tree, TreeInfo::Update<typename Tree::Node>> {
+template <
+    BSTTree Tree,
+    class Update = TreeInfo::Update<typename Tree::Node>,
+    class Base = set::BSTSet<Tree, Update>>
+class BSTIndexedOrderedSet final : public Base {
 private:
   using Node = Tree::Node;
   using K = Tree::Node::KeyType;
 
 public:
-  BSTIndexedOrderedSet()
-      : set::BSTSet<Tree, TreeInfo::Update<typename Tree::Node>>(
-            TreeInfo::Update<typename Tree::Node>{}
-        ) {
+  BSTIndexedOrderedSet() : Base(Update{}) {
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {
