@@ -138,11 +138,11 @@ private:
     }
 
     if (Child(side, parent)->bias == BiasOf(side)) {
-      parent->bias += BiasOf(Reversed(side));
-      Child(side, parent)->bias += BiasOf(Reversed(side));
-      Rotate(Reversed(side), parent);
+      parent->bias += BiasOf(-side);
+      Child(side, parent)->bias += BiasOf(-side);
+      Rotate(-side, parent);
     } else {
-      BiasedDoubleRotate(Reversed(side), parent);
+      BiasedDoubleRotate(-side, parent);
     }
 
     return true;
@@ -161,12 +161,12 @@ private:
   bool OnChildShrinkedFixup(Side side, Node* parent) {
     assert(parent != nullptr);
 
-    if (parent->bias != BiasOf(Reversed(side))) {
-      parent->bias += BiasOf(Reversed(side));
+    if (parent->bias != BiasOf(-side)) {
+      parent->bias += BiasOf(-side);
       return parent->bias != Bias::NONE;
     }
 
-    auto* node = Child(Reversed(side), parent);
+    auto* node = Child(-side, parent);
     assert(node != nullptr);
 
     if (node->bias != BiasOf(side)) {
@@ -183,10 +183,10 @@ private:
   }
 
   void BiasedDoubleRotate(Side side, Node* upper) {
-    Node* midle = Child(Reversed(side), upper);
+    Node* midle = Child(-side, upper);
     Node* lower = Child(side, midle);
 
-    upper->bias = ((BiasOf(Reversed(side)) == lower->bias) ? (-lower->bias) : (Bias::NONE));
+    upper->bias = ((BiasOf(-side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
     midle->bias = ((BiasOf(side) == lower->bias) ? (-lower->bias) : (Bias::NONE));
     lower->bias = Bias::NONE;
 

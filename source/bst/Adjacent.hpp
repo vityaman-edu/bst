@@ -10,7 +10,7 @@ template <BSTNode Node>
 Node* Adjacent(Side side, Node* node) {
   assert(node != nullptr);
   if (Child(side, node) != nullptr) {
-    return Extreme(Reversed(side), Child(side, node));
+    return Extreme(-side, Child(side, node));
   }
   Node* ancestor = node->parent;
   while (ancestor != nullptr && node == Child(side, ancestor)) {
