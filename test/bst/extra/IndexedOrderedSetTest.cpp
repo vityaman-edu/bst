@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 
+#include "bst/avl/Tree.hpp"
 #include "bst/extra/BSTIndexedOrderedSet.hpp"
 #include "bst/extra/NaiveIndexedOrderedSet.hpp"
 #include "bst/naive/Tree.hpp"
@@ -11,8 +12,8 @@ namespace bst::extra {
 
 using K = int;
 
-using Node = naive::NaiveNode<K, TreeInfo>;
-using Tree = naive::NaiveTree<K, TreeInfo, TreeInfo::Update<Node>>;
+using Node = avl::AVLNode<K, TreeInfo>;
+using Tree = avl::AVLTree<K, TreeInfo, TreeInfo::Update<Node>>;
 
 using SmartSet = BSTIndexedOrderedSet<Tree>;
 using NaiveSet = NaiveIndexedOrderedSet<K>;

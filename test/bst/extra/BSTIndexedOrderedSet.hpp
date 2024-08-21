@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
@@ -16,12 +18,17 @@ struct TreeInfo {
       const Node* lhs = parent->Child(Side::LEFT);
       const Node* rhs = parent->Child(Side::RIGHT);
 
+      std::size_t& tval = parent->Value().size;
       const std::size_t lval = lhs != nullptr ? lhs->Value().size : 0;
       const std::size_t rval = rhs != nullptr ? rhs->Value().size : 0;
 
-      parent->Value().size = 1 + lval + rval;
+      tval = 1 + lval + rval;
     }
   };
+
+  friend std::ostream& operator<<(std::ostream& out, const TreeInfo& self) {
+    return out << "(size: " << self.size << ")";
+  }
 };
 
 template <
@@ -44,21 +51,24 @@ public:
 
 private:
   const K& At(const Node* node, std::size_t index) const {
-    const Node* left = node->Child(Side::LEFT);
-    const Node* right = node->Child(Side::RIGHT);
+    const Node* lhs = node->Child(Side::LEFT);
+    const Node* rhs = node->Child(Side::RIGHT);
 
-    const std::size_t left_size = left != nullptr ? left->Value().size : 0;
+    const std::size_t lhs_size = lhs != nullptr ? lhs->Value().size : 0;
+    const std::size_t rhs_size = rhs != nullptr ? rhs->Value().size : 0;
 
-    if (index < left_size) {
-      return At(left, index);
+    assert(node->Value().size == 1 + lhs_size + rhs_size);
+
+    if (index < lhs_size) {
+      return At(lhs, index);
     }
 
-    if (index == left_size) {
+    if (index == lhs_size) {
       return node->Key();
     }
 
-    assert(right != nullptr);
-    return At(right, index - left_size - 1);
+    assert(rhs != nullptr);
+    return At(rhs, index - lhs_size - 1);
   }
 };
 

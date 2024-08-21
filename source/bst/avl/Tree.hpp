@@ -32,6 +32,9 @@ public:
 
   AVLTree() = default;
 
+  explicit AVLTree(Update update) : update_(std::move(update)) {
+  }
+
   AVLTree(const AVLTree&) = delete;
   AVLTree& operator=(const AVLTree&) = delete;
 
@@ -50,7 +53,7 @@ public:
     Before();
     Defer after([&] { After(); });
 
-    const auto result = naive::NaiveInsert(Root(), node);
+    const auto result = naive::NaiveInsert(Root(), node, update_);
 
     switch (result) {
       case naive::NaiveInsertionResult::EMPTY:
@@ -70,7 +73,7 @@ public:
     Before();
     Defer after([&] { After(); });
 
-    const auto result = naive::NaiveRemove(node);
+    const auto result = naive::NaiveRemove(node, update_);
 
     if (result.successor != nullptr) {
       result.successor->SetBias(node->Bias());
@@ -92,7 +95,9 @@ private:
 
     for (Node *prev = parent, *next = parent->Parent(); next != Nil();
          prev = next, next = next->Parent()) {
+      update_(next);
       if (OnChildGrowthFixup(SideOf(prev), next)) {
+        IteratingOverBranchFrom(next, update_);
         break;
       }
     }
@@ -107,9 +112,9 @@ private:
     if (parent->Child(side)->Bias() == BiasOf(side)) {
       AdjustBias(parent, -side);
       AdjustBias(parent->Child(side), -side);
-      Rotate(-side, parent);
+      DoRotate(-side, parent);
     } else {
-      BiasedDoubleRotate(-side, parent);
+      DoDoubleRotate(-side, parent);
     }
 
     return true;
@@ -118,11 +123,14 @@ private:
   void OnRemoveFixup(Node* parent, Side side) {
     while (parent != Nil()) {
       auto next = std::tuple(parent->Parent(), SideOf(parent));
+      update_(parent);
       if (OnChildShrinkedFixup(side, parent)) {
         break;
       }
       std::tie(parent, side) = next;
     }
+
+    IteratingOverBranchFrom(parent, update_);
   }
 
   bool OnChildShrinkedFixup(Side side, Node* parent) {
@@ -134,7 +142,7 @@ private:
     Node* node = parent->Child(-side);
 
     if (node->Bias() != BiasOf(side)) {
-      Rotate(side, parent);
+      DoRotate(side, parent);
       if (node->Bias() != Bias::NONE) {
         AdjustBias(parent, side);
       }
@@ -142,11 +150,15 @@ private:
       return node->Bias() != Bias::NONE;
     }
 
-    BiasedDoubleRotate(side, parent);
+    DoDoubleRotate(side, parent);
     return false;
   }
 
-  void BiasedDoubleRotate(Side side, Node* upper) {
+  void DoRotate(Side side, Node* upper) {
+    Rotate(side, upper, update_);
+  }
+
+  void DoDoubleRotate(Side side, Node* upper) {
     Node* midle = upper->Child(-side);
     Node* lower = midle->Child(side);
 
@@ -154,7 +166,7 @@ private:
     midle->SetBias(((BiasOf(side) == lower->Bias()) ? (-lower->Bias()) : (Bias::NONE)));
     lower->SetBias(Bias::NONE);
 
-    DoubleRotate(side, upper);
+    DoubleRotate(side, upper, update_);
   }
 
   static void AdjustBias(Node* node, Side side) {

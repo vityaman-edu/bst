@@ -9,8 +9,8 @@
 
 namespace bst::avl {
 
-template <WeaklyOrdered K>
-std::int64_t Height(AVLNode<K>* node) {
+template <WeaklyOrdered K, class V>
+std::int64_t Height(AVLNode<K, V>* node) {
   if (node == nullptr) {
     return 0;
   }

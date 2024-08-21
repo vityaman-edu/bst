@@ -28,7 +28,7 @@ void Rotate(Side side, Node* upper) {
 template <BSTNode Node, std::invocable<Node*> OnChildrenChanged>
 void Rotate(Side side, Node* upper, OnChildrenChanged notify) {
   Rotate(side, upper);
-  for (Node* node : {upper, upper->parent, upper->parent->parent}) {
+  for (Node* node : {upper, upper->Parent(), upper->Parent()->Parent()}) {
     notify(node);
   }
 }
