@@ -20,6 +20,9 @@ std::tuple<Node*, std::weak_ordering> SearchParent(Node* node, const typename No
 
 template <ReadonlyBSTNode Node>
 Node* Search(Node* node, const typename Node::KeyType& key) {
+  if (node == nullptr) {
+    return nullptr;
+  }
   auto [parent, ordering] = SearchParent(node, key);
   if (ordering == std::weak_ordering::equivalent) {
     return parent;

@@ -9,6 +9,7 @@
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
+#include "bst/set/MutIterator.hpp"
 #include "bst/support/Update.hpp"
 
 namespace bst::set {
@@ -71,16 +72,34 @@ public:
   }
 
   void Remove(const K& item) {
-    auto* node = Find(item);
-    if (node != nullptr) {
-      size_ -= 1;
-      tree_.Remove(node);
-      delete node;  // NOLINT(cppcoreguidelines-owning-memory)
+    auto iter = Find(item);
+    if (iter == end()) {
+      return;
     }
+    Node* node = iter.NodePtr();
+    size_ -= 1;
+    tree_.Remove(node);
+    delete node;  // NOLINT(cppcoreguidelines-owning-memory)
+  }
+
+  MutIterator<Node> Find(const K& item) {
+    Node* node = Search(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return MutIterator<Node>(node);
+  }
+
+  ConstIterator<Node> Find(const K& item) const {
+    const Node* node = Search(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return ConstIterator<Node>(node);
   }
 
   bool Contains(const K& item) const {
-    return Find(item) != nullptr;
+    return Find(item) != end();
   }
 
   [[nodiscard]] std::size_t Size() const {
@@ -95,6 +114,18 @@ public:
     Free(tree_.Root());
     tree_ = {};
     size_ = 0;
+  }
+
+  MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)
+    auto* root = tree_.Root();
+    if (root == nullptr) {
+      return end();
+    }
+    return MutIterator<Node>(Min(root));
+  }
+
+  MutIterator<Node> end() {  // NOLINT(readability-identifier-naming)
+    return MutIterator<Node>();
   }
 
   ConstIterator<Node> begin() const {  // NOLINT(readability-identifier-naming)
@@ -115,22 +146,6 @@ protected:
   }
 
 private:
-  Node* Find(const K& item) {
-    auto* root = tree_.Root();
-    if (root == nullptr) {
-      return nullptr;
-    }
-    return Search(tree_.Root(), item);
-  }
-
-  const Node* Find(const K& item) const {
-    auto* root = tree_.Root();
-    if (root == nullptr) {
-      return nullptr;
-    }
-    return Search(tree_.Root(), item);
-  }
-
   template <std::ranges::range Range>
   void Assign(const Range& range) {
     Clear();
