@@ -41,23 +41,22 @@ TEST(IndexedOrderedSet, Example) {
   ASSERT_EQ(set.At(0), -1);
   ASSERT_EQ(set.At(1), 0);
 
-  // TODO(vityaman): not yet implemented
-  // set.Remove(0);
-  // ASSERT_EQ(set.Size(), 5);
-  // ASSERT_EQ(set.At(0), -1);
-  // ASSERT_EQ(set.At(1), 1);
+  set.Remove(0);
+  ASSERT_EQ(set.Size(), 5);
+  ASSERT_EQ(set.At(0), -1);
+  ASSERT_EQ(set.At(1), 1);
 
-  // set.Remove(2);
-  // ASSERT_EQ(set.Size(), 4);
-  // ASSERT_EQ(set.At(0), -1);
-  // ASSERT_EQ(set.At(1), 1);
-  // ASSERT_EQ(set.At(2), 3);
-  // ASSERT_EQ(set.At(3), 4);
+  set.Remove(2);
+  ASSERT_EQ(set.Size(), 4);
+  ASSERT_EQ(set.At(0), -1);
+  ASSERT_EQ(set.At(1), 1);
+  ASSERT_EQ(set.At(2), 3);
+  ASSERT_EQ(set.At(3), 4);
 
-  // set.Remove(1);
-  // ASSERT_EQ(set.Size(), 3);
-  // ASSERT_EQ(set.At(0), -1);
-  // ASSERT_EQ(set.At(1), 3);
+  set.Remove(1);
+  ASSERT_EQ(set.Size(), 3);
+  ASSERT_EQ(set.At(0), -1);
+  ASSERT_EQ(set.At(1), 3);
 }
 
 TEST(IndexedOrderedSet, Comparison) {
@@ -90,12 +89,13 @@ TEST(IndexedOrderedSet, Comparison) {
   std::uniform_int_distribution<int> key(min, max);
 
   const struct {
-    int add = 200;
-    int contains = 250;
-    int remove = 250;
-    int clear = 250;
-    int size = 300;
-    int iterate = 350;
+    int add = 100;
+    int contains = 200;
+    int remove = 300;
+    int clear = 325;
+    int size = 350;
+    int at = 450;
+    int iterate = 500;
   } border;
 
   std::uniform_int_distribution<int> action(0, border.iterate);
@@ -109,7 +109,7 @@ TEST(IndexedOrderedSet, Comparison) {
     }
 
     SmartSet smart;
-    NaiveSet silly;
+    NaiveSet naive;
 
     const auto random_key = [&]() {
       if (smart.Size() == 0 || coin(random) == 0) {
@@ -120,36 +120,45 @@ TEST(IndexedOrderedSet, Comparison) {
       return out[0];
     };
 
+    const auto random_index = [&]() {
+      std::uniform_int_distribution<std::size_t> index(0, smart.Size() - 1);
+      return index(random);
+    };
+
     for (std::size_t j = 0; j < actions; ++j) {
       const auto point = action(random);
       if (point < border.add) {
         statistics.add += 1;
         const auto val = random_key();
-        silly.Add(val);
+        naive.Add(val);
         smart.Add(val);
       } else if (point < border.contains) {
         statistics.contains += 1;
         const auto val = random_key();
-        const auto silly_res = silly.Contains(val);
+        const auto naive_res = naive.Contains(val);
         const auto smart_res = smart.Contains(val);
-        ASSERT_EQ(silly_res, smart_res);
+        ASSERT_EQ(naive_res, smart_res);
       } else if (point < border.remove) {
         statistics.remove += 1;
         const auto val = random_key();
-        silly.Remove(val);
+        naive.Remove(val);
         smart.Remove(val);
       } else if (point < border.clear) {
         statistics.clear += 1;
-        silly.Clear();
+        naive.Clear();
         smart.Clear();
       } else if (point < border.size) {
         statistics.size += 1;
-        ASSERT_EQ(silly.Size(), smart.Size());
+        ASSERT_EQ(naive.Size(), smart.Size());
+      } else if (point < border.at && !smart.IsEmpty()) {
+        statistics.at += 1;
+        const auto index = random_index();
+        ASSERT_EQ(naive.At(index), smart.At(index));
       } else /* (point < border.iterate) */ {
         statistics.iterate += 1;
-        const auto silly_items = silly | std::ranges::to<std::vector>();
+        const auto naive_items = naive | std::ranges::to<std::vector>();
         const auto smart_items = smart | std::ranges::to<std::vector>();
-        ASSERT_EQ(silly_items, smart_items);
+        ASSERT_EQ(naive_items, smart_items);
       }
     }
   }
@@ -160,6 +169,7 @@ TEST(IndexedOrderedSet, Comparison) {
             << "remove = " << statistics.remove << ", "
             << "clear = " << statistics.clear << ", "
             << "size = " << statistics.size << ", "
+            << "at = " << statistics.at << ", "
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 

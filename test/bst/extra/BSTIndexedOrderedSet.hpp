@@ -38,7 +38,7 @@ public:
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {
-    assert(!IsEmpty());
+    assert(!this->IsEmpty());
     return At(this->Root(), index);
   }
 
@@ -48,12 +48,16 @@ private:
     const Node* right = node->Child(Side::RIGHT);
 
     const std::size_t left_size = left != nullptr ? left->Value().size : 0;
+
     if (index < left_size) {
       return At(left, index);
     }
+
     if (index == left_size) {
       return node->Key();
     }
+
+    assert(right != nullptr);
     return At(right, index - left_size - 1);
   }
 };

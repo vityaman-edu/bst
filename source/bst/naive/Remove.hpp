@@ -48,4 +48,12 @@ NaiveRemovalResult<Node> NaiveRemove(Node* node) {
   return result;
 }
 
+template <BSTNode Node, std::invocable<Node*> OnChildrenChanged>
+NaiveRemovalResult<Node> NaiveRemove(Node* node, OnChildrenChanged notify) {
+  const auto result = NaiveRemove(node);
+  IteratingOverBranchFrom(result.shrinked.node, notify);
+  IteratingOverBranchFrom(node->Parent(), notify);
+  return result;
+}
+
 }  // namespace bst::naive

@@ -17,8 +17,9 @@ public:
   }
 
   void Remove(const K& item) {
-    if (!Contains(item)) {
+    if (Contains(item)) {
       std::ranges::remove(elements_, item);
+      elements_.pop_back();
     }
   }
 

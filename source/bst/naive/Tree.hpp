@@ -61,7 +61,7 @@ public:
       LinkChild(&dummy.value(), Side::LEFT, node);
     }
 
-    NaiveRemove(node);
+    NaiveRemove(node, update_);
 
     if (dummy != std::nullopt) {
       root_ = dummy->Child(Side::LEFT);
