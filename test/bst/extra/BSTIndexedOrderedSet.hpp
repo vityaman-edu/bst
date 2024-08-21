@@ -55,9 +55,11 @@ private:
     const Node* rhs = node->Child(Side::RIGHT);
 
     const std::size_t lhs_size = lhs != nullptr ? lhs->Value().size : 0;
-    const std::size_t rhs_size = rhs != nullptr ? rhs->Value().size : 0;
 
+#ifndef NDEBUG
+    const std::size_t rhs_size = rhs != nullptr ? rhs->Value().size : 0;
     assert(node->Value().size == 1 + lhs_size + rhs_size);
+#endif
 
     if (index < lhs_size) {
       return At(lhs, index);
