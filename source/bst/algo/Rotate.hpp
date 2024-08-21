@@ -1,5 +1,7 @@
 #pragma once
 
+#include <concepts>
+
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 

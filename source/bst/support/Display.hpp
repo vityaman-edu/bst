@@ -1,8 +1,10 @@
 #pragma once
 
+#include <cstddef>
 #include <iostream>
 
 #include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 
 namespace bst {
 

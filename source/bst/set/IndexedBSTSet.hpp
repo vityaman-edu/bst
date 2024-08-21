@@ -1,5 +1,11 @@
 #pragma once
 
+#include <cassert>
+#include <concepts>
+#include <cstddef>
+
+#include "bst/core/Node.hpp"
+#include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
