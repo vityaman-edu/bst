@@ -4,18 +4,18 @@
 #include <random>
 
 #include "bst/avl/Tree.hpp"
-#include "bst/extra/BSTIndexedOrderedSet.hpp"
-#include "bst/extra/NaiveIndexedOrderedSet.hpp"
 #include "bst/naive/Tree.hpp"
+#include "bst/set/IndexedBSTSet.hpp"
+#include "bst/set/NaiveIndexedOrderedSet.hpp"
 
-namespace bst::extra {
+namespace bst::set {
 
 using K = int;
 
 using Node = avl::AVLNode<K, TreeInfo>;
 using Tree = avl::AVLTree<K, TreeInfo, TreeInfo::Update<Node>>;
 
-using SmartSet = BSTIndexedOrderedSet<Tree>;
+using SmartSet = IndexedBSTSet<Tree>;
 using NaiveSet = NaiveIndexedOrderedSet<K>;
 
 TEST(IndexedOrderedSet, Example) {
@@ -174,4 +174,4 @@ TEST(IndexedOrderedSet, Comparison) {
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 
-}  // namespace bst::extra
+}  // namespace bst::set

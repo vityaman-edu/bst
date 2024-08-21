@@ -1,11 +1,9 @@
 #pragma once
 
-#include <ostream>
-
 #include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
-namespace bst::extra {
+namespace bst::set {
 
 struct TreeInfo {
   std::size_t size = 1;
@@ -25,23 +23,19 @@ struct TreeInfo {
       tval = 1 + lval + rval;
     }
   };
-
-  friend std::ostream& operator<<(std::ostream& out, const TreeInfo& self) {
-    return out << "(size: " << self.size << ")";
-  }
 };
 
 template <
     BSTTree Tree,
     class Update = TreeInfo::Update<typename Tree::Node>,
-    class Base = set::BSTSet<Tree, Update>>
-class BSTIndexedOrderedSet final : public Base {
+    class Base = BSTSet<Tree, Update>>
+class IndexedBSTSet final : public Base {
 private:
   using Node = Tree::Node;
   using K = Tree::Node::KeyType;
 
 public:
-  BSTIndexedOrderedSet() : Base(Update{}) {
+  IndexedBSTSet() : Base(Update{}) {
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {
@@ -74,4 +68,4 @@ private:
   }
 };
 
-}  // namespace bst::extra
+}  // namespace bst::set

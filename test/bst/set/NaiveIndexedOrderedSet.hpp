@@ -5,7 +5,7 @@
 
 #include "bst/core/Node.hpp"
 
-namespace bst::extra {
+namespace bst::set {
 
 template <WeaklyOrdered K>
 class NaiveIndexedOrderedSet final {
@@ -51,4 +51,4 @@ private:
   std::vector<K> elements_;
 };
 
-}  // namespace bst::extra
+}  // namespace bst::set
