@@ -7,6 +7,7 @@
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
+#include "bst/set/ConstIterator.hpp"
 #include "bst/set/Set.hpp"
 
 namespace bst::set {
@@ -45,12 +46,17 @@ public:
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {
+    return *IteratorAt(index);
+  }
+
+  ConstIterator<Node> IteratorAt(std::size_t index) const {
     assert(!this->IsEmpty());
-    return At(this->Root(), index);
+    const Node* node = At(this->Root(), index);
+    return ConstIterator<Node>(node);
   }
 
 private:
-  const K& At(const Node* node, std::size_t index) const {
+  const Node* At(const Node* node, std::size_t index) const {
     const Node* lhs = node->Child(Side::LEFT);
     const Node* rhs = node->Child(Side::RIGHT);
 
@@ -66,7 +72,7 @@ private:
     }
 
     if (index == lhs_size) {
-      return node->Key();
+      return node;
     }
 
     assert(rhs != nullptr);
