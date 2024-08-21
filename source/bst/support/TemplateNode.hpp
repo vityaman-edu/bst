@@ -4,6 +4,7 @@
 
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/support/Unreachable.hpp"
 
 namespace bst {
 
@@ -23,22 +24,40 @@ public:
     return key_;
   }
 
-  [[nodiscard]] auto& Value(this auto& self) {
-    return self.value_;
+  [[nodiscard]] const ValueType& Value() const {
+    return value_;
   }
 
-  [[nodiscard]] auto* Parent(this auto& self) {
-    return self.parent_;
+  [[nodiscard]] ValueType& Value() {
+    return value_;
   }
 
-  [[nodiscard]] auto* Child(this auto& self, Side side) {
+  [[nodiscard]] const Node* Parent() const {
+    return parent_;
+  }
+
+  [[nodiscard]] Node* Parent() {
+    return parent_;
+  }
+
+  [[nodiscard]] const Node* Child(Side side) const {
     switch (side) {
       case Side::LEFT:
-        return self.left_;
+        return left_;
       case Side::RIGHT:
-        return self.right_;
+        return right_;
     }
-    std::unreachable();
+    Unreachable();
+  }
+
+  [[nodiscard]] Node* Child(Side side) {
+    switch (side) {
+      case Side::LEFT:
+        return left_;
+      case Side::RIGHT:
+        return right_;
+    }
+    Unreachable();
   }
 
   void SetParent(Node* parent) {

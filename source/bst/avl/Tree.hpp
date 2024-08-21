@@ -5,7 +5,6 @@
 #include <concepts>
 #include <cstdlib>
 #include <tuple>
-#include <utility>
 #include <variant>
 
 #include "bst/algo/Rotate.hpp"
@@ -16,6 +15,7 @@
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Remove.hpp"
 #include "bst/support/Defer.hpp"
+#include "bst/support/Unreachable.hpp"
 #include "bst/support/Update.hpp"
 
 #ifndef NDEBUG
@@ -68,7 +68,7 @@ public:
         return true;
     }
 
-    std::unreachable();
+    Unreachable();
   }
 
   void Remove(Node* node) {
@@ -84,8 +84,12 @@ public:
     OnRemoveFixup(result.shrinked.node, result.shrinked.side);
   }
 
-  auto* Root(this auto& self) {
-    return self.Nil()->Child(Side::LEFT);
+  const Node* Root() const {
+    return Nil()->Child(Side::LEFT);
+  }
+
+  Node* Root() {
+    return Nil()->Child(Side::LEFT);
   }
 
 private:
@@ -189,8 +193,12 @@ private:
     EnsureSanity();
   }
 
-  auto* Nil(this auto& self) {
-    return &self.nil_;
+  const Node* Nil() const {
+    return &nil_;
+  }
+
+  Node* Nil() {
+    return &nil_;
   }
 
   void Swap(AVLTree& that) {

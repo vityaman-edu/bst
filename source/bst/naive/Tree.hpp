@@ -52,7 +52,7 @@ public:
         return true;
     }
 
-    std::unreachable();
+    Unreachable();
   }
 
   void Remove(Node* node) {
@@ -73,8 +73,12 @@ public:
     }
   }
 
-  auto* Root(this auto& self) {
-    return self.root_;
+  const Node* Root() const {
+    return root_;
+  }
+
+  Node* Root() {
+    return root_;
   }
 
 private:

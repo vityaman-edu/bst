@@ -2,9 +2,10 @@
 
 #include <compare>
 #include <concepts>
-#include <utility>
+#include <initializer_list>
 
 #include "bst/core/Side.hpp"
+#include "bst/support/Unreachable.hpp"
 
 namespace bst {
 
@@ -45,7 +46,7 @@ Side SideOf(const Node* node) {
       return side;
     }
   }
-  std::unreachable();
+  Unreachable();
 }
 
 }  // namespace bst

@@ -4,9 +4,9 @@
 #include <random>
 
 #include "bst/avl/Tree.hpp"
-#include "bst/naive/Tree.hpp"
 #include "bst/set/IndexedBSTSet.hpp"
 #include "bst/set/NaiveIndexedOrderedSet.hpp"
+#include "bst/support/Ranges.hpp"
 
 namespace bst::set {
 
@@ -157,8 +157,8 @@ TEST(IndexedOrderedSet, Comparison) {
         ASSERT_EQ(naive.At(index), smart.At(index));
       } else /* (point < border.iterate) */ {
         statistics.iterate += 1;
-        const auto naive_items = naive | std::ranges::to<std::vector>();
-        const auto smart_items = smart | std::ranges::to<std::vector>();
+        const auto naive_items = ToVector<K>(naive);
+        const auto smart_items = ToVector<K>(smart);
         ASSERT_EQ(naive_items, smart_items);
       }
     }

@@ -4,11 +4,11 @@
 #include <chrono>
 #include <iostream>
 #include <random>
-#include <ranges>
 #include <set>
 #include <vector>
 
 #include "bst/set/Set.hpp"
+#include "bst/support/Ranges.hpp"
 
 namespace bst::set {
 
@@ -106,8 +106,8 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         ASSERT_EQ(silly.Size(), smart.size());
       } else /* (point < border.iterate) */ {
         statistics.iterate += 1;
-        const auto silly_items = silly | std::ranges::to<std::vector>();
-        const auto smart_items = smart | std::ranges::to<std::vector>();
+        const auto silly_items = ToVector<K>(silly);
+        const auto smart_items = ToVector<K>(smart);
         ASSERT_EQ(silly_items, smart_items);
       }
     }

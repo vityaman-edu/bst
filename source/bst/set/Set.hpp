@@ -115,12 +115,20 @@ protected:
   }
 
 private:
-  auto Find(this auto& self, const K& item) -> decltype(self.tree_.Root()) {
-    auto* root = self.tree_.Root();
+  Node* Find(const K& item) {
+    auto* root = tree_.Root();
     if (root == nullptr) {
       return nullptr;
     }
-    return Search(self.tree_.Root(), item);
+    return Search(tree_.Root(), item);
+  }
+
+  const Node* Find(const K& item) const {
+    auto* root = tree_.Root();
+    if (root == nullptr) {
+      return nullptr;
+    }
+    return Search(tree_.Root(), item);
   }
 
   template <std::ranges::range Range>

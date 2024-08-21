@@ -3,8 +3,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <ranges>
-
 #include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
@@ -23,9 +21,7 @@ void TestConstructionFromRange() {
     expected.Add(element);
   }
 
-  auto actual_items = actual | std::ranges::to<std::vector>();
-  auto expected_items = expected | std::ranges::to<std::vector>();
-  ASSERT_EQ(actual_items, expected_items);
+  ASSERT_EQ(ToVector<int>(actual), ToVector<int>(expected));
 }
 
 template <BSTTree Tree>
@@ -35,7 +31,7 @@ void TestConstructionFromInitializerList() {
   Set set = {1, 2, 4};
 
   std::vector<int> expected = {1, 2, 4};
-  ASSERT_EQ(set | std::ranges::to<std::vector>(), expected);
+  ASSERT_EQ(ToVector<int>(set), expected);
 }
 
 template <BSTTree Tree>
@@ -45,13 +41,13 @@ void TestMovable() {
   std::vector<int> expected = {1, 2, 3, 4};
 
   Set first(expected);
-  ASSERT_THAT(first | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(ToVector<int>(first), expected);
 
   Set second = std::move(first);
-  ASSERT_THAT(second | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(ToVector<int>(second), expected);
 
   first = std::move(second);
-  ASSERT_THAT(first | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(ToVector<int>(first), expected);
 }
 
 template <BSTTree Tree>
@@ -67,9 +63,9 @@ void TestCopyable() {
   Set third;
   third = first;
 
-  ASSERT_THAT(first | std::ranges::to<std::vector>(), expected);
-  ASSERT_THAT(second | std::ranges::to<std::vector>(), expected);
-  ASSERT_THAT(third | std::ranges::to<std::vector>(), expected);
+  ASSERT_THAT(ToVector<int>(first), expected);
+  ASSERT_THAT(ToVector<int>(second), expected);
+  ASSERT_THAT(ToVector<int>(third), expected);
 }
 
 }  // namespace bst::set

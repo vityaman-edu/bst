@@ -68,8 +68,10 @@ public:
   }
 
   static SampleTree FromTable(const NodeTable& table) {
-    auto numbers = table | std::views::transform([](const NodeState& row) { return row.number; }) |
-                   std::ranges::to<std::set>();
+    std::set<std::size_t> numbers;
+    for (const NodeState& row : table) {
+      numbers.insert(row.number);
+    }
 
     auto max_number = *std::ranges::max_element(numbers);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <initializer_list>
 
 #include "bst/algo/Adjacent.hpp"
 #include "bst/core/Node.hpp"

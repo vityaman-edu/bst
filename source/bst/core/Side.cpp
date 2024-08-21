@@ -3,7 +3,8 @@
 #include <cassert>
 #include <compare>
 #include <cstdint>
-#include <utility>
+
+#include "bst/support/Unreachable.hpp"
 
 namespace bst {
 
@@ -20,7 +21,7 @@ Side SideOf(std::weak_ordering ordering) {
     return Side::RIGHT;
   }
   assert(ordering == std::weak_ordering::equivalent);
-  std::unreachable();
+  Unreachable();
 }
 
 }  // namespace bst
