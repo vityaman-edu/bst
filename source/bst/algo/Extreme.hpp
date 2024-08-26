@@ -7,6 +7,9 @@ namespace bst {
 
 template <ReadonlyBSTNode Node>
 Node* Extreme(Side side, Node* node) {
+  if (node == nullptr) {
+    return nullptr;
+  }
   while (node->Child(side) != nullptr) {
     node = node->Child(side);
   }

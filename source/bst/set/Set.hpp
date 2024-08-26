@@ -80,6 +80,7 @@ public:
     if (iter == end()) {
       return;
     }
+
     Node* node = iter.NodePtr();
     size_ -= 1;
     tree_.Remove(node);
@@ -87,19 +88,11 @@ public:
   }
 
   Iterator Find(const K& item) {
-    Node* node = Search(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return Iterator(node);
+    return Iterator(Search(tree_.Root(), item));
   }
 
   ReadonlyIterator Find(const K& item) const {
-    const Node* node = Search(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return ReadonlyIterator(node);
+    return ReadonlyIterator(Search(tree_.Root(), item));
   }
 
   bool Contains(const K& item) const {
@@ -107,35 +100,19 @@ public:
   }
 
   [[nodiscard]] Iterator LowerBound(const K& item) {
-    Node* node = bst::LowerBound(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return Iterator(node);
+    return Iterator(bst::LowerBound(tree_.Root(), item));
   }
 
   [[nodiscard]] ReadonlyIterator LowerBound(const K& item) const {
-    const Node* node = bst::LowerBound(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return ReadonlyIterator(node);
+    return ReadonlyIterator(bst::LowerBound(tree_.Root(), item));
   }
 
   [[nodiscard]] Iterator UpperBound(const K& item) {
-    Node* node = bst::UpperBound(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return Iterator(node);
+    return Iterator(bst::UpperBound(tree_.Root(), item));
   }
 
   [[nodiscard]] ReadonlyIterator UpperBound(const K& item) const {
-    const Node* node = bst::UpperBound(tree_.Root(), item);
-    if (node == nullptr) {
-      return end();
-    }
-    return ReadonlyIterator(node);
+    return ReadonlyIterator(bst::UpperBound(tree_.Root(), item));
   }
 
   [[nodiscard]] std::size_t Size() const {
@@ -153,27 +130,19 @@ public:
   }
 
   Iterator begin() {  // NOLINT(readability-identifier-naming)
-    auto* root = tree_.Root();
-    if (root == nullptr) {
-      return end();
-    }
-    return Iterator(Min(root));
+    return Iterator(Min(tree_.Root()));
   }
 
   Iterator end() {  // NOLINT(readability-identifier-naming)
-    return Iterator();
+    return Iterator(nullptr);
   }
 
   ReadonlyIterator begin() const {  // NOLINT(readability-identifier-naming)
-    const Node* root = tree_.Root();
-    if (root == nullptr) {
-      return end();
-    }
-    return ReadonlyIterator(Min(root));
+    return ReadonlyIterator(Min(tree_.Root()));
   }
 
   ReadonlyIterator end() const {  // NOLINT(readability-identifier-naming)
-    return ReadonlyIterator();
+    return ReadonlyIterator(nullptr);
   }
 
 protected:

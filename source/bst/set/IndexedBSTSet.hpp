@@ -51,8 +51,7 @@ public:
 
   ConstIterator<Node> IteratorAt(std::size_t index) const {
     assert(!this->IsEmpty());
-    const Node* node = At(this->Root(), index);
-    return ConstIterator<Node>(node);
+    return ConstIterator<Node>(At(this->Root(), index));
   }
 
 private:

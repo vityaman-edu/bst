@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <iterator>
 
 #include "bst/algo/Adjacent.hpp"
@@ -17,10 +16,10 @@ public:
   using pointer = const Node::KeyType*;                       // NOLINT
   using reference = const Node::KeyType&;                     // NOLINT
 
-  MutIterator() = default;
+  MutIterator() : MutIterator(nullptr) {
+  }
 
   explicit MutIterator(Node* node) : node_(node) {
-    assert(node != nullptr);
   }
 
   const Node::KeyType& operator*() const {
