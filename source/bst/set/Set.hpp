@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <ranges>
 
+#include "bst/algo/Bound.hpp"
 #include "bst/algo/Search.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
@@ -103,6 +104,38 @@ public:
 
   bool Contains(const K& item) const {
     return Find(item) != end();
+  }
+
+  [[nodiscard]] Iterator LowerBound(const K& item) {
+    Node* node = bst::LowerBound(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return Iterator(node);
+  }
+
+  [[nodiscard]] ReadonlyIterator LowerBound(const K& item) const {
+    const Node* node = bst::LowerBound(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return ReadonlyIterator(node);
+  }
+
+  [[nodiscard]] Iterator UpperBound(const K& item) {
+    Node* node = bst::UpperBound(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return Iterator(node);
+  }
+
+  [[nodiscard]] ReadonlyIterator UpperBound(const K& item) const {
+    const Node* node = bst::UpperBound(tree_.Root(), item);
+    if (node == nullptr) {
+      return end();
+    }
+    return ReadonlyIterator(node);
   }
 
   [[nodiscard]] std::size_t Size() const {

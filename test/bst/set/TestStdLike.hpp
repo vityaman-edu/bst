@@ -38,6 +38,8 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   struct {
     std::size_t add = 0;
     std::size_t contains = 0;
+    std::size_t lower_bound = 0;
+    std::size_t upper_bound = 0;
     std::size_t remove = 0;
     std::size_t clear = 0;
     std::size_t size = 0;
@@ -50,10 +52,12 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   const struct {
     int add = 100;
     int contains = 200;
-    int remove = 300;
-    int clear = 320;
-    int size = 350;
-    int iterate = 400;
+    int lower_bound = 250;
+    int upper_bound = 300;
+    int remove = 400;
+    int clear = 420;
+    int size = 450;
+    int iterate = 500;
   } border;
   std::uniform_int_distribution<int> action(0, border.iterate);
 
@@ -92,6 +96,24 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
         const auto silly_res = silly.Contains(val);
         const auto smart_res = smart.contains(val);
         ASSERT_EQ(silly_res, smart_res);
+      } else if (point < border.lower_bound) {
+        statistics.lower_bound += 1;
+        const auto val = random_key();
+        const auto silly_res = silly.LowerBound(val);
+        const auto smart_res = smart.lower_bound(val);
+        ASSERT_TRUE(
+            (silly_res == silly.end() && smart_res == smart.end())  //
+            || (*silly_res == *smart_res)
+        );
+      } else if (point < border.upper_bound) {
+        statistics.upper_bound += 1;
+        const auto val = random_key();
+        const auto silly_res = silly.UpperBound(val);
+        const auto smart_res = smart.upper_bound(val);
+        ASSERT_TRUE(
+            (silly_res == silly.end() && smart_res == smart.end())  //
+            || (*silly_res == *smart_res)
+        );
       } else if (point < border.remove) {
         statistics.remove += 1;
         const auto val = random_key();
@@ -116,10 +138,12 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   auto end = Clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 
-  std::cerr << "[ RUN      ] SimpleSet.StdLike: statistics "
+  std::cerr << "[ RUN      ] " << set_name << ".StdLike: statistics "
             << "duration " << duration << ", "
             << "add = " << statistics.add << ", "
             << "contains = " << statistics.contains << ", "
+            << "lower_bound = " << statistics.lower_bound << ", "
+            << "upper_bound = " << statistics.upper_bound << ", "
             << "remove = " << statistics.remove << ", "
             << "clear = " << statistics.clear << ", "
             << "size = " << statistics.size << ", "
