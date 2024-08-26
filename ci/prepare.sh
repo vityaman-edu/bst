@@ -18,4 +18,4 @@ fi
 
 message "Preparing a developement environment..."
 mkdir -p build
-(cd build && cmake -DAVL_DEVELOPER=ON -DCMAKE_BUILD_TYPE=$MODE ..)
+(cd build && cmake -DBST_DEVELOPER=ON -DCMAKE_BUILD_TYPE=$MODE ..)
