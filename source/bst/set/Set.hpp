@@ -24,6 +24,9 @@ private:
 public:
   using K = Node::KeyType;
 
+  using Iterator = MutIterator<Node>;
+  using ReadonlyIterator = ConstIterator<Node>;
+
   BSTSet() = default;
 
   explicit BSTSet(Update update) : tree_(std::move(update)) {
@@ -82,20 +85,20 @@ public:
     delete node;  // NOLINT(cppcoreguidelines-owning-memory)
   }
 
-  MutIterator<Node> Find(const K& item) {
+  Iterator Find(const K& item) {
     Node* node = Search(tree_.Root(), item);
     if (node == nullptr) {
       return end();
     }
-    return MutIterator<Node>(node);
+    return Iterator(node);
   }
 
-  ConstIterator<Node> Find(const K& item) const {
+  ReadonlyIterator Find(const K& item) const {
     const Node* node = Search(tree_.Root(), item);
     if (node == nullptr) {
       return end();
     }
-    return ConstIterator<Node>(node);
+    return ReadonlyIterator(node);
   }
 
   bool Contains(const K& item) const {
@@ -116,28 +119,28 @@ public:
     size_ = 0;
   }
 
-  MutIterator<Node> begin() {  // NOLINT(readability-identifier-naming)
+  Iterator begin() {  // NOLINT(readability-identifier-naming)
     auto* root = tree_.Root();
     if (root == nullptr) {
       return end();
     }
-    return MutIterator<Node>(Min(root));
+    return Iterator(Min(root));
   }
 
-  MutIterator<Node> end() {  // NOLINT(readability-identifier-naming)
-    return MutIterator<Node>();
+  Iterator end() {  // NOLINT(readability-identifier-naming)
+    return Iterator();
   }
 
-  ConstIterator<Node> begin() const {  // NOLINT(readability-identifier-naming)
-    auto* root = tree_.Root();
+  ReadonlyIterator begin() const {  // NOLINT(readability-identifier-naming)
+    const Node* root = tree_.Root();
     if (root == nullptr) {
       return end();
     }
-    return ConstIterator<Node>(Min(root));
+    return ReadonlyIterator(Min(root));
   }
 
-  ConstIterator<Node> end() const {  // NOLINT(readability-identifier-naming)
-    return ConstIterator<Node>();
+  ReadonlyIterator end() const {  // NOLINT(readability-identifier-naming)
+    return ReadonlyIterator();
   }
 
 protected:
