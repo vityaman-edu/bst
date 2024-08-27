@@ -11,6 +11,9 @@ include(cmake/CompileOptions.cmake)
 add_subdirectory(source)
 
 if(BST_DEVELOPER)
+    find_package(GTest REQUIRED)
+    find_package(GBenchmark REQUIRED)
+
     add_subdirectory(test)
     add_subdirectory(benchmark)
 endif()

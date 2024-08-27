@@ -1,5 +1,3 @@
-find_package(GTest REQUIRED)
-
 get_filename_component(BST_TEST_INCLUDE_PATH "." ABSOLUTE)
 get_filename_component(BST_TEST_SOURCE_PATH "./${PROJECT_NAME}" ABSOLUTE)
 
