@@ -15,7 +15,11 @@ concept BSTTree =
       { writable.Root() } -> std::convertible_to<typename Tree::Node*>;
       { readonly.Root() } -> std::convertible_to<const typename Tree::Node*>;
     } && std::default_initializable<Tree> && std::movable<Tree> &&
-    std::invocable<typename Tree::UpdateCallback, typename Tree::Node*> &&
-    BSTNode<typename Tree::Node>;
+    std::invocable<
+        typename Tree::UpdateCallback,
+        typename Tree::Node::ValueType*,
+        const typename Tree::Node::ValueType*,
+        const typename Tree::Node::ValueType*> &&
+    std::default_initializable<typename Tree::UpdateCallback> && BSTNode<typename Tree::Node>;
 
 }  // namespace bst

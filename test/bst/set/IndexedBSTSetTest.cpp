@@ -13,7 +13,7 @@ namespace bst::set {
 using K = int;
 
 using Node = avl::AVLNode<K, TreeInfo>;
-using Tree = avl::AVLTree<K, TreeInfo, TreeInfo::Update<Node>>;
+using Tree = avl::AVLTree<K, TreeInfo, TreeInfo::Update>;
 
 using SmartSet = IndexedBSTSet<Tree>;
 using NaiveSet = NaiveIndexedOrderedSet<K>;

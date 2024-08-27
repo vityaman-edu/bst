@@ -2,7 +2,6 @@
 
 #include <concepts>
 #include <optional>
-#include <utility>
 #include <variant>
 
 #include "bst/core/Node.hpp"
@@ -17,16 +16,13 @@ namespace bst::naive {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<NaiveNode<K, V>*> Update = EmptyUpdateCallback<NaiveNode<K, V>>>
+    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
 class NaiveTree {
 public:
   using Node = NaiveNode<K, V>;
   using UpdateCallback = Update;
 
   NaiveTree() = default;
-
-  explicit NaiveTree(Update update) : update_(std::move(update)) {
-  }
 
   explicit NaiveTree(Node* root) : root_(root) {
     assert(root != nullptr);
@@ -84,7 +80,7 @@ public:
 
 private:
   Node* root_ = nullptr;
-  Update update_ = {};
+  AdaptedUpdateCallback<Node, typename Node::ValueType, UpdateCallback> update_{{}};
 };
 
 }  // namespace bst::naive

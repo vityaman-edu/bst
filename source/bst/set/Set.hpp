@@ -26,9 +26,6 @@ public:
 
   BSTSet() = default;
 
-  explicit BSTSet(Tree::UpdateCallback update) : tree_(std::move(update)) {
-  }
-
   BSTSet(const std::initializer_list<K>& list) {
     Assign(list);
   }

@@ -1,10 +1,8 @@
 #pragma once
 
 #include <cassert>
-#include <concepts>
 #include <cstddef>
 
-#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
@@ -15,19 +13,14 @@ namespace bst::set {
 struct TreeInfo {
   std::size_t size = 1;
 
-  template <BSTNode Node>
   struct Update {
-    static_assert(std::same_as<typename Node::ValueType, TreeInfo>);
+    void operator()(TreeInfo* parent, const TreeInfo* lhs, const TreeInfo* rhs) {
+      std::size_t& pval = parent->size;
 
-    void operator()(Node* parent) {
-      const Node* lhs = parent->Child(Side::LEFT);
-      const Node* rhs = parent->Child(Side::RIGHT);
+      const std::size_t lval = lhs != nullptr ? lhs->size : 0;
+      const std::size_t rval = rhs != nullptr ? rhs->size : 0;
 
-      std::size_t& tval = parent->Value().size;
-      const std::size_t lval = lhs != nullptr ? lhs->Value().size : 0;
-      const std::size_t rval = rhs != nullptr ? rhs->Value().size : 0;
-
-      tval = 1 + lval + rval;
+      pval = 1 + lval + rval;
     }
   };
 };
