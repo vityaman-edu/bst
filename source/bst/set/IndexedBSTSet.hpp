@@ -32,17 +32,14 @@ struct TreeInfo {
   };
 };
 
-template <
-    BSTTree Tree,
-    class Update = TreeInfo::Update<typename Tree::Node>,
-    class Base = BSTSet<Tree, Update>>
-class IndexedBSTSet final : public Base {
+template <BSTTree Tree>
+class IndexedBSTSet final : public BSTSet<Tree> {
 private:
   using Node = Tree::Node;
   using K = Tree::Node::KeyType;
 
 public:
-  IndexedBSTSet() : Base(Update{}) {
+  IndexedBSTSet() : BSTSet<Tree>({}) {
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {

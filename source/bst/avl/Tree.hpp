@@ -27,10 +27,11 @@ namespace bst::avl {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<AVLNode<K, V>*> Update = EmptyUpdate<AVLNode<K, V>>>
+    std::invocable<AVLNode<K, V>*> Update = EmptyUpdateCallback<AVLNode<K, V>>>
 struct AVLTree {
 public:
   using Node = AVLNode<K, V>;
+  using UpdateCallback = Update;
 
   AVLTree() = default;
 

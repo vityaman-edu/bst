@@ -17,10 +17,11 @@ namespace bst::naive {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<NaiveNode<K, V>*> Update = EmptyUpdate<NaiveNode<K, V>>>
+    std::invocable<NaiveNode<K, V>*> Update = EmptyUpdateCallback<NaiveNode<K, V>>>
 class NaiveTree {
 public:
   using Node = NaiveNode<K, V>;
+  using UpdateCallback = Update;
 
   NaiveTree() = default;
 

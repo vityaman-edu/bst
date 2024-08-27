@@ -5,7 +5,7 @@
 namespace bst {
 
 template <BSTNode Node>
-struct EmptyUpdate {
+struct EmptyUpdateCallback {
   void operator()(Node* /*parent*/) {
     // Do nothing
   }

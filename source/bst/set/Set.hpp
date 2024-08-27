@@ -1,6 +1,5 @@
 #pragma once
 
-#include <concepts>
 #include <cstddef>
 #include <initializer_list>
 #include <ranges>
@@ -11,13 +10,10 @@
 #include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/MutIterator.hpp"
-#include "bst/support/Update.hpp"
 
 namespace bst::set {
 
-template <
-    BSTTree Tree,
-    std::invocable<typename Tree::Node*> Update = EmptyUpdate<typename Tree::Node>>
+template <BSTTree Tree>
 class BSTSet {
 private:
   using Node = Tree::Node;
@@ -30,7 +26,7 @@ public:
 
   BSTSet() = default;
 
-  explicit BSTSet(Update update) : tree_(std::move(update)) {
+  explicit BSTSet(Tree::UpdateCallback update) : tree_(std::move(update)) {
   }
 
   BSTSet(const std::initializer_list<K>& list) {
