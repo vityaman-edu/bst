@@ -76,12 +76,15 @@ public:
   }
 
   void Remove(const K& item) {
-    auto iter = Find(item);
-    if (iter == end()) {
+    auto iterator = Find(item);
+    if (iterator == end()) {
       return;
     }
+    Remove(iterator);
+  }
 
-    Node* node = iter.NodePtr();
+  void Remove(Iterator iterator) {
+    Node* node = iterator.NodePtr();
     size_ -= 1;
     tree_.Remove(node);
     delete node;  // NOLINT(cppcoreguidelines-owning-memory)
