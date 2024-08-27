@@ -14,11 +14,11 @@ namespace bst::set {
 
 using K = int;
 
-template <BSTTree Tree>
+template <template <class, class, class> class Tree>
 void TestStdLike(const std::string& set_name) {  // NOLINT
   using Clock = std::chrono::high_resolution_clock;
   using SmartSet = std::set<K>;
-  using SillySet = BSTSet<Tree>;
+  using SillySet = BSTSet<Tree, K>;
 
   const auto seed = 43278423342;
 

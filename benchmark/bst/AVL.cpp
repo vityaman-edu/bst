@@ -22,7 +22,7 @@ std::vector<int> RandomInput(std::size_t size) {
   return numbers;
 }
 
-using Set = bst::set::BSTSet<bst::avl::AVLTree<int>>;
+using Set = bst::set::BSTSet<bst::avl::AVLTree, int>;
 
 Set SetOf(const std::vector<int>& numbers) {
   Set set;

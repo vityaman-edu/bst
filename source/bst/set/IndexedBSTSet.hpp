@@ -3,8 +3,8 @@
 #include <cassert>
 #include <cstddef>
 
+#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
-#include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/Set.hpp"
 
@@ -25,14 +25,18 @@ struct TreeInfo {
   };
 };
 
-template <BSTTree Tree>
-class IndexedBSTSet final : public BSTSet<Tree> {
+template <
+    template <class, class, class>
+    class Tree,
+    WeaklyOrdered K,
+    class Base = BSTSet<Tree, K, TreeInfo, TreeInfo::Update>>
+class IndexedBSTSet final : public Base {
 private:
-  using Node = Tree::Node;
-  using K = Tree::Node::KeyType;
+  using UsedTree = Tree<K, TreeInfo, TreeInfo::Update>;
+  using Node = UsedTree::Node;
 
 public:
-  IndexedBSTSet() : BSTSet<Tree>({}) {
+  IndexedBSTSet() : Base({}) {
   }
 
   [[nodiscard]] const K& At(std::size_t index) const {

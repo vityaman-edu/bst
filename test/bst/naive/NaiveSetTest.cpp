@@ -9,23 +9,23 @@ namespace bst::naive {
 using namespace bst::set;
 
 TEST(NaiveSet, StdLike) {
-  TestStdLike<NaiveTree<K>>("NaiveSet");
+  TestStdLike<NaiveTree>("NaiveSet");
 }
 
 TEST(NaiveSet, ConstructFromRange) {
-  TestConstructionFromRange<NaiveTree<K>>();
+  TestConstructionFromRange<NaiveTree, K>();
 }
 
 TEST(NaiveSet, ConstructFromInitializerList) {
-  TestConstructionFromInitializerList<NaiveTree<K>>();
+  TestConstructionFromInitializerList<NaiveTree, K>();
 }
 
 TEST(NaiveSet, Movable) {
-  TestMovable<NaiveTree<K>>();
+  TestMovable<NaiveTree, K>();
 }
 
 TEST(NaiveSet, Copyable) {
-  TestCopyable<NaiveTree<K>>();
+  TestCopyable<NaiveTree, K>();
 }
 
 }  // namespace bst::naive

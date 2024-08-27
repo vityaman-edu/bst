@@ -1,26 +1,36 @@
 #pragma once
 
+#include <concepts>
 #include <cstddef>
 #include <initializer_list>
 #include <ranges>
+#include <variant>
 
 #include "bst/algo/Bound.hpp"
 #include "bst/algo/Search.hpp"
+#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/MutIterator.hpp"
+#include "bst/support/Update.hpp"
 
 namespace bst::set {
 
-template <BSTTree Tree>
+template <
+    template <class, class, class>
+    class Tree,
+    WeaklyOrdered K,
+    class V = std::monostate,
+    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
 class BSTSet {
 private:
-  using Node = Tree::Node;
+  using UsedTree = Tree<K, V, Update>;
+  static_assert(BSTTree<UsedTree>);
+
+  using Node = UsedTree::Node;
 
 public:
-  using K = Node::KeyType;
-
   using Iterator = MutIterator<Node>;
   using ReadonlyIterator = ConstIterator<Node>;
 
@@ -169,7 +179,7 @@ private:
     delete node;  // NOLINT(cppcoreguidelines-owning-memory)
   }
 
-  Tree tree_;
+  UsedTree tree_;
   std::size_t size_ = 0;
 };
 

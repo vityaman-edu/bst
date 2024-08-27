@@ -9,23 +9,23 @@ namespace bst::avl {
 using namespace bst::set;
 
 TEST(AVLSet, StdLike) {
-  TestStdLike<AVLTree<K>>("AVLSet");
+  TestStdLike<AVLTree>("AVLSet");
 }
 
 TEST(AVLSet, ConstructFromRange) {
-  TestConstructionFromRange<AVLTree<K>>();
+  TestConstructionFromRange<AVLTree, K>();
 }
 
 TEST(AVLSet, ConstructFromInitializerList) {
-  TestConstructionFromInitializerList<AVLTree<K>>();
+  TestConstructionFromInitializerList<AVLTree, K>();
 }
 
 TEST(AVLSet, Movable) {
-  TestMovable<AVLTree<K>>();
+  TestMovable<AVLTree, K>();
 }
 
 TEST(AVLSet, Copyable) {
-  TestCopyable<AVLTree<K>>();
+  TestCopyable<AVLTree, K>();
 }
 
 }  // namespace bst::avl

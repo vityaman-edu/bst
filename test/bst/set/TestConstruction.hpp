@@ -3,14 +3,13 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "bst/core/Tree.hpp"
 #include "bst/set/Set.hpp"
 
 namespace bst::set {
 
-template <BSTTree Tree>
+template <template <class, class, class> class Tree, WeaklyOrdered K>
 void TestConstructionFromRange() {
-  using Set = BSTSet<Tree>;
+  using Set = BSTSet<Tree, K>;
 
   auto elements = {7, 4, 2, 5, 7, 2};
 
@@ -24,9 +23,9 @@ void TestConstructionFromRange() {
   ASSERT_EQ(ToVector<int>(actual), ToVector<int>(expected));
 }
 
-template <BSTTree Tree>
+template <template <class, class, class> class Tree, WeaklyOrdered K>
 void TestConstructionFromInitializerList() {
-  using Set = BSTSet<Tree>;
+  using Set = BSTSet<Tree, K>;
 
   Set set = {1, 2, 4};
 
@@ -34,9 +33,9 @@ void TestConstructionFromInitializerList() {
   ASSERT_EQ(ToVector<int>(set), expected);
 }
 
-template <BSTTree Tree>
+template <template <class, class, class> class Tree, WeaklyOrdered K>
 void TestMovable() {
-  using Set = BSTSet<Tree>;
+  using Set = BSTSet<Tree, K>;
 
   std::vector<int> expected = {1, 2, 3, 4};
 
@@ -50,9 +49,9 @@ void TestMovable() {
   ASSERT_THAT(ToVector<int>(first), expected);
 }
 
-template <BSTTree Tree>
+template <template <class, class, class> class Tree, WeaklyOrdered K>
 void TestCopyable() {
-  using Set = BSTSet<Tree>;
+  using Set = BSTSet<Tree, K>;
 
   std::vector<int> expected = {1, 2, 3, 4};
 
