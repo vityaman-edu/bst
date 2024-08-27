@@ -4,8 +4,8 @@
 #include <cstdint>
 
 #include "bst/avl/Node.hpp"
-#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 
 namespace bst::avl {
 

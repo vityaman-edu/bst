@@ -12,6 +12,7 @@
 #include "bst/avl/Node.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Remove.hpp"
 #include "bst/support/Defer.hpp"

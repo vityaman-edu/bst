@@ -1,18 +1,13 @@
 #pragma once
 
-#include <compare>
 #include <concepts>
 #include <initializer_list>
 
 #include "bst/core/Side.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/support/Unreachable.hpp"
 
 namespace bst {
-
-template <class T>
-concept WeaklyOrdered = requires(const T& lhs, const T& rhs) {
-  { lhs <=> rhs } -> std::convertible_to<std::weak_ordering>;
-};
 
 template <class Node>
 concept ReadonlyBSTNode = requires(const Node* readonly, Side side) {

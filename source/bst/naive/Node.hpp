@@ -2,7 +2,7 @@
 
 #include <variant>
 
-#include "bst/core/Node.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/support/TemplateNode.hpp"
 
 namespace bst::naive {

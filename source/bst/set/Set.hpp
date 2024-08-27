@@ -8,9 +8,9 @@
 
 #include "bst/algo/Bound.hpp"
 #include "bst/algo/Search.hpp"
-#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/MutIterator.hpp"
 #include "bst/support/Update.hpp"

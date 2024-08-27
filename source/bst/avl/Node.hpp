@@ -3,7 +3,7 @@
 #include <variant>
 
 #include "bst/avl/Bias.hpp"
-#include "bst/core/Node.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/support/TemplateNode.hpp"
 
 namespace bst::avl {

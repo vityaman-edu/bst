@@ -3,8 +3,8 @@
 #include <cassert>
 #include <cstddef>
 
-#include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/Set.hpp"
 

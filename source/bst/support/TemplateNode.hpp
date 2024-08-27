@@ -4,6 +4,7 @@
 
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/WeaklyOrdered.hpp"
 #include "bst/support/Unreachable.hpp"
 
 namespace bst {
