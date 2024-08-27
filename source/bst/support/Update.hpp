@@ -1,10 +1,10 @@
 #pragma once
 
-#include <concepts>
 #include <utility>
 
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/UpdateCallback.hpp"
 
 namespace bst {
 
@@ -18,7 +18,7 @@ struct EmptyUpdateCallback {
 template <
     BSTNode Node,
     class V = typename Node::ValueType,
-    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
+    UpdateCallback<V> Update = EmptyUpdateCallback<V>>
 class AdaptedUpdateCallback {
 public:
   explicit AdaptedUpdateCallback(Update origin) : origin_(std::move(origin)) {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <concepts>
 #include <cstddef>
 #include <initializer_list>
 #include <ranges>
@@ -10,6 +9,7 @@
 #include "bst/algo/Search.hpp"
 #include "bst/core/Side.hpp"
 #include "bst/core/Tree.hpp"
+#include "bst/core/UpdateCallback.hpp"
 #include "bst/core/WeaklyOrdered.hpp"
 #include "bst/set/ConstIterator.hpp"
 #include "bst/set/MutIterator.hpp"
@@ -22,7 +22,7 @@ template <
     class Tree,
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
+    UpdateCallback<V> Update = EmptyUpdateCallback<V>>
 class BSTSet {
 private:
   using UsedTree = Tree<K, V, Update>;

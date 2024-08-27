@@ -1,11 +1,11 @@
 #pragma once
 
-#include <concepts>
 #include <optional>
 #include <variant>
 
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/UpdateCallback.hpp"
 #include "bst/core/WeaklyOrdered.hpp"
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Node.hpp"
@@ -17,7 +17,7 @@ namespace bst::naive {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
+    UpdateCallback<V> Update = EmptyUpdateCallback<V>>
 class NaiveTree {
 public:
   using Node = NaiveNode<K, V>;

@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include <cmath>
-#include <concepts>
 #include <cstdlib>
 #include <tuple>
 #include <variant>
@@ -12,6 +11,7 @@
 #include "bst/avl/Node.hpp"
 #include "bst/core/Node.hpp"
 #include "bst/core/Side.hpp"
+#include "bst/core/UpdateCallback.hpp"
 #include "bst/core/WeaklyOrdered.hpp"
 #include "bst/naive/Insert.hpp"
 #include "bst/naive/Remove.hpp"
@@ -28,7 +28,7 @@ namespace bst::avl {
 template <
     WeaklyOrdered K,
     class V = std::monostate,
-    std::invocable<V*, const V*, const V*> Update = EmptyUpdateCallback<V>>
+    UpdateCallback<V> Update = EmptyUpdateCallback<V>>
 struct AVLTree {
 public:
   using Node = AVLNode<K, V>;
