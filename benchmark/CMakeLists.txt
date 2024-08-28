@@ -1,5 +1,3 @@
-find_package(GBenchmark REQUIRED)
-
 get_filename_component(BST_BENCH_SOURCE_PATH "./${PROJECT_NAME}" ABSOLUTE)
 
 set(BST_BENCH_TARGET_BASE "${PROJECT_NAME}-bench")
