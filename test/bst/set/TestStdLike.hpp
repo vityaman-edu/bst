@@ -138,15 +138,15 @@ void TestStdLike(const std::string& set_name) {  // NOLINT
   auto end = Clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 
-  std::cerr << "[ RUN      ] " << set_name << ".StdLike: statistics "
-            << "duration " << duration << ", "
-            << "add = " << statistics.add << ", "
-            << "contains = " << statistics.contains << ", "
-            << "lower_bound = " << statistics.lower_bound << ", "
-            << "upper_bound = " << statistics.upper_bound << ", "
-            << "remove = " << statistics.remove << ", "
-            << "clear = " << statistics.clear << ", "
-            << "size = " << statistics.size << ", "
+  std::cerr << "[ RUN      ] " << set_name << ".StdLike: statistics "  //
+            << "duration " << duration << ", "                         //
+            << "add = " << statistics.add << ", "                      //
+            << "contains = " << statistics.contains << ", "            //
+            << "lower_bound = " << statistics.lower_bound << ", "      //
+            << "upper_bound = " << statistics.upper_bound << ", "      //
+            << "remove = " << statistics.remove << ", "                //
+            << "clear = " << statistics.clear << ", "                  //
+            << "size = " << statistics.size << ", "                    //
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 

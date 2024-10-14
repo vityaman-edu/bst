@@ -161,13 +161,13 @@ TEST(IndexedOrderedSet, Comparison) {
     }
   }
 
-  std::cerr << "[ RUN      ] SimpleSet.StdLike: statistics "
-            << "add = " << statistics.add << ", "
-            << "contains = " << statistics.contains << ", "
-            << "remove = " << statistics.remove << ", "
-            << "clear = " << statistics.clear << ", "
-            << "size = " << statistics.size << ", "
-            << "at = " << statistics.at << ", "
+  std::cerr << "[ RUN      ] SimpleSet.StdLike: statistics "  //
+            << "add = " << statistics.add << ", "             //
+            << "contains = " << statistics.contains << ", "   //
+            << "remove = " << statistics.remove << ", "       //
+            << "clear = " << statistics.clear << ", "         //
+            << "size = " << statistics.size << ", "           //
+            << "at = " << statistics.at << ", "               //
             << "iterate = " << statistics.iterate << "." << std::endl;
 }
 
