@@ -54,7 +54,7 @@ public:
     Before();
     Defer after([&] { After(); });
 
-    const auto result = naive::NaiveInsert(Root(), node, update_);
+    const auto result = naive::NaiveInsert(Root(), node);
 
     switch (result) {
       case naive::NaiveInsertionResult::EMPTY:
