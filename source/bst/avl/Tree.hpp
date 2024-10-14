@@ -63,7 +63,7 @@ public:
       case naive::NaiveInsertionResult::EXISTS:
         return false;
       case naive::NaiveInsertionResult::INSERTED:
-        OnInsertFixup(node->Parent(), SideOf(node));
+        OnInsertFixup(node);
         return true;
     }
 
@@ -92,13 +92,8 @@ public:
   }
 
 private:
-  void OnInsertFixup(Node* parent, Side side) {
-    AdjustBias(parent, side);
-    if (parent->Bias() == Bias::NONE) {
-      return;
-    }
-
-    for (Node *prev = parent, *next = parent->Parent(); next != Nil();
+  void OnInsertFixup(Node* node) {
+    for (Node *prev = node, *next = node->Parent(); next != Nil();
          prev = next, next = next->Parent()) {
       update_(next);
       if (OnChildGrowthFixup(SideOf(prev), next)) {
