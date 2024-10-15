@@ -17,3 +17,5 @@ endmacro()
 
 BST_BENCH_DECLARE(avl AVL.cpp)
 BST_BENCH_DECLARE(naive Naive.cpp)
+BST_BENCH_DECLARE(stdset StdSet.cpp)
+BST_BENCH_DECLARE(stdhashset StdHashSet.cpp)

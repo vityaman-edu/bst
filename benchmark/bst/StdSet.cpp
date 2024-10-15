@@ -2,9 +2,6 @@
 
 #include <random>
 
-#include "bst/avl/Tree.hpp"
-#include "bst/set/Set.hpp"
-
 namespace {
 
 const auto seed = 1432424;
@@ -22,12 +19,12 @@ std::vector<int> RandomInput(std::size_t size) {
   return numbers;
 }
 
-using Set = bst::set::BSTSet<bst::avl::AVLTree, int>;
+using Set = std::set<int>;
 
 Set SetOf(const std::vector<int>& numbers) {
   Set set;
   for (auto number : numbers) {
-    set.Add(number);
+    set.emplace(number);
   }
   return set;
 }
@@ -39,7 +36,8 @@ void LookupOnInputShuffled(benchmark::State& state) {
   auto set = SetOf(input);
 
   for (auto _ : state) {
-    set.Contains(number(random));
+    auto is_present = set.contains(number(random));
+    benchmark::DoNotOptimize(is_present);
   }
 
   state.SetComplexityN(size);
@@ -56,7 +54,8 @@ void LookupOnInputSorted(benchmark::State& state) {
   auto set = SetOf(input);
 
   for (auto _ : state) {
-    set.Contains(number(random));
+    auto is_present = set.contains(number(random));
+    benchmark::DoNotOptimize(is_present);
   }
 
   state.SetComplexityN(size);
@@ -79,6 +78,6 @@ void InsertOnInputShuffled(benchmark::State& state) {
 
 BENCHMARK(InsertOnInputShuffled)->RangeMultiplier(2)->Range(1 << 2, 1 << 18)->Complexity();
 BENCHMARK(LookupOnInputShuffled)->RangeMultiplier(2)->Range(1 << 2, 1 << 18)->Complexity();
-BENCHMARK(LookupOnInputSorted)->RangeMultiplier(2)->Range(1 << 2, 1 << 18)->Complexity();
+BENCHMARK(LookupOnInputSorted)->RangeMultiplier(2)->Range(1 << 2, 1 << 12)->Complexity();
 
 BENCHMARK_MAIN();

@@ -7,14 +7,14 @@
 
 namespace {
 
+const auto seed = 1432424;
+const auto min = -10'000;
+const auto max = +10'000;
+
+std::default_random_engine random(seed);
+std::uniform_int_distribution<int> number(min, max);
+
 std::vector<int> RandomInput(std::size_t size) {
-  const auto seed = 1432424;
-  const auto min = -10'000;
-  const auto max = +10'000;
-
-  std::default_random_engine random(seed);
-  std::uniform_int_distribution<int> number(min, max);
-
   std::vector<int> numbers(size);
   for (std::size_t i = 0; i < size; ++i) {
     numbers.emplace_back(number(random));
@@ -39,7 +39,7 @@ void LookupOnInputShuffled(benchmark::State& state) {
   auto set = SetOf(input);
 
   for (auto _ : state) {
-    set.Contains(10);
+    set.Contains(number(random));
   }
 
   state.SetComplexityN(size);
@@ -56,7 +56,20 @@ void LookupOnInputSorted(benchmark::State& state) {
   auto set = SetOf(input);
 
   for (auto _ : state) {
-    set.Contains(10);
+    set.Contains(number(random));
+  }
+
+  state.SetComplexityN(size);
+}
+
+void InsertOnInputShuffled(benchmark::State& state) {
+  const auto size = state.range(0);
+
+  const auto input = RandomInput(size);
+
+  for (auto _ : state) {
+    auto set = SetOf(input);
+    benchmark::DoNotOptimize(set);
   }
 
   state.SetComplexityN(size);
@@ -64,7 +77,8 @@ void LookupOnInputSorted(benchmark::State& state) {
 
 }  // namespace
 
-BENCHMARK(LookupOnInputShuffled)->RangeMultiplier(2)->Range(1 << 6, 1 << 12)->Complexity();
-BENCHMARK(LookupOnInputSorted)->RangeMultiplier(2)->Range(1 << 6, 1 << 12)->Complexity();
+BENCHMARK(InsertOnInputShuffled)->RangeMultiplier(2)->Range(1 << 2, 1 << 14)->Complexity();
+BENCHMARK(LookupOnInputShuffled)->RangeMultiplier(2)->Range(1 << 2, 1 << 18)->Complexity();
+BENCHMARK(LookupOnInputSorted)->RangeMultiplier(2)->Range(1 << 2, 1 << 12)->Complexity();
 
 BENCHMARK_MAIN();
